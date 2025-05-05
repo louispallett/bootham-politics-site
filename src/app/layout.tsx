@@ -27,9 +27,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main>{children}</main>
-        
+        <div className="flex flex-col min-h-screen justify-between w-full">
+          <main>{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
+}
+
+function Footer() {
+  return (
+    <footer className="footer">
+      <div>
+          <div>
+            <p>This is a Next.js application.</p>
+            <p>This application is not an official Bootham School application.</p>
+          </div>
+          <p><a href="https://github.com/louispallett" className="text-slate-700">© 2025 Louis Pallett</a></p>
+      </div>
+    </footer>
+  )
 }
