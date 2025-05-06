@@ -2,7 +2,7 @@ import { connectToDB } from "@/lib/db";
 import { NextRequest } from "next/server";
 import User from "@/models/User";
 
-// Sign in
+// Register
 export async function POST(req:Request) {
     try {
 
