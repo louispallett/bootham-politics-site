@@ -39,3 +39,22 @@ export async function POST(req: Request) {
         );
     }
 }
+
+export async function PUT(req: Request) {
+    try {
+        await connectToDB();
+
+        const data = await req.json();
+        await Post.updateOne(
+            { _id: data._id },
+            { 
+                title: data.title,
+                content: data.content
+            }
+        );
+
+        return new NextResponse(null, { status: 204 });
+    } catch (err) {
+
+    }
+}
