@@ -1,7 +1,7 @@
 import { GET, POST, PUT } from "@/app/api/tags/route";
 import Tag from "@/models/Tag";
 
-describe.skip("API for Tag model", () => {
+describe("API for Tag model", () => {
     it("Creates a tag", async () => {
         const req = new Request("http://localhost/api/tags", {
             method: "POST", 
@@ -19,7 +19,7 @@ describe.skip("API for Tag model", () => {
     });
 
     describe("API for Tag model (2)", () => {
-        beforeAll(async () => {
+        beforeEach(async () => {
             await Tag.create({
                 name: "British Politics"
             });
@@ -34,7 +34,7 @@ describe.skip("API for Tag model", () => {
             const json = await res.json();
     
             expect(res.status).toBe(200);
-            expect(json[0].name).toBe("British Politics");
+            expect(json.tags[0].name).toBe("British Politics");
         });
     
         it("Throws error if Tag already exists", async () => {
@@ -47,8 +47,10 @@ describe.skip("API for Tag model", () => {
             });
     
             const res = await POST(req);
+            const json = await res.json();
             
             expect(res.status).toBe(409);
+            expect(json.message).toBe("Tag already exists");
         });
     
         it("Updates a tag", async () => {
@@ -61,7 +63,7 @@ describe.skip("API for Tag model", () => {
             });
     
             const res = await PUT(req);
-    
+
             expect(res.status).toBe(204);
         })
     });

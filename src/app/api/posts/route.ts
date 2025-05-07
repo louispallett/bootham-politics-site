@@ -7,17 +7,13 @@ export async function GET() {
         await connectToDB();
         const posts = await Post.find();
         return NextResponse.json(posts);
-    } catch (err: any) {
-        console.error("Error fetching posts: ", err);
-
+    } catch (err:any) {
+        console.error(err);
         return NextResponse.json(
-            {
-                success: false,
-                message: err.message || "Server Error"
-            },
-            { status: err.statusCode || 500}
+            { success: false, message: err.message || "Internal Server Error" },
+            { status: err.statusCode || 500 }
         );
-    }
+    }   
 }
 
 export async function POST(req: Request) {
@@ -27,17 +23,13 @@ export async function POST(req: Request) {
         const newPost = await Post.create(data);
 
         return NextResponse.json(newPost, { status: 201 });
-    } catch (err: any) {
-        console.error("Error creating post: ", err);
-
+    } catch (err:any) {
+        console.error(err);
         return NextResponse.json(
-            {
-                success: false,
-                message: err.message || "Server Error"
-            },
-            { status: err.statusCode || 500}
+            { success: false, message: err.message || "Internal Server Error" },
+            { status: err.statusCode || 500 }
         );
-    }
+    }   
 }
 
 export async function PUT(req: Request) {
@@ -54,7 +46,11 @@ export async function PUT(req: Request) {
         );
 
         return new NextResponse(null, { status: 204 });
-    } catch (err) {
+    } catch (err:any) {
         console.error(err);
-    }
+        return NextResponse.json(
+            { success: false, message: err.message || "Internal Server Error" },
+            { status: err.statusCode || 500 }
+        );
+    }   
 }

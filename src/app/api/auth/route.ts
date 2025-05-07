@@ -10,6 +10,7 @@ export async function POST(req:Request) {
         await connectToDB();
         const data = await req.json();
         const user = await User.findOne({ email: data.email.toLowerCase() });
+        
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 401 });
         }
@@ -26,8 +27,11 @@ export async function POST(req:Request) {
         );
 
         return NextResponse.json({ token }, { status: 200 });
-    } catch (err) {
+    } catch (err:any) {
         console.error("Login error: ", err);
-        return NextResponse.json({ message: "Sever Error: " + err }, { status: 500 });
+        return NextResponse.json(
+            { success: false, message: err.message || "Internal Server Error" },
+            { status: err.statusCode || 500 }
+        );
     }
 }

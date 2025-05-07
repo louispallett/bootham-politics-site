@@ -11,7 +11,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         }
 
         return NextResponse.json(post);
-    } catch (err) {
+    } catch (err:any) {
         console.error(err);
+        return NextResponse.json(
+            { success: false, message: err.message || "Internal Server Error" },
+            { status: err.statusCode || 500 }
+        );
     }
 }
