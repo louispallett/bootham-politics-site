@@ -1,4 +1,6 @@
-jest.setTimeout(10000); // To allow for memory-server to run
+import dotenv from 'dotenv';
+dotenv.config({ path: ".env.test" });
+jest.setTimeout(10000); // (to allow for memory-server to run
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 

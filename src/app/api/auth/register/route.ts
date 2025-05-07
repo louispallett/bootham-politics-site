@@ -8,6 +8,15 @@ export async function POST(req:Request) {
     try {
         await connectToDB();
         const data = await req.json();
+
+        const userExists = await User.findOne({ email: data.email.toLowerCase() });
+        if (userExists) {
+            return NextResponse.json({ message: "Email already used for another account" }, { status: 401 });
+        }
+
+        if (data.passkey != process.env.PASS_KEY) {
+            return NextResponse.json({ message: "Invalid Pass Key" }, { status: 401 });
+        }
         
         const hashedPassword = await bcrypt.hash(data.password, 12);
 

@@ -1,15 +1,15 @@
 import { POST } from "@/app/api/auth/register/route";
-// import bcrypt from "bcryptjs";
 
 describe("API for User model", () => {
     it("Creates a user", async () => {
-        const req = new Request("http://localhost/api/users", {
+        const req = new Request("http://localhost/api/auth/register", {
             method: "POST",
             body: JSON.stringify({
                 firstName: "John",
                 lastName: "Doe",
                 email: "John.Doe@example.com",
-                password: "HelloWorld1!"
+                password: "HelloWorld1!",
+                passkey: process.env.PASS_KEY
             }),
             headers: { "Content-Type": "application/json" }
         });
@@ -18,9 +18,26 @@ describe("API for User model", () => {
         const json = await res.json();
 
         expect(res.status).toBe(201);
-        expect(res.fullName).toBe("John Doe");
-        //? Below tests that the password is hashed in the same method as bcrypt 
-        //? (not that the two strings are the same)
-        // expect(await bcrypt.compare("HelloWorld1!", res.password)).toBe(true);
+        expect(json.firstName).toBe("John");
     });
+
+    it("Returns error with invalid pass key", async () => {
+            const req = new Request("http://localhost/api/auth/register", {
+            method: "POST",
+            body: JSON.stringify({
+                firstName: "John",
+                lastName: "Doe",
+                email: "John.Doe@example.com",
+                password: "HelloWorld1!",
+                passkey: "wrong"
+            }),
+            headers: { "Content-Type": "application/json" }
+        });
+
+        const res = await POST(req);
+        const json = await res.json();
+
+        expect(res.status).toBe(401);
+        expect(json.message).toBe("Invalid Pass Key");
+    })
 });
