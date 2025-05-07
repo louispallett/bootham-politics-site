@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import Tag from "@/models/Tag";
 import { connectToDB } from "@/lib/db";
+import { z } from "zod";
+
+const ValidationSchema = z.object({
+    name: z.string().trim().max(100),
+});
 
 export async function GET() {
     try {
@@ -24,17 +29,24 @@ export async function GET() {
 export async function POST(req:Request) {
     try {
         await connectToDB();
+        const body = await req.json();
 
-        const data = await req.json();
+        const parsed = ValidationSchema.safeParse(body);
+        if(!parsed.success) {
+            return NextResponse.json({
+                message: "Validation Errors",
+                errors: parsed.error.flatten().fieldErrors,
+            }, { status: 400 });
+        }
+
+        const { name } = parsed.data;
         
-        const tagExists = await Tag.findOne({ name: data.name });
+        const tagExists = await Tag.findOne({ name });
         if (tagExists) {
             return NextResponse.json({ message: "Tag already exists" }, { status: 409 });
         }
 
-        const tag = await Tag.create({
-            name: data.name
-        });
+        const tag = await Tag.create({ name });
 
         if (!tag) {
             throw new Error("Database connection failure");
@@ -54,10 +66,10 @@ export async function PUT(req:Request) {
     try {
         await connectToDB();
 
-        const data = await req.json();
+        const body = await req.json();
         await Tag.updateOne(
-            { _id: data._id },
-            { name: data.name }
+            { _id: body._id },
+            { name: body.name }
         );
 
         return new NextResponse(null, { status: 204 });

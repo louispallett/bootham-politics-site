@@ -23,8 +23,9 @@ describe("API for Post route", () => {
     });
     
     describe("API for Post model(2)", () => {
+        let post:any;
         beforeAll(async () => {
-            await Post.create({ 
+            post = await Post.create({ 
                 title: "Test", 
                 content: "Test content" 
             });
@@ -43,6 +44,7 @@ describe("API for Post route", () => {
             const req = new Request("http://localhost/api/posts", {
                 method: "PUT",
                 body: JSON.stringify({ 
+                    _id: post._id,
                     title: "Test Post", 
                     content: "Updated content",
                 }),

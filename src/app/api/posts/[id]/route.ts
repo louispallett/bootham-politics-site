@@ -1,11 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ObjectId } from "mongodb";
 import Post from "@/models/Post";
 import { connectToDB } from "@/lib/db";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         await connectToDB();
-        const post = await Post.findById(params.id);
+
+        const id = params.id;
+
+        if (!ObjectId.isValid(id)) {
+          return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
+        }
+      
+        const _id = new ObjectId(id);
+
+        const post = await Post.findById(_id);
         if (!post) {
             return NextResponse.json({ message: "Post not found" }, { status: 404 });
         }

@@ -3,19 +3,36 @@ import { NextResponse } from "next/server";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { z } from "zod";
+
+const ValidationSchema = z.object({
+    email: z.string().trim().email().max(100),
+    password: z.string().min(8).max(200)
+});
 
 // Sign in
 export async function POST(req:Request) {
     try {
         await connectToDB();
-        const data = await req.json();
-        const user = await User.findOne({ email: data.email.toLowerCase() });
+        const body = await req.json();
+
+        const parsed = ValidationSchema.safeParse(body);
+        if(!parsed.success) {
+            return NextResponse.json({
+                message: "Validation Errors",
+                errors: parsed.error.flatten().fieldErrors,
+            }, { status: 400 });
+        }
+
+        const { email, password } = parsed.data;
+
+        const user = await User.findOne({ email: email.toLowerCase() });
         
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 401 });
         }
 
-        const correctPassword = await bcrypt.compare(data.password, user.password);
+        const correctPassword = await bcrypt.compare(password, user.password);
         if (!correctPassword) {
             return NextResponse.json({ message: "Incorrect Password" }, { status: 401 });
         }

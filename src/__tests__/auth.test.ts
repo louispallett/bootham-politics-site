@@ -38,7 +38,7 @@ describe("Auth route (Sign in)", () => {
                 method: "POST",
                 body: JSON.stringify({
                     email: "Jon.Doe@example.com",
-                    password: "HelloWorld1"
+                    password: "HelloWorld2!"
                 }),
                 headers: { "Content-Type": "application/json" }
             });

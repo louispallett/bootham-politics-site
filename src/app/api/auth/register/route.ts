@@ -2,28 +2,51 @@ import { connectToDB } from "@/lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import User from "@/models/User";
+import { z } from "zod";
+
+const RegisterSchema = z.object({
+    firstName: z.string().trim().min(1).max(50),
+    lastName: z.string().trim().min(1).max(50),
+    email: z.string().trim().email().max(100),
+    password: z.string().trim().min(8).max(200).refine((val) =>
+        /[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[^A-Za-z0-9]/.test(val),
+        {
+            message: "Password must include upper/lowercase, number, and symbol",
+        }
+    )
+});
 
 // Register
 export async function POST(req:Request) {
     try {
         await connectToDB();
-        const data = await req.json();
+        const body = await req.json();
 
-        const userExists = await User.findOne({ email: data.email.toLowerCase() });
+        const parsed = RegisterSchema.safeParse(body);
+        if(!parsed.success) {
+            return NextResponse.json({
+                message: "Validation Errors",
+                errors: parsed.error.flatten().fieldErrors,
+            }, { status: 400 });
+        }
+
+        const { firstName, lastName, email, password } = parsed.data;
+
+        const userExists = await User.findOne({ email: body.email.toLowerCase() });
         if (userExists) {
             return NextResponse.json({ message: "Email already used for another account" }, { status: 401 });
         }
-
-        if (data.passkey != process.env.PASS_KEY) {
+        
+        if (body.passkey != process.env.PASS_KEY) {
             return NextResponse.json({ message: "Invalid Pass Key" }, { status: 401 });
         }
         
-        const hashedPassword = await bcrypt.hash(data.password, 12);
+        const hashedPassword = await bcrypt.hash(password, 12);
 
         const user = await User.create({
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email.toLowerCase(),
+            firstName: firstName,
+            lastName: lastName,
+            email: email.toLowerCase(),
             password: hashedPassword
         })
 

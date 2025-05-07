@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import Post from "@/models/Post";
 import { connectToDB } from "@/lib/db";
+import { z } from "zod";
+
+const ValidationSchema1 = z.object({
+    title: z.string().trim().max(200),
+    content: z.string().min(8).max(100000)
+});
 
 export async function GET() {
     try {
@@ -19,8 +25,20 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         await connectToDB();
-        const data = await req.json();
-        const newPost = await Post.create(data);
+        const body = await req.json();
+
+        const parsed = ValidationSchema1.safeParse(body);
+        if(!parsed.success) {
+            console.error(parsed.error.flatten().fieldErrors);
+            return NextResponse.json({
+                message: "Validation Errors",
+                errors: parsed.error.flatten().fieldErrors,
+            }, { status: 400 });
+        }
+
+        const { title, content } = parsed.data;
+
+        const newPost = await Post.create({ title, content });
 
         return NextResponse.json(newPost, { status: 201 });
     } catch (err:any) {
@@ -32,17 +50,32 @@ export async function POST(req: Request) {
     }   
 }
 
+const ValidationSchema2 = z.object({
+    _id: z.string().trim().max(36),
+    title: z.string().trim().max(200),
+    content: z.string().min(8).max(100000)
+});
+
 export async function PUT(req: Request) {
     try {
         await connectToDB();
 
-        const data = await req.json();
+        const body = await req.json();
+
+        const parsed = ValidationSchema2.safeParse(body);
+        if(!parsed.success) {
+            console.error(parsed.error.flatten().fieldErrors);
+            return NextResponse.json({
+                message: "Validation Errors",
+                errors: parsed.error.flatten().fieldErrors,
+            }, { status: 400 });
+        }
+
+        const { _id, title, content } = parsed.data;
+
         await Post.updateOne(
-            { _id: data._id },
-            { 
-                title: data.title,
-                content: data.content
-            }
+            { _id  },
+            { title, content }
         );
 
         return new NextResponse(null, { status: 204 });
