@@ -2,6 +2,10 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <p>Hello, World</p>
+    <div className="flex items-center flex-col">
+      <div className="grid">
+        
+      </div>
+    </div>
   );
 }

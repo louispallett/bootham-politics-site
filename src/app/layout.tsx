@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import "./styles/styles.css";
 
 const geistSans = Geist({
@@ -13,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "My App",
+  title: "Bootham Politics Hub",
   description: "", //! Add later
 };
 
@@ -27,7 +28,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex flex-col min-h-screen justify-between w-full">
+        <div className="flex flex-col min-h-screen justify-between">
+          <Header />
           <main>{children}</main>
           <Footer />
         </div>
@@ -36,16 +38,29 @@ export default function RootLayout({
   );
 }
 
+function Header() {
+  return (
+    <header>
+      <div>
+        <img src="/images/bootham-logo.png" alt="" className="h-16"/>
+      </div>
+      <div>
+        <menu>
+
+        </menu>
+      </div>
+    </header>
+  )
+}
+
 function Footer() {
   return (
     <footer className="footer">
       <div>
-          <div>
-            <p>This is a Next.js application.</p>
-            <p>This application is not an official Bootham School application.</p>
-          </div>
-          <p><a href="https://github.com/louispallett" className="text-slate-700">© 2025 Louis Pallett</a></p>
+        <p>This is a Next.js application.</p>
+        <p>This application is not an official Bootham School application.</p>
       </div>
+      <p><a href="https://github.com/louispallett" className="text-slate-700">© 2025 Louis Pallett</a></p>
     </footer>
   )
 }

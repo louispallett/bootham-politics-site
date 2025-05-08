@@ -1,31 +1,24 @@
+header, 
 footer {
-    width: 100%;
-    padding-left: 0.75em;   
-    padding-right: 0.75em;
-    padding-top: 0.75em;    
-    padding-bottom: 0.75em;
+    padding: 0.75em;
     border-radius: 0.5em;   
     margin: 0.25em;         
     margin-top: 0.5em;      
     margin-bottom: 0.5em;
-}
-
-footer > div {
     display: flex;
     justify-content: space-between;
     align-items: end;
 }
 
-footer > div > p:nth-child(2) {
-    font-weight: bold;
-    padding-top: 1.25em;
+header, footer {
+    background-color: #3B82F6;
 }
 
 footer > div > p,
-footer > div > div > p {
+footer >  p {
     font-size: 0.625rem;
 }
-  
+
 @media (min-width: 640px) {
     footer {
       padding-left: 1.25rem; 
