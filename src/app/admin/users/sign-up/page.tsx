@@ -1,7 +1,7 @@
+import Form from "./Form";
+
 export default function SignUp() {
     return (
-        <>
-            <p>Sign up</p>
-        </>
+        <Form />
     )
 }

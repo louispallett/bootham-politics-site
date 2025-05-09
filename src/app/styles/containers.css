@@ -1,0 +1,6 @@
+.standard-container {
+    border: 3px solid #1D4ED8;
+    padding: 0.625em 1.25em;
+    border-radius: 5px;
+    box-shadow: 5px 5px 0px 0px #e0e7ff;
+}

@@ -1,10 +1,15 @@
 @import "tailwindcss";
+@import "./buttons.css";
+@import "./containers.css";
 @import "./footer.css";
+@import "./fonts.css";
+@import "./form.css";
 
 :root {
   --background: #EFF6FF;
   --textColour: #000;
   --foreground: #93C5FD;
+  --boxBorder: #1D4ED8;
 }
 
 @theme inline {

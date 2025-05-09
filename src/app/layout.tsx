@@ -30,7 +30,11 @@ export default function RootLayout({
       >
         <div className="flex flex-col min-h-screen justify-between">
           <Header />
-          <main>{children}</main>
+          <div className="mx-2.5 md:mx-5">
+            <div className="flex justify-center">
+              <main>{children}</main>
+            </div>
+          </div>
           <Footer />
         </div>
       </body>

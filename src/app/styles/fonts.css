@@ -1,0 +1,46 @@
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+h2 {
+    font-size: 3rem;
+}
+
+h3 {
+    font-size: 2em;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
+
+h5 {
+    font-size: 1.25rem;
+}
+
+a {
+    font-weight: bold;
+    color: var(--link);
+}
+
+a:hover,
+a:focus {
+    color: var(--link-focus);
+    transform: translate(-2.5px, -2.5px);
+}
+
+:root {
+    --link: #1D4ED8;
+    --link-focus: #1d4fd8db;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+      --link: #facc15;
+      --link-focus: #eab308;
+    }
+}
