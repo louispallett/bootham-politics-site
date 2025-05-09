@@ -15,9 +15,7 @@ export default function Form() {
     const onSubmit = (data:object) => {
         setIsPending(true);
         axios.post(`/api/auth`, data)
-            .then((response:any) => {
-                console.log(response.data)
-            }).catch((err:any) => {
+            .then(() => {}).catch((err:any) => {
                 console.log(err.message);
                 setServerError(err.message);
             }).finally(() => {

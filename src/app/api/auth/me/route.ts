@@ -3,16 +3,18 @@ import jwt from "jsonwebtoken";
 import User from "@/models/User";
 import { connectToDB } from "@/lib/db";
 
-export async function GET(req:Request) {
+export async function GET(req:NextRequest) {
+  //? What is '?.' here?
+  //? This is the optional chaining operator - it tells TS/JS to return undefined if 
+  //? req.cookies.get.value is undefined, rather than throwing an error.
+  const token = req.cookies.get("token")?.value;
+
+  if (!token) {
+    return NextResponse.json({ message: "No token provided" }, { status: 401 });
+  }
+
   try {
     await connectToDB();
-
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
-
-    if (!token) {
-      return NextResponse.json({ message: "No token provided" }, { status: 401 });
-    }
 
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET!); // This '!' is a TS non-null assertion operator (https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html)
     const user = await User.findById(decoded.userId).select("-password");

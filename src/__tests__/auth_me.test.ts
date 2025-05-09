@@ -2,6 +2,7 @@ import { GET } from "@/app/api/auth/me/route";
 import { POST } from "@/app/api/auth/route";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import { NextRequest } from "next/server";
 
 describe("Auth ME route (authentication)", () => {
     let token:string;
@@ -28,23 +29,33 @@ describe("Auth ME route (authentication)", () => {
     });
 
     it("Successful on valid JWT", async () => {
-        const req = new Request("http:localhost/api/auth/me", {
-            method: "GET", 
-            headers: { Authorization: "Bearer " + token }
+        const cookieHeader = `token=${token}`;
+        const req = new Request("http://localhost/api/auth/me", {
+            method: "GET",
+            headers: {
+                cookie: cookieHeader,
+            },
         });
 
-        const res = await GET(req);
+        const nextReq = new NextRequest(req);
 
+        const res = await GET(nextReq);
         expect(res.status).toBe(200);
     });
 
     it("Unsuccessful on invalid JWT", async () => {
-        const req = new Request("http:localhost/api/auth/me", {
-            method: "GET", 
-            headers: { Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFiYjMzZmNiODhhNmFmOWQzYmNjNzUiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ2NjQ1ODI0LCJleHAiOjE3NDY3NzU0MjR9.gSwoPjf3lc6BuaPG7UL9hxrkg7wnjDBH7es9RfbmNn1" }
+        const invalidToken = "an.invalid.token";
+        const cookieHeader = `token=${invalidToken}`;
+        const req = new Request("http://localhost/api/auth/me", {
+            method: "GET",
+            headers: {
+                cookie: cookieHeader,
+            },
         });
 
-        const res = await GET(req);
+        const nextReq = new NextRequest(req);
+
+        const res = await GET(nextReq);
         const json = await res.json();
 
         expect(res.status).toBe(401);

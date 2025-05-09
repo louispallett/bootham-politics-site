@@ -28,7 +28,6 @@ describe("Auth route (Sign in)", () => {
             const json = await res.json();
     
             expect(res.status).toBe(200);
-            expect(json.token).toBeTruthy();
         });
     });
     

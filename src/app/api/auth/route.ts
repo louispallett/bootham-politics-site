@@ -1,4 +1,5 @@
 import { connectToDB } from "@/lib/db";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
@@ -43,7 +44,18 @@ export async function POST(req:Request) {
             { expiresIn: "36h" }
         );
 
-        return NextResponse.json({ token }, { status: 200 });
+        const response = NextResponse.json({ token }, { status: 200 });
+
+        response.cookies.set("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+            maxAge: 60 * 60 * 36
+        });
+
+        return response;
+        
     } catch (err:any) {
         console.error("Login error: ", err);
         return NextResponse.json(
