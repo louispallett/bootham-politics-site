@@ -2,7 +2,6 @@ header,
 footer {
     padding: 0.75em;
     border-radius: 0.5em;   
-    margin: 0.25em;         
     margin-top: 0.5em;      
     margin-bottom: 0.5em;
     display: flex;
@@ -10,8 +9,16 @@ footer {
     align-items: end;
 }
 
+header {
+    margin: 0.25em;
+}
+
 header, footer {
     background-color: #3B82F6;
+}
+
+footer {
+    width: 100%;
 }
 
 footer > div > p,

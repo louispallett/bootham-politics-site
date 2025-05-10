@@ -4,10 +4,11 @@ export default function UsersLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="users-wrapper">
+        <div>
             <div className="users-container">
-                <main>{children}</main>
+                <h4>Admin Controls</h4>
             </div>
+            <main>{children}</main>
         </div>
     )
 }
