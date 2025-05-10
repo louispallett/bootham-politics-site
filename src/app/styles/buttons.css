@@ -1,3 +1,14 @@
+:root {
+	--btn-default-bg: #bae6fd;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--btn-default-bg: #1e40af;
+		--btn-default-bg-hover: #2563eb;
+	}
+}
+
 .submit, 
 .success,
 .danger {
@@ -11,6 +22,8 @@
 	box-shadow: 5px 5px 0px 0px #00000032; 
     font-weight: 600;
     cursor: pointer;
+	display: flex;
+	justify-content: center;
 }
 
 .submit {
@@ -31,7 +44,9 @@
 .success:hover,
 .success:focus,
 .danger:hover,
-.danger:focus {
+.danger:focus,
+.btn-default:focus,
+.btn-default:hover {
 	outline: none;
     transform: translate(-2.5px, -2.5px);
 }
@@ -49,6 +64,23 @@
 .danger:hover,
 .danger:focus {
 	background-color: #dc2626e2;
+}
+
+.btn-default {
+    border: 3px solid #000000;
+	font-size: 1.125rem; 
+	padding: 0.2em 0.45em; 
+	border-radius: 0.25em; 
+    font-weight: 500;
+    cursor: pointer;
+	display: flex;
+	justify-content: center;
+	background: var(--btn-default-bg);
+}
+
+.btn-default:hover,
+.btn-default:focus {
+	background: var(--btn-default-bg-hover);
 }
 
 .spinner {

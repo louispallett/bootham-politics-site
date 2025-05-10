@@ -1,3 +1,5 @@
+import AdminControls from "./AdminControls";
+
 export default function UsersLayout({
     children
 } : {
@@ -5,10 +7,8 @@ export default function UsersLayout({
 }) {
     return (
         <div>
-            <div className="users-container">
-                <h4>Admin Controls</h4>
-            </div>
-            <main>{children}</main>
+            <AdminControls />
+            <main className="my-2.5">{children}</main>
         </div>
     )
 }

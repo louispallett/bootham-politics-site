@@ -59,8 +59,8 @@ function Footer() {
     <footer className="footer">
       <p>This application is not an official Bootham School application.</p>
       <div className="flex flex-col items-end">
-        <Link href="/admin/home" className="text-sm">Admin Page</Link>
-        <p><a href="https://github.com/louispallett" className="text-slate-700">© 2025 Louis Pallett</a></p>
+        <a href="/admin/home" className="text-sm text-yellow-400! focus:text-yellow-300! hover:text-yellow-200!">Administrator</a>
+        <p><a href="https://github.com/louispallett" className="text-sm text-yellow-400! focus:text-yellow-300! hover:text-yellow-200!">© 2025 Louis Pallett</a></p>
       </div>
     </footer>
   )

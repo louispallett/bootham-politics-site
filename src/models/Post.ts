@@ -5,7 +5,9 @@ const Schema = mongoose.Schema;
 const Post = new Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
+    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
     tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
+    published: { type: Boolean, default: false, required: true },
     creationDate: { 
         type: Date, 
         required: true,

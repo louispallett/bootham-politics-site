@@ -5,18 +5,18 @@
 @import "./fonts.css";
 @import "./form.css";
 
+* {
+  font-family: "roboto", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 :root {
   --background: #EFF6FF;
   --textColour: #000;
   --foreground: #93C5FD;
   --boxBorder: #1D4ED8;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -37,4 +37,23 @@ body {
   display: flex;
   justify-content: center;
   background-color: var(--foreground);
+}
+
+.spinner {
+  border: 2px solid rgba(0, 0, 0, 0);
+  border-top: 2px solid black;
+  border-radius: 100%;
+}
+
+.spinner {
+  animation: rotate 1500ms infinite linear;
+}
+
+@keyframes rotate {
+  0% {
+      transform: rotate(0);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
 }

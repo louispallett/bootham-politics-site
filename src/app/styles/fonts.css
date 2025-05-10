@@ -29,13 +29,14 @@ a {
 
 a:hover,
 a:focus {
+    cursor: pointer;
     color: var(--link-focus);
     transform: translate(-2.5px, -2.5px);
 }
 
 :root {
-    --link: #1D4ED8;
-    --link-focus: #1d4fd8db;
+    --link: #a16207;
+    --link-focus: #eab308;
 }
 
 @media (prefers-color-scheme: dark) {

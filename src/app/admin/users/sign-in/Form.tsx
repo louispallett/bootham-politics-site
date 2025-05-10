@@ -19,7 +19,7 @@ export default function Form() {
                 console.log(err.message);
                 setServerError(err.message);
             }).finally(() => {
-                setIsPending(false);
+                window.location.assign("/admin/home");
             })
     }
 
@@ -39,7 +39,15 @@ export default function Form() {
                     })}
                 />
             </div>
-            <button className="submit">Submit</button>
+            <button className="submit">
+                { isPending ? (
+                    <div className="spinner h-6 w-6"></div>
+                ) : (
+                    <>
+                        Submit
+                    </>
+                )}
+            </button>
             <p className="text-center text-sm">Not registered? <a href="sign-up">Sign Up</a></p>
         </form>
     )
