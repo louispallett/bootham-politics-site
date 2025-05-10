@@ -25,7 +25,9 @@ footer >  p {
       padding-right: 1.25rem;
     }
 
-    footer > div > p {
-        font-size: 0.825rem; 
+    footer > p,
+    footer > div > p,
+    fotter > div > Link {
+        font-size: 0.625rem; 
     }
 }

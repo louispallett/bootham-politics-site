@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "./styles/styles.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,9 +46,9 @@ export default function RootLayout({
 function Header() {
   return (
     <header>
-      <div>
+      <Link href="/" className="cursor-pointer">
         <img src="/images/bootham-logo.png" alt="" className="h-16"/>
-      </div>
+      </Link>
       <div>
         <menu>
 
@@ -60,11 +61,11 @@ function Header() {
 function Footer() {
   return (
     <footer className="footer">
-      <div>
-        <p>This is a Next.js application.</p>
-        <p>This application is not an official Bootham School application.</p>
+      <p>This application is not an official Bootham School application.</p>
+      <div className="flex flex-col items-end">
+        <Link href="/admin/home" className="text-sm">Admin Page</Link>
+        <p><a href="https://github.com/louispallett" className="text-slate-700">© 2025 Louis Pallett</a></p>
       </div>
-      <p><a href="https://github.com/louispallett" className="text-slate-700">© 2025 Louis Pallett</a></p>
     </footer>
   )
 }
