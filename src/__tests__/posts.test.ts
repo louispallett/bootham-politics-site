@@ -1,7 +1,23 @@
 import { GET, POST, PUT } from "@/app/api/posts/route";
+import User from "@/models/User";
+import bcrypt from "bcryptjs";
 import Post from "@/models/Post";
 
 describe("API for Post route", () => {
+    let id:string;
+    beforeEach(async () => {
+
+        const user = await User.create({
+            firstName: "John",
+            lastName: "Doe",
+            email: "john.doe@example.com",
+            password: await bcrypt.hash("HelloWorld1!", 12),
+            passkey: process.env.PASS_KEY
+        });
+
+        id = user._id;
+    })
+
     describe("API for Post model(1)", () => {
         it("Creates a post", async () => {
             const req = new Request("http://localhost/api/posts", {
@@ -9,6 +25,7 @@ describe("API for Post route", () => {
                 body: JSON.stringify({ 
                     title: "Test Post", 
                     content: "Test content",
+                    author: id
                 }),
                 headers: { "Content-Type": "application/json" }
             });
@@ -27,7 +44,8 @@ describe("API for Post route", () => {
         beforeAll(async () => {
             post = await Post.create({ 
                 title: "Test", 
-                content: "Test content" 
+                content: "Test content",
+                author: id 
             });
         });
     
@@ -47,6 +65,7 @@ describe("API for Post route", () => {
                     _id: post._id,
                     title: "Test Post", 
                     content: "Updated content",
+                    author: id
                 }),
                 headers: { "Content-Type": "application/json" }
             });

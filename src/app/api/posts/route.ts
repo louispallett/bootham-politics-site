@@ -5,7 +5,8 @@ import { z } from "zod";
 
 const ValidationSchema1 = z.object({
     title: z.string().trim().max(200),
-    content: z.string().min(8).max(100000)
+    content: z.string().min(8).max(100000),
+    author: z.string().min(8).max(36)
 });
 
 export async function GET() {
@@ -36,9 +37,9 @@ export async function POST(req: Request) {
             }, { status: 400 });
         }
 
-        const { title, content } = parsed.data;
+        const { title, content, author } = parsed.data;
 
-        const newPost = await Post.create({ title, content });
+        const newPost = await Post.create({ title, content, author });
 
         return NextResponse.json(newPost, { status: 201 });
     } catch (err:any) {
@@ -53,7 +54,8 @@ export async function POST(req: Request) {
 const ValidationSchema2 = z.object({
     _id: z.string().trim().max(36),
     title: z.string().trim().max(200),
-    content: z.string().min(8).max(100000)
+    content: z.string().min(8).max(100000),
+    author: z.string().min(8).max(36)
 });
 
 export async function PUT(req: Request) {
@@ -71,11 +73,11 @@ export async function PUT(req: Request) {
             }, { status: 400 });
         }
 
-        const { _id, title, content } = parsed.data;
+        const { _id, title, content, author } = parsed.data;
 
         await Post.updateOne(
             { _id  },
-            { title, content }
+            { title, content, author }
         );
 
         return new NextResponse(null, { status: 204 });
