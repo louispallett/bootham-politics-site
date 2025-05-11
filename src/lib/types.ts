@@ -7,3 +7,8 @@ export interface Post {
     published: boolean,
     creationDate: Date
 }
+
+export interface Tag {
+    _id: string,
+    name: string
+}

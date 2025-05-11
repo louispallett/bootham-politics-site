@@ -29,7 +29,7 @@ export default function AdminControls() {
                     )}
                 </button>
             </div>
-            <p>Welcome to the administrator page. Here you can create, update, and delete posts. Click <a>here</a> for help.</p>
+            <p>Welcome to the administrator page. Here you can create, update, and delete posts. Click <a className="link">here</a> for help.</p>
         </div>
     )
 }

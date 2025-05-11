@@ -1,8 +1,14 @@
-.standard-container {
-    border: 3px solid #1D4ED8;
+.standard-container,
+.users-container,
+.tag-container {
     padding: 0.625em 1.25em;
     border-radius: 5px;
-    box-shadow: 5px 5px 0px 0px #e0e7ff;
+    box-shadow: 5px 5px 0px 0px var(--form-shadow);
+}
+
+.standard-container,
+.users-container {
+    border: 3px solid #1D4ED8;
 }
 
 .users-wrapper {
@@ -13,9 +19,10 @@
 }
 
 .users-container {
-    border: 3px solid #1D4ED8;
     background: var(--form-background);
-    padding: 0.625em 1.25em;
-    border-radius: 5px;
-    box-shadow: 5px 5px 0px 0px var(--form-shadow);
+}
+
+.tag-container {
+    border: 3px solid #eab308;
+    background: #fef9c3;
 }

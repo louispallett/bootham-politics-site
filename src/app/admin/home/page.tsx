@@ -11,9 +11,10 @@ export default async function AdminHome() {
 
     return (
         <div className="flex flex-col gap-2.5">
-            <div className="flex flex-col md:grid grid-cols-2 gap-2.5">
-                <CreatePostButton />
-                <AccountSettingsButton />
+            <div className="flex flex-col md:grid grid-cols-3 gap-2.5">
+                <CreatePostBtn />
+                <CreateTagBtn />
+                <AccountSettingsBtn />
             </div>
             <div className="flex flex-col md:grid grid-cols-2 gap-2.5">
                 <div className="flex flex-col gap-2.5">
@@ -21,7 +22,7 @@ export default async function AdminHome() {
                     <Posts posts={published} />
                 </div>
                 <div className="flex flex-col gap-2.5">
-                    <h4>Not Published</h4>
+                    <h4 className="text-right">Not Published</h4>
                     <Posts posts={notPublished} />
                 </div>
             </div>
@@ -29,22 +30,26 @@ export default async function AdminHome() {
     )
 }
 
-function CreatePostButton() {
+function CreatePostBtn() {
     return (
-        <Link href="home/create">
-            <button className="success">
-                Create Post
-            </button>
+        <Link href="home/create-post" className="success">
+            Create Post
         </Link>
     )
 }
 
-function AccountSettingsButton() {
+function CreateTagBtn() {
     return (
-        <Link href="home/account">
-            <button className="submit">
-                Account Settings
-            </button>
+        <Link href="home/create-tag" className="success">
+            Create Tag
+        </Link>
+    )
+}
+
+function AccountSettingsBtn() {
+    return (
+        <Link href="home/account" className="submit">
+            Account Settings
         </Link>
     )
 }
@@ -71,7 +76,6 @@ function PostCard({ data }: { data: Post }) {
     return (
         <div className="">
             <p>{data.title}</p>
-            <p>{data.content}</p>
         </div>
     )
 }
