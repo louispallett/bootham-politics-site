@@ -20,15 +20,16 @@ const PutValidation = z.object({
 
 export async function PUT(
     req:Request,
-    { params }: { params: { tagId: string }}
+    { params }: { params: { id: string }}
 ) {
     try {
         await connectToDB();
 
         const body = await req.json();
-        const parsed = PutValidation.safeParse({ tagId: params.tagId, ...body });
+        const parsed = PutValidation.safeParse({ tagId: params.id, ...body });
         
         if (!parsed.success) {
+            console.log(parsed.error.message);
             return NextResponse.json({ error: parsed.error.message }, { status: 400 });
         }
 

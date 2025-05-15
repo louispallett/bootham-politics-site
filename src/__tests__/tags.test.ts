@@ -1,5 +1,7 @@
-import { GET, POST, PUT } from "@/app/api/tags/route";
+import { GET, POST } from "@/app/api/tags/route";
+import { PUT } from "@/app/api/tags/[id]/route";
 import Tag from "@/models/Tag";
+import { TagType } from "@/lib/types";
 
 describe("API for Tag model", () => {
     it("Creates a tag", async () => {
@@ -19,8 +21,9 @@ describe("API for Tag model", () => {
     });
 
     describe("API for Tag model (2)", () => {
+        let createdTag: TagType;
         beforeEach(async () => {
-            await Tag.create({
+            createdTag = await Tag.create({
                 name: "British Politics"
             });
         });
@@ -54,7 +57,7 @@ describe("API for Tag model", () => {
         });
     
         it("Updates a tag", async () => {
-            const req = new Request("http://localhost/api/tags", {
+            const req = new Request(`http://localhost/api/tags/${createdTag._id}`, {
                 method: "PUT", 
                 body: JSON.stringify({
                     name: "Irish Politics"
@@ -62,7 +65,8 @@ describe("API for Tag model", () => {
                 headers: { "Content-Type": "application/json" }
             });
     
-            const res = await PUT(req);
+            const context = { params: { id: createdTag._id.toString() } };
+            const res = await PUT(req, context);
 
             expect(res.status).toBe(204);
         })
