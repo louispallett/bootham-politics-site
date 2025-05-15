@@ -1,4 +1,4 @@
-export interface Post {
+export interface PostType {
     _id: string,
     title: string,
     content: string,
@@ -8,7 +8,7 @@ export interface Post {
     creationDate: Date
 }
 
-export interface Tag {
+export interface TagType {
     _id: string,
     name: string
 }

@@ -39,6 +39,12 @@ form {
     }
 }
 
+input[type="checkbox"],
+label {
+    cursor: pointer;
+}
+
+
 :root {
     --form-background: #dbeafe;
     --textColour: #000;

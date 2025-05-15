@@ -6,7 +6,8 @@ import { z } from "zod";
 const ValidationSchema1 = z.object({
     title: z.string().trim().max(200),
     content: z.string().min(8).max(100000),
-    author: z.string().min(8).max(36)
+    author: z.string().min(8).max(36),
+    tags: z.array(z.string().regex(/^[a-f\d]{24}$/i, "Invalid tag ID")).optional()
 });
 
 export async function GET() {
@@ -37,9 +38,9 @@ export async function POST(req: Request) {
             }, { status: 400 });
         }
 
-        const { title, content, author } = parsed.data;
+        const { title, content, author, tags } = parsed.data;
 
-        const newPost = await Post.create({ title, content, author });
+        const newPost = await Post.create({ title, content, author, tags });
 
         return NextResponse.json(newPost, { status: 201 });
     } catch (err:any) {

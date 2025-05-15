@@ -3,7 +3,7 @@ import Tag from "@/models/Tag";
 import { connectToDB } from "@/lib/db";
 import { z } from "zod";
 
-const ValidationSchema = z.object({
+const Validation = z.object({
     name: z.string().trim().max(100),
 });
 
@@ -31,7 +31,7 @@ export async function POST(req:Request) {
         await connectToDB();
         const body = await req.json();
 
-        const parsed = ValidationSchema.safeParse(body);
+        const parsed = Validation.safeParse(body);
         if(!parsed.success) {
             return NextResponse.json({
                 message: "Validation Errors",
@@ -53,26 +53,6 @@ export async function POST(req:Request) {
         }
 
         return NextResponse.json({ name: tag.name }, { status: 201 });
-    } catch (err:any) {
-        console.error(err);
-        return NextResponse.json(
-            { success: false, message: err.message || "Internal Server Error" },
-            { status: err.statusCode || 500 }
-        );
-    }   
-}
-
-export async function PUT(req:Request) {
-    try {
-        await connectToDB();
-
-        const body = await req.json();
-        await Tag.updateOne(
-            { _id: body._id },
-            { name: body.name }
-        );
-
-        return new NextResponse(null, { status: 204 });
     } catch (err:any) {
         console.error(err);
         return NextResponse.json(

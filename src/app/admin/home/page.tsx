@@ -1,10 +1,10 @@
-import { Post } from "@/lib/types";
+import { PostType } from "@/lib/types";
 import { GET } from "@/app/api/posts/route";
 import Link from "next/link";
 
 export default async function AdminHome() {
     const res = await GET();
-    const posts: Post[] = await res.json();
+    const posts: PostType[] = await res.json();
 
     const published = posts.filter(post=> post.published);
     const notPublished = posts.filter(post => !post.published);
@@ -40,8 +40,8 @@ function CreatePostBtn() {
 
 function CreateTagBtn() {
     return (
-        <Link href="home/create-tag" className="success">
-            Create Tag
+        <Link href="home/manage-tags" className="success">
+            Tags
         </Link>
     )
 }
@@ -54,7 +54,7 @@ function AccountSettingsBtn() {
     )
 }
 
-function Posts({ posts } : { posts: Post[] }) {
+function Posts({ posts } : { posts: PostType[] }) {
     return (
         <>
             { posts.length > 0 ? (
@@ -72,10 +72,16 @@ function Posts({ posts } : { posts: Post[] }) {
     )
 }
 
-function PostCard({ data }: { data: Post }) {
+function PostCard({ data }: { data: PostType }) {
+    const limiter = 50;
+    const shortContent = data.content.length > limiter
+        ? data.content.substring(0, limiter) + "..."
+        : data.content;
+
     return (
         <div className="">
             <p>{data.title}</p>
+            <p>{shortContent}</p>
         </div>
     )
 }
