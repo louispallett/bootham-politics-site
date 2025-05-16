@@ -39,10 +39,21 @@ const PutValidation = z.object({
 
 export async function PUT(req:Request) {
     try {
-        const data = await req.json();
+        const data = await req.json() as Record<string, string>;
+
+        const nameSet = new Set<string>();
+        for (const name of Object.values(data)) {
+            if (nameSet.has(name)) {
+                return NextResponse.json(
+                    { message: "Two tags cannot have the same name"},
+                    { status: 400 }
+                );
+            }
+            nameSet.add(name);
+        }
         const promises = [];
     
-        for (let key in data) {
+        for (const key in data) {
             const parsed = PutValidation.safeParse({ tagId: key, name: data[key] });
             
             if (!parsed.success) {

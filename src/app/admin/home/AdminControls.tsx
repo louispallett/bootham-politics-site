@@ -1,6 +1,7 @@
 'use client'
 
 import axios from "axios";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function AdminControls() {
@@ -16,20 +17,26 @@ export default function AdminControls() {
     }
 
     return (
-        <div className="users-container">
+        <div className="users-container text-center md:text-left">
             <div className="flex flex-col md:flex-row md:justify-between gap-2.5">
                 <h4>Admin Controls</h4>
-                <button onClick={handleLogOut}
-                    className="btn-default"
-                >
-                { isPending ? (
-                    <div className="spinner h-6 ws-6"></div>
-                ) : (
-                        <>Log Out</>
-                    )}
-                </button>
+
+                <div className="flex gap-2.5 justify-between">
+                    <Link href="/admin/home" className="btn-default">
+                        Admin Home
+                    </Link>
+                    <button onClick={handleLogOut}
+                        className="btn-default"
+                    >
+                    { isPending ? (
+                        <div className="spinner h-6 ws-6"></div>
+                    ) : (
+                            <>Log Out</>
+                        )}
+                    </button>
+                </div>
             </div>
-            <p>Welcome to the administrator page. Here you can create, update, and delete posts. Click <a className="link">here</a> for help.</p>
+            <p className="mt-2.5">Welcome to the administrator page. Here you can create, update, and delete posts. Click <a className="link">here</a> for help.</p>
         </div>
     )
 }
