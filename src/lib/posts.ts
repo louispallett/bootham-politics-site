@@ -6,7 +6,9 @@ export async function getAllPosts(): Promise<PostType[]> {
     try {
         await connectToDB();
     
-        const posts: PostType[] = await Post.find();
+        const posts: PostType[] = await Post.find().populate({
+            path: "author", select: "-_id firstName lastName"
+        });
         return posts;
     } catch (err: any) {
         console.error("Error fetching posts:", err);

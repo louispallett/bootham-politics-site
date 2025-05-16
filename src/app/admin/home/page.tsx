@@ -1,10 +1,9 @@
 import { PostType } from "@/lib/types";
-import { GET } from "@/app/api/posts/route";
+import { getAllPosts } from "@/lib/posts";
 import Link from "next/link";
 
 export default async function AdminHome() {
-    const res = await GET();
-    const posts: PostType[] = await res.json();
+    const posts: PostType[] = await getAllPosts();
 
     const published = posts.filter(post=> post.published);
     const notPublished = posts.filter(post => !post.published);
@@ -73,15 +72,17 @@ function Posts({ posts } : { posts: PostType[] }) {
 }
 
 function PostCard({ data }: { data: PostType }) {
-    const limiter = 50;
+    const limiter = 200;
     const shortContent = data.content.length > limiter
         ? data.content.substring(0, limiter) + "..."
         : data.content;
 
     return (
-        <div className="">
-            <p>{data.title}</p>
+        <Link href={`home/${data._id}`} className="users-container">
+            <h4>{data.title}</h4>
             <p>{shortContent}</p>
-        </div>
+            <p className="text-right font-bold">{data.author.fullname}</p>
+            <p className="text-right">{data.creationDateFormatted}</p>
+        </Link>
     )
 }
