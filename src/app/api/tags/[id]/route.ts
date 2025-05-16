@@ -5,7 +5,6 @@ import { z } from "zod";
 import HttpError from "@/lib/HttpError";
 import { getPostsWithTag } from "@/lib/posts";
 import mongoose from "mongoose";
-import { PostType } from "@/lib/types";
 
 
 const PutValidation = z.object({

@@ -18,8 +18,8 @@ export default function Form() {
             .then((response:object) => {
                 window.location.reload();
             }).catch((err:any) => {
-                console.log(err.message);
-                setServerError(err.message);
+                console.log(err.response.data.message);
+                setServerError(err.response.data.message);
                 setIsPending(false);
             }).finally(() => {
                 setIsPending(false);
@@ -36,7 +36,20 @@ export default function Form() {
                         required: "Required"
                     })}
                 />
-                <button className="submit">Submit</button>
+                <button className="submit">
+                    { isPending ? (
+                        <div className="spinner h-6 w-6"></div>
+                    ) : (
+                        <>
+                            Create
+                        </>
+                    )}
+                </button>
+                { serverError && (
+                    <div className="bg-red-600 text-white font-bold self-start px-2.5 rounded">
+                        <p>Error: {serverError}</p>
+                    </div>
+                )}
             </form>
         </div>
     )

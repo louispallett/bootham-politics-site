@@ -4,7 +4,6 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { TagType } from "@/lib/types";
 import { useState } from "react"
-import { register } from "module";
 
 export default function AllTags({ tags }: { tags: TagType[] }) {
     const form = useForm();
@@ -15,17 +14,17 @@ export default function AllTags({ tags }: { tags: TagType[] }) {
     const [serverError, setServerError] = useState(null);
 
     const onSubmit = (data:object) => {
-        // setIsPending(true);
-        // axios.put(`/api/tags`, data)
-        //     .then((response:object) => {
-        //         setIsSuccess(true);
-        //     }).catch((err:any) => {
-        //         console.log(err.message);
-        //         setServerError(err.message);
-        //         setIsPending(false);
-        //     }).finally(() => {
-        //         // send to update route
-        //     })
+        setIsPending(true);
+        axios.put(`/api/tags`, data)
+            .then((response:object) => {
+                setIsSuccess(true);
+            }).catch((err:any) => {
+                console.log(err.message);
+                setServerError(err.message);
+                setIsPending(false);
+            }).finally(() => {
+                // send to update route
+            })
         console.log(data);
     }
 
