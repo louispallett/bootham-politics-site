@@ -3,7 +3,7 @@ import { getAllPosts } from "@/lib/posts";
 import Link from "next/link";
 
 export default async function AdminHome() {
-    const posts: PostType[] = await getAllPosts();
+    const posts = await getAllPosts();
 
     const published = posts.filter(post=> post.published);
     const notPublished = posts.filter(post => !post.published);
@@ -21,7 +21,7 @@ export default async function AdminHome() {
                     <Posts posts={published} />
                 </div>
                 <div className="flex flex-col gap-2.5">
-                    <h4 className="text-right">Not Published</h4>
+                    <h4 className="md:text-right">Not Published</h4>
                     <Posts posts={notPublished} />
                 </div>
             </div>
@@ -83,6 +83,7 @@ function PostCard({ data }: { data: PostType }) {
             <p>{shortContent}</p>
             <p className="text-right font-bold">{data.author.fullname}</p>
             <p className="text-right">{data.creationDateFormatted}</p>
+            <p>{data.tags[0].name}</p>
         </Link>
     )
 }

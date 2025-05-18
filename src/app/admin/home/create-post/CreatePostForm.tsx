@@ -1,12 +1,12 @@
 'use client'
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { TagType } from "@/lib/types";
+import { PostType, TagType } from "@/lib/types";
 
-export default function CreatePostForm({ tags }: { tags: TagType[] }) {
+export default function CreatePostForm({ tags, userId }: { tags: TagType[], userId: string }) {
     const form = useForm();
     const { register, control, handleSubmit, formState, watch, reset, setValue, trigger } = form;
     const { errors } = formState;
@@ -17,8 +17,9 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
     // We need to pass the token to the server and then fetch the _id of the 
     // user to set it as the author
 
-    const onSubmit = (data:object) => {
+    const onSubmit = (data:any) => {
         setIsPending(true);
+        data.author = userId;
         const selectedTags = Object.entries(data)
             .filter(([key, value]) => tags.find(tag => tag._id === key) && value)
             .map(([key]) => key);
@@ -29,14 +30,12 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
         };
 
         axios.post(`/api/posts`, payload)
-            .then((response:object) => {
-                setIsSuccess(true);
+            .then((response:AxiosResponse) => {
+                window.location.assign(`/admin/home/${response.data._id}`)
             }).catch((err:any) => {
                 console.log(err.message);
                 setServerError(err.message);
                 setIsPending(false);
-            }).finally(() => {
-                // send to update route
             })
     }
 
@@ -54,7 +53,13 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
                 })}
             ></textarea>
             <Tags tags={tags} register={register} />
-            <button className="submit">Submit</button>
+            <button className="submit">
+                { isPending ? (
+                    <div className="spinner h-6 w-6"></div>
+                ) : (
+                    <>Submit</>
+                )}
+            </button>
         </form>
     )
 }

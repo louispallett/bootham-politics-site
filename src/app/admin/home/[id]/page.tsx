@@ -8,7 +8,7 @@ export default async function UpdatePost({ params }: { params: { id: string }}) 
             { data ? (
                 <>
                     <input type="text" defaultValue={data.title} className="form-input text-lg font-bold" />
-                    <input type="text" defaultValue={data.content} className="form-input" />
+                    <textarea defaultValue={data.content} className="form-input" ></textarea>
                 </>
             ) : (
                 <p>Waiting...</p>

@@ -1,8 +1,9 @@
 import Tag from "@/models/Tag";
 import { connectToDB } from "./db";
 import { TagType } from "./types";
+import { NextResponse } from "next/server";
 
-export async function getAllTags() {
+export async function getAllTags(): Promise<TagType[]> {
     try {
         await connectToDB();
 

@@ -2,13 +2,16 @@ import Post from "@/models/Post";
 import { connectToDB } from "./db";
 import { PostType } from "./types";
 
-export async function getAllPosts(): Promise<PostType[]> {
+export async function getAllPosts() {
     try {
         await connectToDB();
     
-        const posts: PostType[] = await Post.find().populate({
-            path: "author", select: "-_id firstName lastName"
-        });
+        const posts = await Post.find()
+        // .populate({
+        //     path: "author", select: "-_id firstName lastName"
+        // })
+        .populate({ path: "tags" })
+        .lean();
         return posts;
     } catch (err: any) {
         console.error("Error fetching posts:", err);
