@@ -2,6 +2,13 @@ import { GET, POST, PUT } from "@/app/api/posts/route";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import Post from "@/models/Post";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
+
+jest.mock("next/headers", () => ({
+  cookies: jest.fn()
+}));
+
 
 describe("API for Post route", () => {
     let id:string;
@@ -20,6 +27,17 @@ describe("API for Post route", () => {
 
     describe("API for Post model(1)", () => {
         it("Creates a post", async () => {
+            const token = jwt.sign({ userId: id }, process.env.JWT_SECRET!);
+
+            (cookies as jest.Mock).mockReturnValue({
+                get: (name: string) => {
+                    if (name === "token") {
+                        return { value: token };
+                    }
+                    return undefined;
+                }
+            })
+
             const req = new Request("http://localhost/api/posts", {
                 method: "POST",
                 body: JSON.stringify({ 
