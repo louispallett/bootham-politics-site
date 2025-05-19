@@ -81,9 +81,9 @@ function PostCard({ data }: { data: PostType }) {
         <Link href={`home/${data._id}`} className="users-container">
             <h4>{data.title}</h4>
             <p>{shortContent}</p>
-            <p className="text-right font-bold">{data.author.fullname}</p>
+            {/* Note the shown error below is a TS over-zealous one because data.author is technically a _id string */}
+            <p className="text-right font-bold">{data.author.fullname}</p> 
             <p className="text-right">{data.creationDateFormatted}</p>
-            <p>{data.tags[0].name}</p>
         </Link>
     )
 }

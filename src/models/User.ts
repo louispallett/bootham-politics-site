@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Post from "./Post";
 
 const User = new mongoose.Schema({
     firstName: { type: String, required: true },

@@ -2,18 +2,33 @@ import { NextResponse } from "next/server";
 import Post from "@/models/Post";
 import { connectToDB } from "@/lib/db";
 import { z } from "zod";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import User from "@/models/User";
+import Tag from "@/models/Tag";
 
 const ValidationSchema1 = z.object({
     title: z.string().trim().max(200),
     content: z.string().min(8).max(100000),
-    author: z.string().min(8).max(36),
     tags: z.array(z.string().regex(/^[a-f\d]{24}$/i, "Invalid tag ID")).optional()
 });
 
 export async function GET() {
     try {
         await connectToDB();
-        const posts = await Post.find();
+        const posts = await Post.find().populate(
+            { 
+                path: "author", 
+                select: "firstName lastName -_id",
+                model: User
+            })
+        .populate(
+            { 
+                path: "tags",
+                select: "name -_id",
+                model: Tag
+            });
+
         return NextResponse.json(posts);
     } catch (err:any) {
         console.error(err);
@@ -25,11 +40,35 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+    
     try {
         await connectToDB();
+    
+        const cookieStore = cookies();
+        const token = (await cookieStore).get("token")?.value;
+    
+        if (!token) {
+            return NextResponse.json( { message: "Unauthorized: No token provided" }, { status: 401 });
+        }
+    
+        let userId: string | null = null;
+
+        try {
+            const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+            userId = decoded?.userId;
+
+            if (!userId) {
+                throw new Error("Invalid token payload");
+            }
+        } catch (err) {
+            console.error("JWT Verification failure: ", err);
+            return NextResponse.json( { message: "Unauthorized: No token provided" }, { status: 401 });
+        }
+
         const body = await req.json();
 
         const parsed = ValidationSchema1.safeParse(body);
+
         if(!parsed.success) {
             console.error(parsed.error.flatten().fieldErrors);
             return NextResponse.json({
@@ -38,9 +77,9 @@ export async function POST(req: Request) {
             }, { status: 400 });
         }
 
-        const { title, content, author, tags } = parsed.data;
+        const { title, content, tags } = parsed.data;
 
-        const newPost = await Post.create({ title, content, author, tags });
+        const newPost = await Post.create({ title, content, author: userId, tags });
 
         return NextResponse.json(newPost, { status: 201 });
     } catch (err:any) {
@@ -56,7 +95,6 @@ const ValidationSchema2 = z.object({
     _id: z.string().trim().max(36),
     title: z.string().trim().max(200),
     content: z.string().min(8).max(100000),
-    author: z.string().min(8).max(36)
 });
 
 export async function PUT(req: Request) {
@@ -66,6 +104,7 @@ export async function PUT(req: Request) {
         const body = await req.json();
 
         const parsed = ValidationSchema2.safeParse(body);
+
         if(!parsed.success) {
             console.error(parsed.error.flatten().fieldErrors);
             return NextResponse.json({
@@ -74,11 +113,11 @@ export async function PUT(req: Request) {
             }, { status: 400 });
         }
 
-        const { _id, title, content, author } = parsed.data;
+        const { _id, title, content } = parsed.data;
 
         await Post.updateOne(
             { _id  },
-            { title, content, author }
+            { title, content }
         );
 
         return new NextResponse(null, { status: 204 });

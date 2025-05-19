@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { PostType, TagType } from "@/lib/types";
 
-export default function CreatePostForm({ tags, userId }: { tags: TagType[], userId: string }) {
+export default function CreatePostForm({ tags }: { tags: TagType[] }) {
     const form = useForm();
     const { register, control, handleSubmit, formState, watch, reset, setValue, trigger } = form;
     const { errors } = formState;
@@ -19,7 +19,6 @@ export default function CreatePostForm({ tags, userId }: { tags: TagType[], user
 
     const onSubmit = (data:any) => {
         setIsPending(true);
-        data.author = userId;
         const selectedTags = Object.entries(data)
             .filter(([key, value]) => tags.find(tag => tag._id === key) && value)
             .map(([key]) => key);

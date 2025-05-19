@@ -1,12 +1,14 @@
+import { Types } from "mongoose"
+
 export interface PostType {
     _id: string,
     title: string,
     content: string,
-    author: UserType,
-    tags: TagType[],
+    author: Types.ObjectId | UserType,
+    tags: Types.ObjectId[] | TagType[],
     published: boolean,
     creationDate: Date,
-    creationDateFormatted: string
+    creationDateFormatted: string,
 }
 
 export interface TagType {

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./User";
 import { DateTime } from "luxon";
 const Schema = mongoose.Schema;
 
@@ -9,7 +10,7 @@ const Post = new Schema({
     tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
     published: { type: Boolean, default: false, required: true },
     creationDate: { 
-        type: Date, 
+        type: Date,
         required: true,
         default: () => new Date(),
         immutable: true
