@@ -37,6 +37,7 @@ const PutValidation = z.object({
     name: z.string().trim().max(100)
 });
 
+// This PUT updates ALL tags
 export async function PUT(req:Request) {
     try {
         const data = await req.json() as Record<string, string>;

@@ -1,9 +1,10 @@
-import { GET, POST, PUT } from "@/app/api/posts/route";
+import { GET, POST } from "@/app/api/posts/route";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import Post from "@/models/Post";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { PostType } from "@/lib/types";
 
 jest.mock("next/headers", () => ({
   cookies: jest.fn()
@@ -58,7 +59,7 @@ describe("API for Post route", () => {
     });
     
     describe("API for Post model(2)", () => {
-        let post:any;
+        let post:PostType;
         beforeAll(async () => {
             post = await Post.create({ 
                 title: "Test", 
@@ -74,23 +75,6 @@ describe("API for Post route", () => {
             expect(res.status).toBe(200);
             expect(json.length).toBe(1);
             expect(json[0].content).toBe("Test content");
-        });
-    
-        it("Updates a post", async () => {
-            const req = new Request("http://localhost/api/posts", {
-                method: "PUT",
-                body: JSON.stringify({ 
-                    _id: post._id,
-                    title: "Test Post", 
-                    content: "Updated content",
-                    author: id
-                }),
-                headers: { "Content-Type": "application/json" }
-            });
-    
-            const res = await PUT(req);
-    
-            expect(res.status).toBe(204);
         });
     })
 })

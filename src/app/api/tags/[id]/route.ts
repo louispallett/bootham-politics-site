@@ -17,6 +17,7 @@ const PutValidation = z.object({
     name: z.string().trim().max(100)
 });
 
+// Updates a single tag
 export async function PUT(
     req:Request,
     { params }: { params: { id: string }}
@@ -65,14 +66,13 @@ export async function DELETE(
     try {
         await connectToDB();
 
-        const id = params.id;
 
         const tagIdSchema = DeleteValidation.shape.tagId;
-        const parsed = tagIdSchema.safeParse(id);
+        const parsed = tagIdSchema.safeParse(params.id);
         
         if (!parsed.success) {
-            console.log(parsed.error.message);
-            return NextResponse.json({ error: parsed.error.message }, { status: 400 });
+            console.log("tags/[id]/DELETE: " + parsed.error.message);
+            throw new HttpError(parsed.error.message, 400);
         }
 
         const tagId = parsed.data;
