@@ -4,16 +4,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./styles/styles.css";
 import Link from "next/link";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
   title: "Bootham Politics Hub",
   description: "", //! Add later
@@ -26,12 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         <div className="min-h-screen flex flex-col">
           <Header />
-          <main className="flex-1 mx-2.5 md:mx-5 flex flex-col">{children}</main>
+          <main 
+            className="flex-1 mx-2.5 md:mx-16 lg:mx-36 2xl:mx-64 flex flex-col mb-16"
+          >{children}</main>
           <Footer />
         </div>
       </body>
