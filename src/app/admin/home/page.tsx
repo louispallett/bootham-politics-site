@@ -77,12 +77,14 @@ function PostCard({ data }: { data: PostType }) {
         ? data.content.substring(0, limiter) + "..."
         : data.content;
 
+    //? Note the shown errors below are a TS over-zealous one because data.author is technically a _id string
+    const fullName = data.author ? data.author.firstName + " " + data.author.lastName : "Unknown Author";
+
     return (
         <Link href={`home/${data._id}`} className="users-container">
             <h4>{data.title}</h4>
             <p>{shortContent}</p>
-            {/* Note the shown error below is a TS over-zealous one because data.author is technically a _id string */}
-            <p className="text-right font-bold">{data.author.fullname}</p> 
+            <p className="text-right font-bold">{fullName}</p> 
             <p className="text-right">{data.creationDateFormatted}</p>
         </Link>
     )

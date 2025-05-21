@@ -4,6 +4,10 @@ form {
     gap: 0.625em;
 }
 
+.form-input:disabled {
+    background-color: #5f5f5f;
+}
+
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

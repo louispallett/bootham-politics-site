@@ -28,7 +28,7 @@ export default function AllTags({ tags }: { tags: TagType[] }) {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="users-container">
             <div className="flex flex-col gap-2.5">
                 <h4>Current Tags</h4>
                 { tags.map(tag => (
@@ -74,9 +74,9 @@ function TagCard({ tag, register, errors }: { tag: TagType, register: any, error
     }
 
     return (
-        <div className={deleted ? "hidden" : "users-container"}>
+        <div className={deleted ? "hidden" : ""}>
             <div className="flex justify-between gap-2.5">
-                <input type="text" defaultValue={tag.name} className="form-input"
+                <input type="text" defaultValue={tag.name} className="form-input" disabled={isPending}
                     {...register(tagId, {
                         required: "Error: Please ensure no tags are empty.",
                     })}

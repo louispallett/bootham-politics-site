@@ -14,6 +14,7 @@ export async function getAllPosts() {
                 path: "author", select: "firstName lastName -_id", model: User
             })
             .populate({ path: "tags", select: "name -_id", model: Tag})
+            .sort("-creationDate").lean();
         return posts;
     } catch (err: any) {
         console.error("Error fetching posts:", err);
@@ -24,7 +25,13 @@ export async function getAllPosts() {
 export async function getPostById(id: string): Promise<PostType> {
     await connectToDB();
 
-    const post = await Post.findById(id);
+    const post = await Post.findById(id)
+        .populate(
+        {
+            path: "author", select: "firstName lastName -_id", model: User
+        })
+        .populate({ path: "tags", select: "name", model: Tag})
+        .lean();
     return post;
 }
 
@@ -82,4 +89,6 @@ export async function getPostsWithTag(tagId: string): Promise<PostType[]> {
 //            .populate({ path: "tags", select: "name -_id", model: Tag })
 //
 // That's it!
+// See this discussion here: https://stackoverflow.com/questions/26818071/mongoose-schema-hasnt-been-registered-for-model
+// (solution in link above by user3616725)
 //! You DO NOT need to insert the author and tag values as anything other than plain strings (representing documents _ids).

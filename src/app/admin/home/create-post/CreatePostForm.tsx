@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { PostType, TagType } from "@/lib/types";
+import { TagType } from "@/lib/types";
 
 export default function CreatePostForm({ tags }: { tags: TagType[] }) {
     const form = useForm();
