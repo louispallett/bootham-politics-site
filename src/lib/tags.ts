@@ -7,7 +7,7 @@ export async function getAllTags(): Promise<TagType[]> {
     try {
         await connectToDB();
 
-        const tags: TagType[] = await Tag.find({}).lean();
+        const tags:TagType[] = await Tag.find({}).lean();
         return tags.map(tag => ({
             ...tag,
             _id: tag._id.toString()
