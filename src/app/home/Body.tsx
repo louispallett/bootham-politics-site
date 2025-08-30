@@ -12,6 +12,7 @@ export default function Body({ posts, tags }:BodyProps) {
     const allPosts = posts;
     const [statePosts, setStatePosts] = useState<PostType[] | null>(posts);
     const [currentFilter, setCurrentFilter] = useState<string | null>(null);
+    const [order, setOrder] = useState<string>("descending");
 
     const handleStatePostChange = (filter:string) => {
         if (currentFilter === filter) {
@@ -26,6 +27,21 @@ export default function Body({ posts, tags }:BodyProps) {
         }
     }
 
+    const handleOrderChange = (order:string) => {
+        let statePostsOrdered = statePosts;
+        let allPostsOrdered = allPosts;
+        if (order === "descending") {
+            statePostsOrdered = statePostsOrdered?.sort((a, b) => a.creationDate + b.creationDate);
+            allPostsOrdered = allPostsOrdered?.sort((a, b) => a.creationDate + b.creationDate);
+        } else {
+            statePostsOrdered = statePostsOrdered?.sort((a, b) => a.creationDate - b.creationDate);
+            allPostsOrdered = allPostsOrdered?.sort((a, b) => a.creationDate - b.creationDate);
+        }
+        setStatePosts(statePostsOrdered);
+    
+
+    }
+
     return (
         <div className="flex flex-col md:flex-row gap-2.5">
             <div className="flex md:flex-col gap-2.5">
@@ -37,9 +53,18 @@ export default function Body({ posts, tags }:BodyProps) {
                 <SortPanel />
             </div>
             <div className="flex flex-col gap-2.5 flex-1">
-            { statePosts?.map(post => (
-                <PostCard data={post} key={post._id} />
-            ))}
+                { statePosts ? (
+                    <>
+                        { statePosts?.map(post => (
+                            <PostCard data={post} key={post._id} />
+                        ))}
+                    </>
+                ) : (
+                    <div className="users-container flex gap-2.5">
+                        <img src="/images/big-ben.svg" alt="" className="h-24"/>
+                        <h4>No Posts found</h4>
+                    </div>
+                )}
             </div>
         </div>
     )
@@ -108,15 +133,15 @@ function SortPanel() {
 function PostCard({ data }: { data: PostType }) {
 	return (
 		<div className="users-container flex flex-col gap-2.5">
-		<h4>{data.title}</h4>
-		<p>{data.content}</p>
-		<div className="self-end">
-			<div className="flex gap-2.5">
-			{ data.tags.map(tag => (
-				<TagCard data={tag.name} key={tag.name} />
-			))}
-			</div>
-		</div>
+            <h4>{data.title}</h4>
+            <p>{data.content}</p>
+            <div className="self-end">
+                <div className="flex gap-2.5">
+                { data.tags.map(tag => (
+                    <TagCard data={tag.name} key={tag.name} />
+                ))}
+                </div>
+            </div>
 		</div>
 	)
 }
