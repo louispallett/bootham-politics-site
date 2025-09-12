@@ -1,14 +1,15 @@
 'use client'
 
 import { PostType, TagType } from "@/lib/types"
+import Link from "next/link"
 import { useState } from "react"
 
-type BodyProps = {
+type PostsProps = {
     posts:PostType[],
     tags:TagType[]
 }
 
-export default function Body({ posts, tags }:BodyProps) {
+export default function Posts({ posts, tags }:PostsProps) {
     const allPosts = posts;
     const [statePosts, setStatePosts] = useState<PostType[] | null>(posts);
     const [currentFilter, setCurrentFilter] = useState<string | null>(null);
@@ -28,18 +29,16 @@ export default function Body({ posts, tags }:BodyProps) {
     }
 
     const handleOrderChange = (order:string) => {
-        let statePostsOrdered = statePosts;
-        let allPostsOrdered = allPosts;
-        if (order === "descending") {
-            statePostsOrdered = statePostsOrdered?.sort((a, b) => a.creationDate + b.creationDate);
-            allPostsOrdered = allPostsOrdered?.sort((a, b) => a.creationDate + b.creationDate);
-        } else {
-            statePostsOrdered = statePostsOrdered?.sort((a, b) => a.creationDate - b.creationDate);
-            allPostsOrdered = allPostsOrdered?.sort((a, b) => a.creationDate - b.creationDate);
-        }
-        setStatePosts(statePostsOrdered);
-    
-
+        // let statePostsOrdered = statePosts;
+        // let allPostsOrdered = allPosts;
+        // if (order === "descending") {
+        //     statePostsOrdered = statePostsOrdered?.sort((a, b) => a.creationDate + b.creationDate);
+        //     allPostsOrdered = allPostsOrdered?.sort((a, b) => a.creationDate + b.creationDate);
+        // } else {
+        //     statePostsOrdered = statePostsOrdered?.sort((a, b) => a.creationDate - b.creationDate);
+        //     allPostsOrdered = allPostsOrdered?.sort((a, b) => a.creationDate - b.creationDate);
+        // }
+        // setStatePosts(statePostsOrdered);
     }
 
     return (
@@ -78,10 +77,10 @@ type FilterPanelProps = {
 
 function FilterPanel({ tags, handleStatePostChange, currentFilter }:FilterPanelProps) {
 	return (
-		<div className="users-container self-start">
+		<div className="users-container rounded self-start">
             <h4>Filter</h4>
             <p><b>By tag</b></p>
-            <div className="bg-slate-50 rounded-md border-slate-600 border-2 text-black">
+            <div className="bg-slate-50 border-slate-600 border-2 text-black">
                 { tags.map(tag => (
                     <TagFilter 
                         name={tag.name} id={tag._id} key={tag._id} 
@@ -132,17 +131,24 @@ function SortPanel() {
 
 function PostCard({ data }: { data: PostType }) {
 	return (
-		<div className="users-container flex flex-col gap-2.5">
-            <h4>{data.title}</h4>
-            <p>{data.content}</p>
-            <div className="self-end">
-                <div className="flex gap-2.5">
-                { data.tags.map(tag => (
-                    <TagCard data={tag.name} key={tag.name} />
-                ))}
+		<Link href={"/home/" + data._id}>
+            <div className="users-container border-none p-0!">
+                <div className="rounded-b-none rounded-lg p-2.5">
+                    <h4>{data.title}</h4> 
+                </div>
+                { data.bannerURL && (
+                    <img src={data.bannerURL} alt="" className="object-cover max-h-full min-w-full" />
+                )}
+                <p className="self-start italic px-2.5 py-3.5 sm:px-3 sm:py-4 dark:text-slate-100">{data.synopsis}</p>
+                <div className="p-2.5 self-end">
+                    <div className="flex gap-2.5">
+                    { data.tags.map(tag => (
+                        <TagCard data={tag.name} key={tag.name} />
+                    ))}
+                    </div>
                 </div>
             </div>
-		</div>
+        </Link>
 	)
 }
 

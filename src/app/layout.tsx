@@ -36,9 +36,13 @@ function Header() {
         <img src="/images/bootham-logo.png" alt="" className="h-16"/>
       </Link>
       <div>
-        <menu>
-
-        </menu>
+        <div className="flex justify-center items-center text-white">
+            <img src="/images/big-ben.svg" alt="" className="h-16"/>
+            <div className="flex flex-col">
+            <h4>Bootham School</h4>
+            <h6 className="text-right">Politics Department</h6>
+            </div>
+        </div>
       </div>
     </header>
   )
