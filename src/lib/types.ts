@@ -3,6 +3,8 @@ import { Types } from "mongoose"
 export interface PostType {
     _id: string,
     title: string,
+    bannerURL?: string,
+    synopsis: string,
     content: string,
     author: Types.ObjectId | UserType,
     tags: Types.ObjectId[] | TagType[],

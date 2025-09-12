@@ -30,12 +30,13 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
 
         axios.post(`/api/posts`, payload)
             .then((response:AxiosResponse) => {
-                window.location.assign(`/admin/home/${response.data._id}`)
+                // window.location.assign(`/admin/home/${response.data._id}`)
             }).catch((err:any) => {
                 console.log(err.message);
                 setServerError(err.message);
+            }).finally(() => {
                 setIsPending(false);
-            })
+            });
     }
 
 
@@ -46,6 +47,11 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
                     required: "Required"
                 })}
             />
+            <textarea id="synopsis" placeholder="Synopsis"
+                className="form-input" {...register("synopsis", {
+                    required: "Required"
+                })}
+            ></textarea>
             <textarea id="content" placeholder="Content"
                 className="form-input" {...register("content", {
                     required: "Required"

@@ -35,12 +35,12 @@ export async function GET() {
 
 const ValidationSchema = z.object({
     title: z.string().trim().max(200),
+    synopsis: z.string().trim().max(1000),
     content: z.string().min(8).max(100000),
     tags: z.array(z.string().regex(/^[a-f\d]{24}$/i, "Invalid tag ID")).optional()
 });
 
 export async function POST(req: Request) {
-    
     try {
         await connectToDB();
     
@@ -77,9 +77,9 @@ export async function POST(req: Request) {
             }, { status: 400 });
         }
 
-        const { title, content, tags } = parsed.data;
+        const { title, synopsis, content, tags } = parsed.data;
 
-        const newPost = await Post.create({ title, content, author: userId, tags });
+        const newPost = await Post.create({ title, synopsis, content, author: userId, tags });
 
         return NextResponse.json(newPost, { status: 201 });
     } catch (err:any) {
