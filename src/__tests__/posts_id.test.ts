@@ -17,6 +17,7 @@ describe("API for Post model (dynamic)", () => {
 
         const post = await Post.create({
             title: "Test",
+            synopsis: "Test synopsis",
             content: "Testy content",
             author: user._id,
             tags: [],
@@ -42,7 +43,8 @@ describe("API for Post model (dynamic)", () => {
         const req = new Request(`http://localhost/api/posts/${postId}`, {
             method: "PUT",
             body: JSON.stringify({ 
-                title: "Test Post", 
+                title: "Test Post",
+                synopsis: "Test synopsis",
                 content: "Updated content",
                 published: false
             }),

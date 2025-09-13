@@ -43,6 +43,7 @@ describe("API for Post route", () => {
                 method: "POST",
                 body: JSON.stringify({ 
                     title: "Test Post", 
+                    synopsis: "Test synopsis",
                     content: "Test content",
                     author: id
                 }),
@@ -62,7 +63,8 @@ describe("API for Post route", () => {
         let post:PostType;
         beforeAll(async () => {
             post = await Post.create({ 
-                title: "Test", 
+                title: "Test",
+                synopsis: "Test synopsis",
                 content: "Test content",
                 author: id 
             });
