@@ -43,6 +43,25 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
                     required: "Required"
                 })}
             />
+            <div>
+                <label htmlFor="banner" className="font-bold dark:text-slate-100">Banner Image</label>
+                <div className="flex items-center gap-5">
+                    <div className="self-left">
+                        <input type="file" id="banner" accept="image/*"
+                        className="block w-full text-sm text-gray-800
+                            py-2 px-4
+                            rounded-sm border-0
+                            text-sm font-semibold
+                            bg-slate-300 text-blue-700
+                            hover:bg-blue-100
+                            cursor-pointer
+                            border-2 border-gray-600 rounded-md shadow-md
+                            focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+                            {...register("banner", {})}
+                        />
+                    </div>
+                </div>
+            </div>
             <textarea id="synopsis" placeholder="Synopsis"
                 className="form-input" {...register("synopsis", {
                     required: "Required"
