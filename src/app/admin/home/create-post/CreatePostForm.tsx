@@ -14,9 +14,6 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
     const [success, setIsSuccess] = useState(false);
     const [serverError, setServerError] = useState(null);
 
-    // We need to pass the token to the server and then fetch the _id of the 
-    // user to set it as the author
-
     const onSubmit = (data:any) => {
         setIsPending(true);
         const selectedTags = Object.entries(data)
@@ -38,7 +35,6 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
                 setIsPending(false);
             });
     }
-
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
