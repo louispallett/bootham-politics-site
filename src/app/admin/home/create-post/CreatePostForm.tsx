@@ -14,27 +14,38 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
     const [success, setIsSuccess] = useState(false);
     const [serverError, setServerError] = useState(null);
 
-    const onSubmit = (data:any) => {
+    const onSubmit = (data: any) => {
         setIsPending(true);
         const selectedTags = Object.entries(data)
             .filter(([key, value]) => tags.find(tag => tag._id === key) && value)
             .map(([key]) => key);
 
-        const payload = {
-            ...data,
-            tags: selectedTags
-        };
+        const formData = new FormData();
+        if (data.banner && data.banner.length > 0) {
+            formData.append('banner', data.banner[0]);
+        }
+        formData.append('title', data.title);
+        formData.append('synopsis', data.synopsis);
+        formData.append('content', data.content);
+        formData.append('tags', JSON.stringify(selectedTags));
 
-        axios.post(`/api/posts`, payload)
-            .then((response:AxiosResponse) => {
-                // window.location.assign(`/admin/home/${response.data._id}`)
-            }).catch((err:any) => {
-                console.log(err.message);
-                setServerError(err.message);
-            }).finally(() => {
-                setIsPending(false);
-            });
-    }
+        axios.post(`/api/posts`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then((response: AxiosResponse) => {
+            // window.location.assign(`/admin/home/${response.data._id}`);
+        })
+        .catch((err: any) => {
+            console.log(err.message);
+            setServerError(err.message);
+        })
+        .finally(() => {
+            setIsPending(false);
+        });
+    };
+
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
