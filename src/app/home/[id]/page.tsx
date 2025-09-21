@@ -13,6 +13,9 @@ export default async function Post({ params }: { params: { id:string }}) {
             { data.bannerURL && (
                 <img src={data.bannerURL} alt="" className="object-cover max-h-full min-w-full" />
             )}
+            { data.bannerCaption && (
+                <p className="text-right px-2.5"><i>{data.bannerCaption}</i></p>
+            )}
             <div className="flex flex-col gap-2.5 px-2.5 py-3.5 sm:px-3 sm:py-4">
                 <p>{data.author.firstName} {data.author.lastName}</p>
                 <p className="self-start italic dark:text-slate-100">{data.synopsis}</p>

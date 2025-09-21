@@ -47,7 +47,8 @@ const ValidationSchema = z.object({
     synopsis: z.string().trim().max(1000),
     content: z.string().min(8).max(100000),
     tags: z.array(z.string().regex(/^[a-f\d]{24}$/i, "Invalid tag ID")).optional(),
-    banner: z.instanceof(File).optional()
+    banner: z.instanceof(File).optional(),
+    bannerCaption: z.string().min(2).max(1000).optional()
 });
 
 export async function POST(req: Request) {
@@ -86,6 +87,7 @@ export async function POST(req: Request) {
             content: body.content,
             tags: body.tags ? JSON.parse(body.tags.toString()) : undefined,
             banner: body.banner,
+            bannerCaption: body.bannerCaption
         });
 
         if(!parsed.success) {
@@ -96,7 +98,7 @@ export async function POST(req: Request) {
             }, { status: 400 });
         }
 
-        const { title, synopsis, content, tags, banner } = parsed.data;
+        const { title, synopsis, content, tags, banner, bannerCaption } = parsed.data;
 
         // Cloudinary
         let cloudinaryURL = null;
@@ -123,7 +125,8 @@ export async function POST(req: Request) {
             content, 
             author: userId, 
             tags,
-            bannerURL: cloudinaryURL
+            bannerURL: cloudinaryURL,
+            bannerCaption
         });
 
         return NextResponse.json(newPost, { status: 201 });

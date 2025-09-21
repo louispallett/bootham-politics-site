@@ -54,23 +54,39 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
                     required: "Required"
                 })}
             />
-            <div>
-                <label htmlFor="banner" className="font-bold dark:text-slate-100">Banner Image</label>
-                <div className="flex items-center gap-5">
-                    <div className="self-left">
-                        <input type="file" id="banner" accept="image/*"
-                        className="block w-full text-sm text-gray-800
-                            py-2 px-4
-                            rounded-sm border-0
-                            text-sm font-semibold
-                            bg-slate-300 text-blue-700
-                            hover:bg-blue-100
-                            cursor-pointer
-                            border-2 border-gray-600 rounded-md shadow-md
-                            focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
-                            {...register("banner", {})}
-                        />
+            <div className="flex gap-2.5 items-center">
+                <div>
+                    <label htmlFor="banner" className="font-bold dark:text-slate-100">Banner Image</label>
+                    <div className="flex items-center gap-5">
+                        <div className="self-center">
+                            <input
+                                type="file"
+                                id="banner"
+                                accept="image/*"
+                                className="block w-full text-sm text-gray-800
+                                    h-10 py-2 px-4 {/* Added h-10 */}
+                                    rounded-sm border-0
+                                    text-sm font-semibold
+                                    bg-slate-300 text-blue-700
+                                    hover:bg-blue-100
+                                    cursor-pointer
+                                    border-2 border-gray-600 rounded-md shadow-md
+                                    focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+                                {...register("banner", {})}
+                            />
+                        </div>
                     </div>
+                </div>
+                <div className="flex-1">
+                    <label htmlFor="bannerCaption" className="font-bold">Caption</label>
+                    <input
+                        type="text"
+                        className="form-input h-10"
+                        placeholder="Caption"
+                        {...register("bannerCaption", {
+                            required: "Required"
+                        })}
+                    />
                 </div>
             </div>
             <textarea id="synopsis" placeholder="Synopsis"

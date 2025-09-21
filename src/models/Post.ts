@@ -7,6 +7,7 @@ const Post = new Schema({
     title: { type: String, required: true },
     bannerURL: { type: String },
     cloudinaryId: { type: String },
+    bannerCaption: { type: String },
     synopsis: { type: String, required: true },
     content: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
