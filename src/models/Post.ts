@@ -10,7 +10,7 @@ const Post = new Schema({
     bannerCaption: { type: String },
     synopsis: { type: String, required: true },
     content: { type: String, required: true },
-    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    author: { type: Schema.Types.ObjectId, ref: "User", required: true, immutable: true },
     tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
     published: { type: Boolean, default: false, required: true },
     creationDate: { 
