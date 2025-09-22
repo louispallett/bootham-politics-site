@@ -16,7 +16,14 @@ export default async function UpdatePost({ params }: { params: { id: string }}) 
     return (
         <div className="users-container flex flex-col gap-2.5">
             <PostInfo published={data.published} author={fullName}/>
-            <UpdatePostForm title={data.title} content={data.content} tags={data.tags}/>
+            <UpdatePostForm 
+                title={data.title} 
+                bannerURL={data.bannerURL}
+                bannerCaption={data.bannerCaption}
+                synopsis={data.synopsis}
+                content={data.content}
+                tags={data.tags}
+            />
             <UpdatePublish published={data.published} />
         </div>
     )

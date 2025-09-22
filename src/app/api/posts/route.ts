@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Post from "@/models/Post";
 import { connectToDB } from "@/lib/db";
 import { z } from "zod";
@@ -48,10 +48,10 @@ const ValidationSchema = z.object({
     content: z.string().min(8).max(100000),
     tags: z.array(z.string().regex(/^[a-f\d]{24}$/i, "Invalid tag ID")).optional(),
     banner: z.instanceof(File).optional(),
-    bannerCaption: z.string().min(2).max(1000).optional()
+    bannerCaption: z.string().max(1000).optional()
 });
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
         await connectToDB();
     
@@ -102,21 +102,22 @@ export async function POST(req: Request) {
 
         // Cloudinary
         let cloudinaryURL = null;
+        let cloudinaryId = null;
         if (banner) {
             const arrayBuffer = await banner.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
 
             const result = await new Promise((resolve, reject) => {
                 cloudinary.uploader.upload_stream(
-                    { resource_type: 'auto', folder: "FOLDER_NAME" },
+                    { resource_type: 'auto', folder: "Bootham Banners" },
                     (error, result) => {
                         if (error) reject(error);
                         else resolve(result);
                     }
                 ).end(buffer);
             });
-
             cloudinaryURL = (result as any).secure_url;
+            cloudinaryId = (result as any).public_id;
         }
 
         const newPost = await Post.create({ 
@@ -126,6 +127,7 @@ export async function POST(req: Request) {
             author: userId, 
             tags,
             bannerURL: cloudinaryURL,
+            cloudinaryId,
             bannerCaption
         });
 

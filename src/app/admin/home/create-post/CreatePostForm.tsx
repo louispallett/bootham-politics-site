@@ -24,14 +24,15 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
         if (data.banner && data.banner.length > 0) {
             formData.append('banner', data.banner[0]);
         }
-        formData.append('title', data.title);
-        formData.append('synopsis', data.synopsis);
-        formData.append('content', data.content);
-        formData.append('tags', JSON.stringify(selectedTags));
+        formData.append("title", data.title);
+        formData.append("bannerCaption", data.bannerCaption);
+        formData.append("synopsis", data.synopsis);
+        formData.append("content", data.content);
+        formData.append("tags", JSON.stringify(selectedTags));
 
         axios.post(`/api/posts`, formData, {
             headers: {
-                'Content-Type': 'multipart/form-data',
+                "Content-Type": "multipart/form-data",
             },
         })
         .then((response: AxiosResponse) => {
@@ -54,38 +55,28 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
                     required: "Required"
                 })}
             />
-            <div className="flex gap-2.5 items-center">
+            <div className="flex flex-col md:flex-row gap-2.5 md:items-end">
                 <div>
-                    <label htmlFor="banner" className="font-bold dark:text-slate-100">Banner Image</label>
+                    <label htmlFor="banner" className="dark:text-slate-100"><b>Banner Image</b> <i>(optional)</i></label>
                     <div className="flex items-center gap-5">
                         <div className="self-center">
                             <input
                                 type="file"
                                 id="banner"
                                 accept="image/*"
-                                className="block w-full text-sm text-gray-800
-                                    h-10 py-2 px-4 {/* Added h-10 */}
-                                    rounded-sm border-0
-                                    text-sm font-semibold
-                                    bg-slate-300 text-blue-700
-                                    hover:bg-blue-100
-                                    cursor-pointer
-                                    border-2 border-gray-600 rounded-md shadow-md
-                                    focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+                                className="img-upload-btn"
                                 {...register("banner", {})}
                             />
                         </div>
                     </div>
                 </div>
                 <div className="flex-1">
-                    <label htmlFor="bannerCaption" className="font-bold">Caption</label>
+                    {/* <label htmlFor="bannerCaption" className="font-bold">&nbsp;</label> */}
                     <input
                         type="text"
                         className="form-input h-10"
                         placeholder="Caption"
-                        {...register("bannerCaption", {
-                            required: "Required"
-                        })}
+                        {...register("bannerCaption", {})}
                     />
                 </div>
             </div>
@@ -114,7 +105,10 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
 function Tags({ tags, register }: { tags: TagType[], register: any }) {
     return (
         <div className="tag-container">
-            <h4>Tags</h4>
+            <div className="flex gap-1.5 items-center">
+                <h4>Tags</h4>
+                <p><i>(optional)</i></p>
+            </div>
             <p className="my-1.5">Tags are optional and you can add or remove them at any time. Click <Link href="/admin/home/manage-tags" className="link">here</Link> to create a new tag</p>
             <div className="flex flex-wrap gap-5">
                 { tags.map((tag) => (
