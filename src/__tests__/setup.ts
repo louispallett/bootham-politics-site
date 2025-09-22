@@ -18,14 +18,14 @@ afterEach(async () => {
     if (mongoose.connection.readyState !== 1) return;
     const collections = await mongoose.connection.db!.collections();
     for (let collection of collections) {
-      await collection.deleteMany({});
+      	await collection.deleteMany({});
     }
 });  
 
 afterAll(async () => {
     await mongoose.connection.close();
     if (mongo) {
-      await mongo.stop();
+      	await mongo.stop();
     }
 });
   

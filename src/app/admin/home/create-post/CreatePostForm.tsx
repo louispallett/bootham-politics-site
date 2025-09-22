@@ -24,11 +24,18 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
         if (data.banner && data.banner.length > 0) {
             formData.append('banner', data.banner[0]);
         }
-        formData.append("title", data.title);
-        formData.append("bannerCaption", data.bannerCaption);
-        formData.append("synopsis", data.synopsis);
-        formData.append("content", data.content);
-        formData.append("tags", JSON.stringify(selectedTags));
+        Object.entries({
+            title: data.title,
+            bannerCaption: data.bannerCaption,
+            synopsis: data.synopsis,
+            content: data.content,
+            tags: JSON.stringify(selectedTags),
+        }).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
+
+        setIsPending(false);
 
         axios.post(`/api/posts`, formData, {
             headers: {
@@ -36,7 +43,7 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
             },
         })
         .then((response: AxiosResponse) => {
-            // window.location.assign(`/admin/home/${response.data._id}`);
+            window.location.assign(`/admin/home/${response.data._id}`);
         })
         .catch((err: any) => {
             console.log(err.message);
