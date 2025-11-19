@@ -3,57 +3,59 @@ import Post from "@/models/Post";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
-describe.skip("API for Post model (dynamic)", () => {
-    let postId:string;
+describe("API for Post model (dynamic)", () => {
+  let postId: string;
 
-    beforeEach(async () => {
-        const user = await User.create({
-            firstName: "John",
-            lastName: "Doe",
-            email: "john.doe@example.com",
-            password: await bcrypt.hash("HelloWorld1!", 12),
-            passkey: process.env.PASS_KEY
-        });
-
-        const post = await Post.create({
-            title: "Test",
-            synopsis: "Test synopsis",
-            content: "Testy content",
-            author: user._id,
-            tags: [],
-        });
-
-        postId = post._id;
+  beforeEach(async () => {
+    const user = await User.create({
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      password: await bcrypt.hash("HelloWorld1!", 12),
+      passkey: process.env.PASS_KEY,
     });
 
-    it("Fetches post by id", async () => {
-        const req = new Request(`http://localhost/api/posts/${postId}`, {
-            method: "GET",
-        });
-
-        const context = { params: { id: postId } };
-        const res = await GET(req, context);
-        const json = await res.json();
-
-        expect(res.status).toBe(200);
-        expect(json.title).toBe("Test");
+    const post = await Post.create({
+      title: "Test",
+      synopsis: "Test synopsis",
+      content: "Testy content",
+      author: user._id,
+      tags: [],
     });
 
-    it("Updates a post", async () => {
-        const req = new Request(`http://localhost/api/posts/${postId}`, {
-            method: "PUT",
-            body: JSON.stringify({ 
-                title: "Test Post",
-                synopsis: "Test synopsis",
-                content: "Updated content",
-                published: false
-            }),
-            headers: { "Content-Type": "application/json" }
-        });
+    postId = post._id;
+  });
 
-        const context = { params: { id: postId }}
-        const res = await PUT(req, context);
-
-        expect(res.status).toBe(204);
+  it("Fetches post by id", async () => {
+    const req = new Request(`http://localhost/api/posts/${postId}`, {
+      method: "GET",
     });
+
+    const context = { params: { id: postId } };
+    const res = await GET(req, context);
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.title).toBe("Test");
+  });
+
+  it("Updates a post", async () => {
+    const form = new FormData();
+    form.append("title", "Test title");
+    form.append("banner-caption", "");
+    form.append("synopsis", "Test synopsis");
+    form.append("content", "Updated content");
+    form.append("tags", "[]");
+
+    const req = new Request(`http://localhost/api/posts/${postId}`, {
+      method: "PUT",
+      body: form,
+    });
+
+    const context = { params: { id: postId } };
+    const res = await PUT(req, context);
+
+    // PUT returns a 204, so doesn't return any data
+    expect(res.status).toBe(204);
+  });
 });
