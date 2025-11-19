@@ -5,7 +5,34 @@
     padding: 14px 10px;
 }
 
+.article-synopsis-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--padding-sm);
+}
+
+.article-author {
+    align-self: start;
+    min-width: fit-content;
+    padding: var(--padding-xs) var(--padding-md);
+    border-radius: var(--padding-sm);
+    background-color: var(--btn-submit-bg);
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 5px 5px 0px 0px #9C9A9A;
+}
+
 .article-inner > p {
     margin-top: 0.625rem;
     margin-bottom: 0.625rem;
+}
+
+.article-inner > h1,
+.article-inner > h2 { 
+    text-shadow: 5px 5px 5px #9C9A9A;
+}
+
+.article-inner > p > a {
+    font-weight: bold;
+    color: var(--btn-submit-bg);
 }

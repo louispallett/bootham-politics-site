@@ -22,13 +22,15 @@ export default async function Post({ params }: { params: { id: string } }) {
           <i>{data.bannerCaption}</i>
         </p>
       )}
-      <div className="flex flex-col gap-2.5 px-2.5 py-3.5 sm:px-3 sm:py-4">
-        <p>
-          {data.author.firstName} {data.author.lastName}
-        </p>
-        <p className="self-start italic dark:text-slate-100">{data.synopsis}</p>
+      <div className="article sm:px-3 sm:py-4">
+        <div className="article-synopsis-wrapper">
+          <p className="italic dark:text-slate-100">{data.synopsis}</p>
+          <p className="article-author">
+            {data.author.firstName} {data.author.lastName}
+          </p>
+        </div>
         <div
-          className="article dark:text-slate-100"
+          className="article-inner dark:text-slate-100"
           dangerouslySetInnerHTML={{ __html: data.content }}
         ></div>
         <div className="self-end">
@@ -56,4 +58,3 @@ function TagCard({ data }: { data: string }) {
 function Documents() {}
 
 function Images() {}
-
