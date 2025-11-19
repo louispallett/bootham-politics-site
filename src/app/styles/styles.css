@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./article.css";
 @import "./buttons.css";
 @import "./containers.css";
 @import "./footer.css";
