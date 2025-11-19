@@ -1,42 +1,38 @@
-:root {
-	--btn-default-bg: #bae6fd;
-}
-
 @media (prefers-color-scheme: dark) {
-	:root {
-		--btn-default-bg: #1e40af;
-		--btn-default-bg-hover: #2563eb;
-	}
+  :root {
+    --btn-default-bg: #1e40af;
+    --btn-default-bg-hover: #2563eb;
+  }
 }
 
-.submit, 
+.submit,
 .success,
 .danger {
-    color: #fff;
-    border: 3px solid #000000;
-	/* width: 100%;  */
-	position: relative; 
-	font-size: 1.125rem; 
-	padding: 0.4em 0.75em; 
-	border-radius: 0.25rem; 
-	box-shadow: 5px 5px 0px 0px #00000032; 
-    font-weight: 600;
-    cursor: pointer;
-	display: flex;
-	justify-content: center;
+  color: #fff;
+  border: 3px solid #000000;
+  /* width: 100%;  */
+  position: relative;
+  font-size: 1.125rem;
+  padding: 0.4em 0.75em;
+  border-radius: 0.25rem;
+  box-shadow: 5px 5px 0px 0px #00000032;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
 }
 
 .submit {
-	background: #1D4ED8;
+  background: var(--btn-submit-bg);
 }
 
 .success {
-	background-color: #5ad33c;
-    color: #000;
+  background-color: var(--btn-success-bg);
+  color: #000;
 }
 
 .danger {
-	background-color: #dc2626;
+  background-color: var(--btn-danger-bg);
 }
 
 .submit:hover,
@@ -47,48 +43,49 @@
 .danger:focus,
 .btn-default:focus,
 .btn-default:hover {
-	outline: none;
-    transform: translate(-2.5px, -2.5px);
+  outline: none;
+  transform: translate(-2.5px, -2.5px);
 }
 
 .submit:hover,
 .submit:focus {
-	background: #1d4fd8e4;
+  background: var(--btn-submit-hover);
 }
 
 .success:hover,
 .success:focus {
-    background: #5ad33cc7;
+  background: var(--btn-success-hover);
 }
 
 .danger:hover,
 .danger:focus {
-	background-color: #dc2626e2;
+  background-color: var(--btn-danger-hover);
 }
 
 .btn-default {
-    border: 3px solid #000000;
-	font-size: 1.125rem; 
-	padding: 0.2em 0.45em; 
-	border-radius: 0.25em; 
-    font-weight: 500;
-    cursor: pointer;
-	display: flex;
-	justify-content: center;
-	background: var(--btn-default-bg);
+  border: 3px solid #000000;
+  font-size: 1.125rem;
+  padding: 0.2em 0.45em;
+  border-radius: 0.25em;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  background: var(--btn-default-bg);
 }
 
 .btn-default:hover,
 .btn-default:focus {
-	background: var(--btn-default-bg-hover);
+  background: var(--btn-default-bg-hover);
 }
 
 .spinner {
-    border: 2px solid rgba(0, 0, 0, 0);
-    border-top: 2px solid black;
-    border-radius: 100%;
+  border: 2px solid rgba(0, 0, 0, 0);
+  border-top: 2px solid black;
+  border-radius: 100%;
 }
- 
+
 .spinner {
-    animation: rotate 1500ms infinite linear;
+  animation: rotate 1500ms infinite linear;
 }
+

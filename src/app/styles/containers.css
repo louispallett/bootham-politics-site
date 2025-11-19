@@ -1,40 +1,40 @@
 .standard-container,
 .users-container,
 .tag-container {
-    padding: 0.625em 1.25em;
-    border-radius: 5px;
-    box-shadow: 5px 5px 0px 0px var(--form-shadow);
+  padding: 0.625em 1.25em;
+  border-radius: 5px;
+  box-shadow: 5px 5px 0px 0px var(--form-shadow);
 }
 
 .standard-container,
 .users-container {
-    border: 3px solid #1D4ED8;
+  border: 3px solid #1d4ed8;
 }
 
 .users-wrapper {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 }
 
 .users-container {
-    background: var(--form-background);
+  background: var(--form-background);
 }
 
 .tag-container {
-    border: 3px solid var(--yellow-border);
-    background: var(--yellow-container);
+  border: 3px solid var(--yellow-border);
+  background: var(--yellow-container);
 }
 
 :root {
-    --yellow-container: #fef9c3;
-    --yellow-border: #eab308;
+  --yellow-container: #fef9c3;
+  --yellow-border: #eab308;
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --yellow-container: #d97706;
-        --yellow-border: #854d0e;
-    }
+  :root {
+    --yellow-container: #d97706;
+    --yellow-border: #854d0e;
+  }
 }

@@ -1,0 +1,21 @@
+:root {
+  /* Spacing */
+  --padding-xs: 0.25rem;
+  --padding-sm: 0.625rem;
+  --padding-md: 0.75rem;
+  --padding-lg: 0.85rem;
+  --padding-xl: 1rem;
+  /* Colours */
+  --background: #eff6ff;
+  --textColour: #000;
+  --foreground: #93c5fd;
+  --boxBorder: #1d4ed8;
+  /* Buttons */
+  --btn-default-bg: #bae6fd;
+  --btn-submit-bg: #1d4ed8;
+  --btn-success-bg: #5ad33c;
+  --btn-danger-bg: #dc2626;
+  --btn-submit-hover: #1d4fd8e4;
+  --btn-success-hover: #5ad33cc7;
+  --btn-danger-hover: #dc2626e2;
+}

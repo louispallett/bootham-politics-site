@@ -1,4 +1,11 @@
-.article > p {
+.article {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+    padding: 14px 10px;
+}
+
+.article-inner > p {
     margin-top: 0.625rem;
     margin-bottom: 0.625rem;
 }
