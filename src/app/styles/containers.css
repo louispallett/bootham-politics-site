@@ -26,15 +26,3 @@
   border: 3px solid var(--yellow-border);
   background: var(--yellow-container);
 }
-
-:root {
-  --yellow-container: #fef9c3;
-  --yellow-border: #eab308;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --yellow-container: #d97706;
-    --yellow-border: #854d0e;
-  }
-}

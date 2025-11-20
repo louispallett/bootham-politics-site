@@ -1,47 +1,46 @@
-h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
 }
 
 h1 {
-    font-size: 4rem;
+  font-size: 4rem;
 }
 
 h2 {
-    font-size: 3rem;
+  font-size: 3rem;
 }
 
 h3 {
-    font-size: 2em;
+  font-size: 2em;
 }
 
 h4 {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 h5 {
-    font-size: 1.25rem;
+  font-size: 1.25rem;
 }
 
 .link {
-    font-weight: bold;
-    color: var(--link);
+  font-weight: bold;
+  color: var(--link);
+}
+
+ul {
+  margin: var(--padding-sm) 0 var(--padding-sm) var(--padding-xl);
+  list-style: square;
 }
 
 .link:hover,
 .link:focus {
-    cursor: pointer;
-    color: var(--link-focus);
-    transform: translate(-2.5px, -2.5px);
+  cursor: pointer;
+  color: var(--link-focus);
+  transform: translate(-2.5px, -2.5px);
 }
 
-:root {
-    --link: #a16207;
-    --link-focus: #eab308;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-      --link: #facc15;
-      --link-focus: #eab308;
-    }
-}

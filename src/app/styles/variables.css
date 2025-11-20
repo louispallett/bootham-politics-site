@@ -9,8 +9,16 @@
   --background: #eff6ff;
   --textColour: #000;
   --foreground: #93c5fd;
+  --form-background: #dbeafe;
+  --form-shadow: #e0e7ff;
+  --input-background: #eae2e2;
+  --input-background-focus: #fff;
   --boxBorder: #1d4ed8;
-  /* Buttons */
+  --link: #a16207;
+  --link-focus: #eab308;
+  --yellow-container: #fef9c3;
+  --yellow-border: #eab308;
+  /* Button colours */
   --btn-default-bg: #bae6fd;
   --btn-submit-bg: #1d4ed8;
   --btn-success-bg: #5ad33c;
@@ -18,4 +26,26 @@
   --btn-submit-hover: #1d4fd8e4;
   --btn-success-hover: #5ad33cc7;
   --btn-danger-hover: #dc2626e2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Colours */
+    --background: #051e64;
+    --textColour: #ffffff;
+    --foreground: #1d4ed8;
+    --link: #facc15;
+    --link-focus: #eab308;
+    --form-background: #3b82f6;
+    --textColour: #ffffff;
+    --foreground: #1d4ed8;
+    --form-shadow: #0c0a09;
+    --input-background: #fef9c3;
+    --input-background-focus: #fde047;
+    --yellow-container: #d97706;
+    --yellow-border: #854d0e;
+    /* Button colours */
+    --btn-default-bg: #1e40af;
+    --btn-default-bg-hover: #2563eb;
+  }
 }
