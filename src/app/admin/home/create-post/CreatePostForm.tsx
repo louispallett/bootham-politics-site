@@ -3,9 +3,9 @@
 import axios, { AxiosResponse } from "axios";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import Link from "next/link";
 import { TagType } from "@/lib/types";
 import TinyEditor from "../TinyEditor";
+import Tags from "../Tags";
 
 export default function CreatePostForm({ tags }: { tags: TagType[] }) {
   const form = useForm();
@@ -115,49 +115,10 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
         })}
       ></textarea>
       <TinyEditor editorRef={editorRef} />
-      <Tags tags={tags} register={register} />
+      <Tags allTags={tags} register={register} />
       <button className="submit">
-        {isPending ? <div className="spinner h-6 w-6"></div> : <>Submit</>}
+        {isPending ? <div className="spinner h-6 w-6"></div> : <>Create</>}
       </button>
     </form>
-  );
-}
-
-function Tags({ tags, register }: { tags: TagType[]; register: any }) {
-  return (
-    <div className="tag-container">
-      <div className="flex gap-1.5 items-center">
-        <h4>Tags</h4>
-        <p>
-          <i>(optional)</i>
-        </p>
-      </div>
-      <p className="my-1.5">
-        Tags are optional and you can add or remove them at any time. Click{" "}
-        <Link href="/admin/home/manage-tags" className="link">
-          here
-        </Link>{" "}
-        to create a new tag
-      </p>
-      <div className="flex flex-wrap gap-5">
-        {tags.map((tag) => (
-          <TagCard tag={tag} register={register} key={tag._id} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function TagCard({ tag, register }: { tag: TagType; register: any }) {
-  return (
-    <div className="flex gap-1 flex-wrap justify-center items-center">
-      <input
-        type="checkbox"
-        id={tag._id}
-        name={tag._id}
-        {...register(tag._id, {})}
-      />
-      <label htmlFor={tag._id}>{tag.name}</label>
-    </div>
   );
 }

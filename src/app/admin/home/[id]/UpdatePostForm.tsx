@@ -1,21 +1,23 @@
 "use client";
 
-// Note - it might be wise to move the forms in general into a separate file where both the create and 
+// Note - it might be wise to move the forms in general into a separate file where both the create and
 // update forms can draw from - the only difference here is the intial content, which can be an optional
 // parameter.
 
-import { PostType } from "@/lib/types";
+import { PostType, TagType } from "@/lib/types";
 import axios, { AxiosResponse } from "axios";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import TinyEditor from "../TinyEditor";
+import Tags from "../Tags";
 
 type Props = {
   postData: PostType;
+  allTags: TagType[];
 };
 
-export default function UpdatePostForm({ postData }: Props) {
+export default function UpdatePostForm({ postData, allTags }: Props) {
   const form = useForm();
   const params = useParams();
   const {
@@ -77,16 +79,22 @@ export default function UpdatePostForm({ postData }: Props) {
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       {postData ? (
         <>
-          <input
-            type="text"
-            defaultValue={postData.title}
-            className="form-input text-lg font-bold"
-            {...register("title", {
-              required: "Required",
-            })}
-          />
+          <div>
+            <label htmlFor="title" className="font-bold dark:text-slate-100">
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              defaultValue={postData.title}
+              className="form-input text-lg font-bold"
+              {...register("title", {
+                required: "Required",
+              })}
+            />
+          </div>
           {postData.bannerURL && (
-            <div className="">
+            <div>
               <p>
                 <b>Current Banner</b>
               </p>
@@ -104,7 +112,7 @@ export default function UpdatePostForm({ postData }: Props) {
                     type="file"
                     id="banner"
                     accept="image/*"
-                    className="img-upload-btn"
+                    className="upload-btn"
                     {...register("banner", {})}
                   />
                 </div>
@@ -143,6 +151,13 @@ export default function UpdatePostForm({ postData }: Props) {
             </label>
             <TinyEditor editorRef={editorRef} data={postData.content} />
           </div>
+          {postData.tags && (
+            <Tags
+              allTags={allTags}
+              register={register}
+              selectedTags={postData.tags}
+            />
+          )}
         </>
       ) : (
         <div className="flex justify-center items-center p-4">
