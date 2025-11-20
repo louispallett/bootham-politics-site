@@ -10,6 +10,7 @@ type FileUploaderProps = {
 export default function FileUploader({ postId }: FileUploaderProps) {
   const [uploading, setUploading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [progress, setProgress] = useState<number>(0);
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -17,9 +18,10 @@ export default function FileUploader({ postId }: FileUploaderProps) {
 
     setUploading(true);
     setMessage("");
+    setProgress(0);
 
     try {
-      await uploadFile(file, postId);
+      await uploadFile(file, postId, setProgress);
       setMessage("Upload Successful");
     } catch (err: any) {
       console.error(err);
@@ -47,13 +49,24 @@ export default function FileUploader({ postId }: FileUploaderProps) {
         className="upload-btn"
         onChange={handleFileChange}
       />
-      {uploading && <p>Uploading...</p>}
+      {uploading && (
+        <>
+          <div className="loading-bar-wrapper">
+            <div className="loading-bar" style={{ width: `${progress}%` }} />
+          </div>
+          <p className="mt-1 text-sm">{progress}%</p>
+        </>
+      )}
       {!uploading && message && <p>{message}</p>}
     </div>
   );
 }
 
-export async function uploadFile(file: File, postId: string) {
+export async function uploadFile(
+  file: File,
+  postId: string,
+  onProgress: (p: number) => void,
+) {
   //----------------------------
   // 1. Request Presigned URL
   //----------------------------
@@ -75,6 +88,12 @@ export async function uploadFile(file: File, postId: string) {
     },
     //! Prevents Axios from messing with the S3 PUT payload
     transformRequest: [(data) => data],
+    onUploadProgress: (event) => {
+      if (event.total) {
+        const percent = Math.round((event.loaded / event.total) * 100);
+        onProgress(percent);
+      }
+    },
   });
 
   //----------------------------

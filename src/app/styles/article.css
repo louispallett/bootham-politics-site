@@ -41,3 +41,19 @@
     margin-top: var(--padding-md);
     background-color: var(--form-background);
 }
+
+.loading-bar-wrapper {
+    width: full;
+    background-color: #fff;
+    height: 1.25em;
+    margin-top: 1em;
+    outline: 2px solid black;
+}
+
+.loading-bar {
+    background-color: #65a30d;
+    height: 1.25em;
+    transition-property: all;
+    transition-timing-function: var(--default-transition-timing-function); /* cubic-bezier(0.4, 0, 0.2, 1) */
+    transition-duration: var(--default-transition-duration); /* 150ms */
+}
