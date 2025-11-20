@@ -1,11 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { ObjectId } from "mongodb";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuid } from "uuid";
 import { s3Client } from "@/lib/s3";
+import { z } from "zod";
+import mongoose from "mongoose";
+import {
+  ALLOWED_EXTENSIONS,
+  ALLOWED_MIME_TYPES,
+  MAX_FILE_SIZE_BYTES,
+} from "../auxiliary";
+
+const ValidationSchema = z.object({
+  postId: z
+    .string()
+    .trim()
+    .refine((v) => mongoose.Types.ObjectId.isValid(v), {
+      message: "Invalid tag ID",
+    }),
+  filename: z
+    .string()
+    .trim()
+    .max(1000, "Filename too long")
+    .refine((name) => name.includes("."), {
+      message: "File must include an extension",
+    })
+    .refine(
+      (name) => {
+        const ext = name.split(".").pop()?.toLowerCase();
+        return ALLOWED_EXTENSIONS.includes(ext || "");
+      },
+      {
+        message: "Unsupported file extension",
+      },
+    ),
+  mimeType: z
+    .string()
+    .trim()
+    .refine((v) => ALLOWED_MIME_TYPES.includes(v), {
+      message: "Unsupported file type",
+    }),
+  size: z
+    .number()
+    .positive()
+    .max(MAX_FILE_SIZE_BYTES, "File too large (max 10 MB)"),
+});
 
 export async function POST(req: NextRequest) {
   try {
@@ -37,15 +78,53 @@ export async function POST(req: NextRequest) {
     // ---------------------------
     // 2. VALIDATE INPUT
     // ---------------------------
-    const { postId, filename, mimeType, size } = await req.json();
+    const body = await req.json();
 
-    if (!postId || !ObjectId.isValid(postId)) {
-      return NextResponse.json({ error: "Invalid postId" }, { status: 400 });
+    const parsed = ValidationSchema.safeParse(body);
+    if (!parsed.success) {
+      console.error(parsed.error.flatten().fieldErrors);
+      return NextResponse.json(
+        {
+          message: "Validation Errors",
+          errors: parsed.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      );
     }
 
-    if (!filename || !mimeType) {
+    const { postId, filename, mimeType, size } = parsed.data;
+
+    // ----------------------------------------
+    // EXTRA SAFETY: Validate mime ↔ extension
+    // ----------------------------------------
+    const fileExt = filename.split(".").pop()?.toLowerCase();
+
+    if (!fileExt) {
       return NextResponse.json(
-        { error: "filename and mimeType are required" },
+        { error: "Missing file extension" },
+        { status: 400 },
+      );
+    }
+
+    const mimeMismatch =
+      (fileExt === "pdf" && mimeType !== "application/pdf") ||
+      (["doc"].includes(fileExt) && mimeType !== "application/msword") ||
+      (["docx"].includes(fileExt) &&
+        mimeType !==
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document") ||
+      (["xls"].includes(fileExt) && mimeType !== "application/vnd.ms-excel") ||
+      (["xlsx"].includes(fileExt) &&
+        mimeType !==
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
+      (["ppt"].includes(fileExt) &&
+        mimeType !== "application/vnd.ms-powerpoint") ||
+      (["pptx"].includes(fileExt) &&
+        mimeType !==
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation");
+
+    if (mimeMismatch) {
+      return NextResponse.json(
+        { error: "File extension does not match MIME type" },
         { status: 400 },
       );
     }
@@ -53,7 +132,6 @@ export async function POST(req: NextRequest) {
     // ---------------------------
     // 3. GENERATE S3 KEY
     // ---------------------------
-    const fileExt = filename.split(".").pop();
     const s3Key = `documents/${postId}/${uuid()}.${fileExt}`;
 
     // ---------------------------
@@ -75,8 +153,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       uploadUrl,
       s3Key,
-      bucket: process.env.S3_BUCKET_NAME!,
-      uploader: userId,
       mimeType,
       originalName: filename,
       size,
