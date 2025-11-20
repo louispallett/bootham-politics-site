@@ -63,10 +63,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    let userId: string;
     try {
-      const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-      userId = decoded.userId;
+      jwt.verify(token, process.env.JWT_SECRET!);
     } catch (err) {
       console.error("JWT Verification failed:", err);
       return NextResponse.json(
