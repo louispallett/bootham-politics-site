@@ -1,6 +1,7 @@
 import { getPostById } from "@/lib/posts";
 import UpdatePostForm from "./UpdatePostForm";
 import UpdatePublish from "./UpdatePublish";
+import FileUploader from "../FileUploader";
 
 export default async function UpdatePost({
   params,
@@ -20,11 +21,14 @@ export default async function UpdatePost({
     : "Unknown Author";
 
   return (
-    <div className="users-container flex flex-col gap-2.5">
-      <PostInfo published={data.published} author={fullName} />
-      <UpdatePostForm postData={JSON.parse(JSON.stringify(data))} />
-      <UpdatePublish published={data.published} />
-    </div>
+    <>
+      <div className="users-container flex flex-col gap-2.5">
+        <PostInfo published={data.published} author={fullName} />
+        <UpdatePostForm postData={JSON.parse(JSON.stringify(data))} />
+        <UpdatePublish published={data.published} />
+      </div>
+      <FileUploader postId={id} />
+    </>
   );
 }
 

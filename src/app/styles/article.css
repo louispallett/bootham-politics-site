@@ -36,3 +36,8 @@
     font-weight: bold;
     color: var(--btn-submit-bg);
 }
+
+.file-uploader {
+    margin-top: var(--padding-md);
+    background-color: var(--form-background);
+}

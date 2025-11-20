@@ -138,7 +138,7 @@ export async function POST(req: NextRequest) {
     // 4. GENERATE PRESIGNED URL
     // ---------------------------
     const command = new PutObjectCommand({
-      Bucket: process.env.S3_BUCKET_NAME!,
+      Bucket: process.env.AWS_BUCKET_NAME!,
       Key: s3Key,
       ContentType: mimeType,
     });

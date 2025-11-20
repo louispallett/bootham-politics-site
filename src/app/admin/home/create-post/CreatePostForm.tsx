@@ -90,7 +90,7 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
                 type="file"
                 id="banner"
                 accept="image/*"
-                className="img-upload-btn"
+                className="upload-btn"
                 {...register("banner", {})}
               />
             </div>

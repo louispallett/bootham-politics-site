@@ -108,9 +108,9 @@ export async function POST(req: NextRequest) {
       uploader: userId,
       originalName,
       mimeType,
-      s3Bucket: process.env.S3_BUCKET_NAME!,
       size,
       s3Key,
+      s3Bucket: process.env.AWS_BUCKET_NAME!,
     });
 
     return NextResponse.json({ success: true, document: newDoc });
