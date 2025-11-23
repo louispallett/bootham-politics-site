@@ -11,7 +11,7 @@ export async function GET(
   try {
     await connectToDB();
 
-    const documentId = params.documentId;
+    const documentId = await params.documentId;
 
     if (!ObjectId.isValid(documentId)) {
       return NextResponse.json(
