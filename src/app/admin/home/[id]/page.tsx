@@ -1,8 +1,8 @@
 import { getPostById } from "@/lib/posts";
 import UpdatePostForm from "./UpdatePostForm";
 import UpdatePublish from "./UpdatePublish";
-import FileUploader from "../FileUploader";
 import { getAllTags } from "@/lib/tags";
+import ManageDocuments from "../ManageDocuments";
 
 export default async function UpdatePost({
   params,
@@ -32,7 +32,7 @@ export default async function UpdatePost({
         />
         <UpdatePublish published={data.published} />
       </div>
-      <FileUploader postId={id} />
+      <ManageDocuments postId={id} />
     </>
   );
 }
