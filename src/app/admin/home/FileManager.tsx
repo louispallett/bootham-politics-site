@@ -43,7 +43,9 @@ function FileCard({ file }: FileCardProps) {
   return (
     <>
       <p>
-        <a href={url}>{file.originalName}</a>
+        <a href={url} target="_blank">
+          {file.originalName}
+        </a>
       </p>
     </>
   );
