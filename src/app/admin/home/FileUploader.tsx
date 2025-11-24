@@ -1,16 +1,22 @@
 "use client";
 
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 type FileUploaderProps = {
   postId: string;
+  uploading: boolean;
+  setUploading: (v: boolean) => void;
 };
 
-export default function FileUploader({ postId }: FileUploaderProps) {
-  const [uploading, setUploading] = useState<boolean>(false);
+export default function FileUploader({
+  postId,
+  uploading,
+  setUploading,
+}: FileUploaderProps) {
   const [message, setMessage] = useState<string>("");
   const [progress, setProgress] = useState<number>(0);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -22,14 +28,18 @@ export default function FileUploader({ postId }: FileUploaderProps) {
 
     try {
       await uploadFile(file, postId, setProgress);
-      setMessage("Upload Successful");
+      setMessage(`${file.name} Uploaded Successfully`);
     } catch (err: any) {
       console.error(err);
       setMessage(err.message || "Upload Failed");
     } finally {
       setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   }
+
   return (
     <div className="standard-container file-uploader">
       <h4>File Uploader</h4>
@@ -43,6 +53,7 @@ export default function FileUploader({ postId }: FileUploaderProps) {
         <li>You can only upload a maximum of 10 files per article.</li>
       </ul>
       <input
+        ref={fileInputRef}
         type="file"
         id="banner"
         accept=".odt,.pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
