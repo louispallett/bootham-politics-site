@@ -19,5 +19,5 @@ export async function getPresignedDownloadUrl(
     Key: key,
   });
 
-  return await getSignedUrl(s3Client, command, { expiresIn: 60 });
+  return await getSignedUrl(s3Client, command, { expiresIn: 60 * 60 });
 }
