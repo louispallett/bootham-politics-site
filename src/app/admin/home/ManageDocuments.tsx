@@ -12,21 +12,22 @@ type ManageDocumentsProps = {
 };
 
 export default function ManageDocuments({ postId }: ManageDocumentsProps) {
-  const [postDocuments, setPostDocuments] = useState<DocumentType[]>(null);
+  const [postDocuments, setPostDocuments] = useState<DocumentType[] | null>(
+    null,
+  );
   const [uploading, setUploading] = useState<boolean>(false);
 
   useEffect(() => {
-    const getDocuments = () => {
-      axios
-        .get(`/api/documents/byPost/${postId}`)
-        .then((response: any) => {
-          setPostDocuments(response.data);
-        })
-        .catch((err: any) => {
-          console.error(err);
-        });
+    const loadDocuments = async () => {
+      try {
+        const response = await axios.get(`/api/documents/byPost/${postId}`);
+        console.log(response.data);
+        setPostDocuments(response.data);
+      } catch (err: any) {
+        console.error(err);
+      }
     };
-    getDocuments();
+    loadDocuments();
   }, [uploading]);
 
   return (

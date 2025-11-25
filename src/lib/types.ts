@@ -38,4 +38,5 @@ export interface DocumentType {
   s3Key: string;
   s3Bucket: string;
   createdAt: Date;
+  url?: string;
 }

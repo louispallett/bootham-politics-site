@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import HttpError from "@/lib/HttpError";
 import Document from "@/models/Document";
 import { NextRequest, NextResponse } from "next/server";
+import { getPresignedDownloadUrl } from "@/lib/s3";
 
 export async function GET(
   req: NextRequest,
@@ -17,9 +18,20 @@ export async function GET(
       return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
-    const documents = await Document.find({ postId });
+    const documents = await Document.find({ postId }).lean();
     if (!documents) {
       throw new HttpError("Error fetching documents", 500);
+    }
+
+    for (const document of documents) {
+      const url = await getPresignedDownloadUrl(
+        document.s3Bucket,
+        document.s3Key,
+      );
+      document.url = url;
+
+      delete document.s3Bucket;
+      delete document.s3Key;
     }
 
     return NextResponse.json(documents);
