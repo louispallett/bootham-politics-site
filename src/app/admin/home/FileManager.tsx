@@ -1,19 +1,39 @@
 "use client";
 
 import { DocumentType } from "@/lib/types";
+import axios from "axios";
+import { useState } from "react";
 
 type FileManagerProps = {
   postDocuments: DocumentType[];
+  deleting: boolean;
+  setDeleting: (v: boolean) => void;
 };
 
-export default function FileManager({ postDocuments }: FileManagerProps) {
+export default function FileManager({
+  postDocuments,
+  deleting,
+  setDeleting,
+}: FileManagerProps) {
   return (
     <div className="standard-container file-uploader">
       <h4>File Manager</h4>
       <div className="flex flex-col my-2.5 gap-2.5">
-        {postDocuments.map((file) => (
-          <FileCard file={file} url={file.url} key={file._id} />
-        ))}
+        {postDocuments.length > 0 ? (
+          <>
+            {postDocuments.map((file) => (
+              <FileCard
+                file={file}
+                url={file.url}
+                key={file._id}
+                deleting={deleting}
+                setDeleting={setDeleting}
+              />
+            ))}
+          </>
+        ) : (
+          <p>No documents.</p>
+        )}
       </div>
     </div>
   );
@@ -22,10 +42,26 @@ export default function FileManager({ postDocuments }: FileManagerProps) {
 type FileCardProps = {
   file: DocumentType;
   url?: string;
+  deleting: boolean;
+  setDeleting: (v: boolean) => void;
 };
 
-function FileCard({ file, url }: FileCardProps) {
+function FileCard({ file, url, deleting, setDeleting }: FileCardProps) {
   const icon = getIcon(file.mimeType);
+  const [error, setError] = useState<string | null>(null);
+  const handleDelete = () => {
+    setDeleting(true);
+    axios
+      .delete(`/api/documents/${file._id}`)
+      .then(() => {})
+      .catch((err: any) => {
+        console.error(err);
+        setError(err.message);
+      })
+      .finally(() => {
+        setDeleting(false);
+      });
+  };
 
   return (
     <div className="flex gap-2.5">
@@ -37,7 +73,15 @@ function FileCard({ file, url }: FileCardProps) {
           </p>
         </div>
       </a>
-      <button className="danger">Delete</button>
+      {deleting ? (
+        <div className="danger">
+          <div className="spinner h-6 w-6"></div>
+        </div>
+      ) : (
+        <button className="danger" onClick={handleDelete}>
+          Delete
+        </button>
+      )}
     </div>
   );
 }

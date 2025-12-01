@@ -16,6 +16,7 @@ export default function ManageDocuments({ postId }: ManageDocumentsProps) {
     null,
   );
   const [uploading, setUploading] = useState<boolean>(false);
+  const [deleting, setDeleting] = useState<boolean>(false);
 
   useEffect(() => {
     const loadDocuments = async () => {
@@ -28,7 +29,7 @@ export default function ManageDocuments({ postId }: ManageDocumentsProps) {
       }
     };
     loadDocuments();
-  }, [uploading]);
+  }, [uploading, deleting]);
 
   return (
     <>
@@ -36,6 +37,8 @@ export default function ManageDocuments({ postId }: ManageDocumentsProps) {
         <>
           <FileManager
             postDocuments={JSON.parse(JSON.stringify(postDocuments))}
+            deleting={deleting}
+            setDeleting={setDeleting}
           />
           <FileUploader
             postId={postId}
