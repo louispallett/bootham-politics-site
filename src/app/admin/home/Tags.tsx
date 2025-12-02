@@ -3,11 +3,12 @@ import Link from "next/link";
 
 type TagsProps = {
   allTags: TagType[];
+  tag?: TagType;
   register: any;
   selectedTags?: TagType[];
 };
 
-export default function Tags({ allTags, register }: TagsProps) {
+export default function Tags({ allTags, register, selectedTags }: TagsProps) {
   return (
     <div className="tag-container">
       <div className="flex gap-1.5 items-center">
@@ -25,21 +26,38 @@ export default function Tags({ allTags, register }: TagsProps) {
       </p>
       <div className="flex flex-wrap gap-5">
         {allTags.map((tag) => (
-          <TagCard tag={tag} register={register} key={tag._id} />
+          <TagCard
+            tag={tag}
+            register={register}
+            key={tag._id}
+            selectedTags={selectedTags}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function TagCard({ tag, register }: { tag: TagType; register: any }) {
+type TagProps = {
+  tag: TagType;
+  register: any;
+  selectedTags?: TagType[];
+};
+
+function TagCard({ tag, register, selectedTags }: TagProps) {
+  const isChecked = selectedTags
+    ? selectedTags.some(
+        (item: TagType) => item._id.toString() === tag._id.toString(),
+      )
+    : false;
   return (
     <div className="flex gap-1 flex-wrap justify-center items-center">
       <input
+        defaultChecked={isChecked}
         type="checkbox"
         id={tag._id}
         name={tag._id}
-        {...register(tag._id, {})}
+        {...register(tag._id)}
       />
       <label htmlFor={tag._id}>{tag.name}</label>
     </div>

@@ -22,7 +22,6 @@ export default function ManageDocuments({ postId }: ManageDocumentsProps) {
     const loadDocuments = async () => {
       try {
         const response = await axios.get(`/api/documents/byPost/${postId}`);
-        console.log(response.data);
         setPostDocuments(response.data);
       } catch (err: any) {
         console.error(err);
