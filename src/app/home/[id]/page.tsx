@@ -1,10 +1,26 @@
+import { getIcon } from "@/app/auxiliary";
+import { getDocumentsByPostId } from "@/lib/documents";
 import { getPostById } from "@/lib/posts";
+import { DocumentType, PostType } from "@/lib/types";
 
 export default async function Post({ params }: { params: { id: string } }) {
   const { id } = await params;
 
   const data = await getPostById(id);
+  const documents = await getDocumentsByPostId(id);
+  return (
+    <>
+      <Article data={data} />
+      {documents.length > 0 && <Documents documents={documents} />}
+    </>
+  );
+}
 
+type ArticleProps = {
+  data: PostType;
+};
+
+function Article({ data }: ArticleProps) {
   return (
     <div className="users-container border-none p-0!">
       <div className="rounded-b-none rounded-lg p-2.5">
@@ -55,6 +71,41 @@ function TagCard({ data }: { data: string }) {
   );
 }
 
-function Documents() {}
+type DocumentsProps = {
+  documents: DocumentType[];
+};
 
-function Images() {}
+function Documents({ documents }: DocumentsProps) {
+  return (
+    <div className="users-container border-none p-0! mt-5">
+      <div className="rounded-b-none rounded-lg p-2.5">
+        <h4>Documents</h4>
+      </div>
+      <div className="flex flex-col m-2.5 gap-2.5">
+        {documents.map((document: DocumentType) => (
+          <FileCard file={document} key={document._id} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+type FileCardProps = {
+  file: DocumentType;
+};
+
+function FileCard({ file }: FileCardProps) {
+  const icon = getIcon(file.mimeType);
+  return (
+    <div className="flex gap-2.5">
+      <a className="flex-1" href={file.url} target="_blank">
+        <div className="flex items-center gap-2.5">
+          <img src={`/images/file-icons/${icon}.svg`} className="h-8" />
+          <p>
+            <b>{file.originalName}</b>
+          </p>
+        </div>
+      </a>
+    </div>
+  );
+}

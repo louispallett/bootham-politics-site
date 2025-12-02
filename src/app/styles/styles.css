@@ -26,14 +26,6 @@
   transition-duration: 150ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #051e64;
-    --textColour: #ffffff;
-    --foreground: #1d4ed8;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--textColour);

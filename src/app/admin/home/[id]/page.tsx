@@ -1,6 +1,8 @@
 import { getPostById } from "@/lib/posts";
 import UpdatePostForm from "./UpdatePostForm";
 import UpdatePublish from "./UpdatePublish";
+import { getAllTags } from "@/lib/tags";
+import ManageDocuments from "../ManageDocuments";
 
 export default async function UpdatePost({
   params,
@@ -9,6 +11,7 @@ export default async function UpdatePost({
 }) {
   const { id } = await params;
   const data = await getPostById(id);
+  const allTags = await getAllTags();
 
   // NextJS throws warning if we don't convert _id to simple string:
   for (let tag of data.tags) {
@@ -20,11 +23,17 @@ export default async function UpdatePost({
     : "Unknown Author";
 
   return (
-    <div className="users-container flex flex-col gap-2.5">
-      <PostInfo published={data.published} author={fullName} />
-      <UpdatePostForm postData={JSON.parse(JSON.stringify(data))} />
-      <UpdatePublish published={data.published} />
-    </div>
+    <>
+      <div className="users-container flex flex-col gap-2.5">
+        <PostInfo published={data.published} author={fullName} />
+        <UpdatePostForm
+          postData={JSON.parse(JSON.stringify(data))}
+          allTags={allTags}
+        />
+        <UpdatePublish published={data.published} />
+      </div>
+      <ManageDocuments postId={id} />
+    </>
   );
 }
 
@@ -37,14 +46,17 @@ function PostInfo({
 }) {
   return (
     <>
+      <div className="flex justify-between gap-2.5">
+        <h3>Update Post</h3>
+        {published ? (
+          <div className="success">Published</div>
+        ) : (
+          <div className="danger">Not Published</div>
+        )}
+      </div>
       <p className="text-right">
         Created by <b>{author}</b>
       </p>
-      {published ? (
-        <div className="success self-start">Published</div>
-      ) : (
-        <div className="danger self-start">Not Published</div>
-      )}
     </>
   );
 }
