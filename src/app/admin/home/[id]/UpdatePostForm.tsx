@@ -5,11 +5,12 @@
 // parameter.
 
 import { PostType, TagType } from "@/lib/types";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import TinyEditor from "../TinyEditor";
+import { CheckIcon } from "@heroicons/react/16/solid";
 import Tags from "../Tags";
 
 type Props = {
@@ -32,7 +33,7 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
   } = form;
   const { errors } = formState;
   const [isPending, setIsPending] = useState(false);
-  const [success, setIsSuccess] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState(null);
   const editorRef = useRef<any>(null);
 
@@ -65,13 +66,18 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((response: AxiosResponse) => {
-        window.location.reload();
+      .then(() => {
+        setSuccess(true);
       })
       .catch((err: any) => {
-        console.log(err.message);
+        console.error(err.message);
         setServerError(err.message);
+      })
+      .finally(() => {
         setIsPending(false);
+        setTimeout(() => {
+          setSuccess(false);
+        }, 3000);
       });
   };
 
@@ -166,7 +172,20 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
       )}
       <div className="flex flex-col sm:grid grid-cols-2 gap-2.5">
         <button className="success" type="submit">
-          {isPending ? <div className="spinner h-6 w-6"></div> : <>Save</>}
+          {isPending ? (
+            <div className="spinner h-6 w-6"></div>
+          ) : (
+            <>
+              {success ? (
+                <div className="flex items-center gap-1">
+                  <CheckIcon className="h-5 w-6" />
+                  <>Saved</>
+                </div>
+              ) : (
+                <>Save</>
+              )}
+            </>
+          )}
         </button>
         <button className="danger" type="button">
           {isPending ? <div className="spinner h-6 w-6"></div> : <>Delete</>}
