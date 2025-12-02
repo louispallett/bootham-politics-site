@@ -40,9 +40,7 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
   const onSubmit = (data: any) => {
     setIsPending(true);
     const selectedTags = Object.entries(data)
-      .filter(
-        ([key, value]) => postData.tags.find((tag) => tag._id === key) && value,
-      )
+      .filter(([key, value]) => allTags.find((tag) => tag._id === key) && value)
       .map(([key]) => key);
 
     if (!editorRef.current) {
