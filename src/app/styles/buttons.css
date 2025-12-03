@@ -1,3 +1,7 @@
+.btn {
+  cursor: pointer;
+}
+
 .submit,
 .success,
 .danger {
@@ -10,7 +14,6 @@
   border-radius: 0.25rem;
   box-shadow: 5px 5px 0px 0px #00000032;
   font-weight: 600;
-  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,14 +32,7 @@
   background-color: var(--btn-danger-bg);
 }
 
-.submit:hover,
-.submit:focus,
-.success:hover,
-.success:focus,
-.danger:hover,
-.danger:focus,
-.btn-default:focus,
-.btn-default:hover {
+.btn:hover {
   outline: none;
   transform: translate(-2.5px, -2.5px);
 }

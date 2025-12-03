@@ -169,7 +169,7 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
         </div>
       )}
       <div className="flex flex-col sm:grid grid-cols-2 gap-2.5">
-        <button className="success" type="submit">
+        <button className="btn success" type="submit">
           {isPending ? (
             <div className="spinner h-6 w-6"></div>
           ) : (
@@ -185,7 +185,7 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
             </>
           )}
         </button>
-        <button className="danger" type="button">
+        <button className="btn danger" type="button">
           {isPending ? <div className="spinner h-6 w-6"></div> : <>Delete</>}
         </button>
       </div>

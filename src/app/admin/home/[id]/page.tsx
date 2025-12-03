@@ -30,7 +30,7 @@ export default async function UpdatePost({
           postData={JSON.parse(JSON.stringify(data))}
           allTags={allTags}
         />
-        <UpdatePublish published={data.published} />
+        <UpdatePublish postId={id} published={data.published} />
       </div>
       <ManageDocuments postId={id} />
     </>
