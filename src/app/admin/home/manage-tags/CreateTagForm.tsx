@@ -39,7 +39,7 @@ export default function Form() {
                 <span className="bg-red-600 text-white font-bold self-start px-2.5 rounded">
                     {typeof errors.name?.message === "string" ? errors.name.message : null}
                 </span>
-                <button className="submit">
+                <button className="btn submit">
                     { isPending ? (
                         <div className="spinner h-6 w-6"></div>
                     ) : (

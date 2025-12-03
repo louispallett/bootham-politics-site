@@ -31,7 +31,7 @@ export default async function AdminHome() {
 
 function CreatePostBtn() {
   return (
-    <Link href="home/create-post" className="success">
+    <Link href="home/create-post" className="btn success">
       Create Post
     </Link>
   );
@@ -39,7 +39,7 @@ function CreatePostBtn() {
 
 function CreateTagBtn() {
   return (
-    <Link href="home/manage-tags" className="success">
+    <Link href="home/manage-tags" className="btn success">
       Tags
     </Link>
   );
@@ -47,7 +47,7 @@ function CreateTagBtn() {
 
 function AccountSettingsBtn() {
   return (
-    <Link href="home/account" className="submit">
+    <Link href="home/account" className="btn submit">
       Account Settings
     </Link>
   );

@@ -79,7 +79,7 @@ function FileCard({ file, url, deleting, setDeleting }: FileCardProps) {
           <div className="spinner h-6 w-6"></div>
         </div>
       ) : (
-        <button className="danger" onClick={handleDelete}>
+        <button className="btn danger" onClick={handleDelete}>
           Delete
         </button>
       )}

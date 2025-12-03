@@ -40,7 +40,7 @@ export default function AllTags({ tags }: { tags: TagType[] }) {
                     {serverError}
                 </span>
             )}
-            <button className="success">
+            <button className="btn success">
                 { isPending ? (
                     <div className="spinner h-6 w-6"></div>
                 ) : (
@@ -81,7 +81,7 @@ function TagCard({ tag, register, errors }: { tag: TagType, register: any, error
                         required: "Error: Please ensure no tags are empty.",
                     })}
                 />
-                <button className="danger" type="button"
+                <button className="btn danger" type="button"
                     onClick={handleDelete}
                 >
                     { isPending ? (

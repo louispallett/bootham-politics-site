@@ -116,7 +116,7 @@ export default function CreatePostForm({ tags }: { tags: TagType[] }) {
       ></textarea>
       <TinyEditor editorRef={editorRef} />
       <Tags allTags={tags} register={register} />
-      <button className="submit">
+      <button className="btn submit">
         {isPending ? <div className="spinner h-6 w-6"></div> : <>Create</>}
       </button>
     </form>
