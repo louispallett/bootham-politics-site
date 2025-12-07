@@ -13,7 +13,7 @@ export async function DELETE(
   try {
     await connectToDB();
 
-    const id = await params.id;
+    const { id } = await params;
 
     if (!ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
