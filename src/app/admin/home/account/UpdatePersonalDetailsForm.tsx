@@ -49,7 +49,7 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
   };
 
   return (
-    <div className="standard-container container-indigo flex flex-col gap-5">
+    <div className="users-container flex flex-col gap-5">
       <h4>Update Personal Details</h4>
       <form
         onSubmit={handleSubmit(onSubmit)}
