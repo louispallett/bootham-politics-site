@@ -152,7 +152,7 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
                 <p>Success!</p>
               </div>
             ) : (
-              <button className="submit">Save</button>
+              <button className="btn submit">Save</button>
             )}
           </>
         )}
