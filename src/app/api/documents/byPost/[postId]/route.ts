@@ -12,7 +12,7 @@ export async function GET(
   try {
     await connectToDB();
 
-    const postId = await params.postId;
+    const { postId } = await params;
 
     if (!ObjectId.isValid(postId)) {
       return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });

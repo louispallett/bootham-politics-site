@@ -14,7 +14,7 @@ export async function GET(
   try {
     await connectToDB();
 
-    const id = await params.id;
+    const { id } = await params;
 
     if (!ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
@@ -61,7 +61,7 @@ export async function PUT(
   try {
     await connectToDB();
 
-    const id = await params.id;
+    const { id } = await params;
 
     const formData = await req.formData();
     const body = Object.fromEntries(formData.entries());
