@@ -17,7 +17,7 @@ export default function UpdatePublish({
   const handlePublishChange = () => {
     setLoading(true);
     axios
-      .put(`/api/posts/update-publish/${postId}`)
+      .put(`/api/posts/${postId}/update-publish`)
       .then((response: AxiosResponse) => {
         // TODO: If response is OK, we could update a state here.
         // Since we also have a published/notpublished notice at the start of the article, we need to have
