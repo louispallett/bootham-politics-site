@@ -44,11 +44,9 @@ export async function POST(req: Request) {
       );
     }
 
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      process.env.JWT_SECRET!,
-      { expiresIn: "36h" },
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
+      expiresIn: "36h",
+    });
 
     const responseBody =
       process.env.NODE_ENV == "test" ? { token } : { success: true };
@@ -71,4 +69,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
