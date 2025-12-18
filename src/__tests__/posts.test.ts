@@ -5,8 +5,6 @@ import Post from "@/models/Post";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { PostType } from "@/lib/types";
-import { NextRequest } from "next/server";
-import FormDataNode from "form-data";
 
 jest.mock("next/headers", () => ({
   cookies: jest.fn(),
