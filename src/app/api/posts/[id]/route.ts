@@ -63,6 +63,13 @@ export async function PUT(
 
     const { id } = await params;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid post ID" },
+        { status: 400 },
+      );
+    }
+
     const formData = await req.formData();
     const body = Object.fromEntries(formData.entries());
 
