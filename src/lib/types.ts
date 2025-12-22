@@ -4,6 +4,7 @@ export interface PostType {
   _id: string;
   title: string;
   bannerURL?: string;
+  cloudinaryId?: string;
   bannerCaption?: string;
   synopsis: string;
   content: string;
