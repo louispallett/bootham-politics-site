@@ -23,9 +23,6 @@
   --btn-submit-bg: #1d4ed8;
   --btn-success-bg: #5ad33c;
   --btn-danger-bg: #dc2626;
-  --btn-submit-hover: #1d4fd8e4;
-  --btn-success-hover: #5ad33cc7;
-  --btn-danger-hover: #dc2626e2;
 }
 
 @media (prefers-color-scheme: dark) {
