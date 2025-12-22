@@ -6,6 +6,11 @@ import { connectToDB } from "@/lib/db";
 import { z } from "zod";
 import mongoose from "mongoose";
 import HttpError from "@/lib/HttpError";
+import { s3Client } from "@/lib/s3";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { getDocumentsByPostId } from "@/lib/documents";
+import { DocumentType } from "@/lib/types";
+import Document from "@/models/Document";
 
 export async function GET(
   req: NextRequest,
@@ -177,7 +182,33 @@ export async function DELETE(
       );
     }
 
-    await Post.findByIdAndDelete(id);
+    // Delete documents (if any)
+    const documents = await getDocumentsByPostId(id);
+    while (documents.length > 0) {
+      try {
+        const workingDocument: DocumentType | undefined = documents.pop();
+
+        await s3Client.send(
+          new DeleteObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: workingDocument?.s3Key,
+          }),
+        );
+
+        await Document.findOneAndDelete({ _id: workingDocument?._id });
+      } catch (err: any) {
+        throw new HttpError("Error when deleting documents. Details: " + err);
+      }
+    }
+
+    // Delete Cloudinary image
+    const post = await Post.findById(id);
+    if (post.bannerURL) {
+      await cloudinary.uploader.destroy(post.cloudinaryId);
+    }
+
+    // Delete post
+    await post.deleteOne();
 
     return new NextResponse(null, { status: 204 });
   } catch (err: any) {
