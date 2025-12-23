@@ -1,8 +1,7 @@
 import { getPostById } from "@/lib/posts";
-import UpdatePostForm from "./UpdatePostForm";
-import UpdatePublish from "./UpdatePublish";
 import { getAllTags } from "@/lib/tags";
 import ManageDocuments from "../ManageDocuments";
+import FormWrapper from "./FormWrapper";
 
 export default async function UpdatePost({
   params,
@@ -26,11 +25,10 @@ export default async function UpdatePost({
     <>
       <div className="users-container flex flex-col gap-2.5">
         <PostInfo published={data.published} author={fullName} />
-        <UpdatePostForm
+        <FormWrapper
           postData={JSON.parse(JSON.stringify(data))}
-          allTags={allTags}
+          allTags={JSON.parse(JSON.stringify(allTags))}
         />
-        <UpdatePublish postId={id} published={data.published} />
       </div>
       <ManageDocuments postId={id} />
     </>

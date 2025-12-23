@@ -1,7 +1,7 @@
 "use client";
 
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { useState } from "react";
+import { useFormContext } from "./FormContext";
 
 type UpdatePublishProps = {
   published: boolean;
@@ -12,10 +12,10 @@ export default function UpdatePublish({
   published,
   postId,
 }: UpdatePublishProps) {
-  const [loading, setLoading] = useState<boolean>(false);
+  const { isPending, setIsPending, setServerError } = useFormContext();
 
   const handlePublishChange = () => {
-    setLoading(true);
+    setIsPending(true);
     axios
       .put(`/api/posts/${postId}/update-publish`)
       .then((response: AxiosResponse) => {
@@ -28,15 +28,19 @@ export default function UpdatePublish({
       })
       .catch((err: AxiosError) => {
         console.error(err);
+        setServerError({
+          message: err?.response?.data?.message,
+          status: err?.response?.status,
+        });
       })
       .finally(() => {
-        setLoading(false);
+        setIsPending(false);
       });
   };
 
   return (
     <button className="btn submit" onClick={handlePublishChange}>
-      {loading ? (
+      {isPending ? (
         <div className="spinner h-7 w-7"></div>
       ) : (
         <>{published ? <>Unpublish</> : <>Publish</>}</>
