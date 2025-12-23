@@ -41,3 +41,8 @@ export interface DocumentType {
   createdAt: Date;
   url?: string;
 }
+
+export interface HttpError {
+  status: number;
+  message: string;
+}
