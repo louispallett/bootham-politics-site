@@ -6,6 +6,11 @@ import { connectToDB } from "@/lib/db";
 import { z } from "zod";
 import mongoose from "mongoose";
 import HttpError from "@/lib/HttpError";
+import { s3Client } from "@/lib/s3";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { getDocumentsByPostId } from "@/lib/documents";
+import { DocumentType } from "@/lib/types";
+import Document from "@/models/Document";
 
 export async function GET(
   req: NextRequest,
@@ -63,6 +68,13 @@ export async function PUT(
 
     const { id } = await params;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid post ID" },
+        { status: 400 },
+      );
+    }
+
     const formData = await req.formData();
     const body = Object.fromEntries(formData.entries());
 
@@ -93,10 +105,6 @@ export async function PUT(
     let cloudinaryURL = null;
     let cloudinaryId = null;
     if (banner) {
-      // Delete original image on cloudinary database
-      // FIXME: This isn't working because we need to use the cloudinaryID, which we currently aren't saving. Either, we need to save this to our
-      // post model, and save it when we upload the picture, or we need to find out if we can delete via the URL.
-      // FIXME: Additionally, if the user doesn't send a banner, it automatically updates banner to null!
       const originalPost = await Post.findById(id);
       if (originalPost.bannerURL) {
         await cloudinary.uploader.destroy(originalPost.cloudinaryId);
@@ -158,33 +166,50 @@ export async function PUT(
   }
 }
 
-const DeleteValidation = z.object({
-  postId: z
-    .string()
-    .trim()
-    .refine((v) => mongoose.Types.ObjectId.isValid(v), {
-      message: "Invalid tag ID",
-    }),
-});
-
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   try {
     await connectToDB();
 
-    const postIdSchema = DeleteValidation.shape.postId;
-    const parsed = postIdSchema.safeParse(params.id);
+    const { id } = await params;
 
-    if (!parsed.success) {
-      console.error("posts/[id]/DELETE: " + parsed.error.message);
-      throw new HttpError(parsed.error.message, 400);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new HttpError("Invalid post ID", 400);
     }
 
-    const postId = parsed.data;
+    // Delete documents (if any)
+    const documents = await getDocumentsByPostId(id);
+    if (!documents) {
+      throw new HttpError("Database failed to connect");
+    }
 
-    await Post.findByIdAndDelete(postId);
+    while (documents.length > 0) {
+      try {
+        const workingDocument: DocumentType | undefined = documents.pop();
+
+        await s3Client.send(
+          new DeleteObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: workingDocument?.s3Key,
+          }),
+        );
+
+        await Document.findOneAndDelete({ _id: workingDocument?._id });
+      } catch (err: any) {
+        throw new HttpError("Error when deleting documents. Details: " + err);
+      }
+    }
+
+    // Delete Cloudinary image
+    const post = await Post.findById(id);
+    if (post.bannerURL) {
+      await cloudinary.uploader.destroy(post.cloudinaryId);
+    }
+
+    // Delete post
+    await post.deleteOne();
 
     return new NextResponse(null, { status: 204 });
   } catch (err: any) {

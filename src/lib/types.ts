@@ -4,6 +4,7 @@ export interface PostType {
   _id: string;
   title: string;
   bannerURL?: string;
+  cloudinaryId?: string;
   bannerCaption?: string;
   synopsis: string;
   content: string;
@@ -39,4 +40,9 @@ export interface DocumentType {
   s3Bucket: string;
   createdAt: Date;
   url?: string;
+}
+
+export interface HttpError {
+  status: number;
+  message: string;
 }

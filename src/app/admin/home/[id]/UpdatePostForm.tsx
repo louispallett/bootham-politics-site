@@ -5,13 +5,15 @@
 // parameter.
 
 import { PostType, TagType } from "@/lib/types";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useFormContext } from "./FormContext";
 import TinyEditor from "../TinyEditor";
 import { CheckIcon } from "@heroicons/react/16/solid";
 import Tags from "../Tags";
+import UpdatePublish from "./UpdatePublish";
 
 type Props = {
   postData: PostType;
@@ -19,8 +21,9 @@ type Props = {
 };
 
 export default function UpdatePostForm({ postData, allTags }: Props) {
-  const form = useForm();
   const params = useParams();
+  const { isPending, setIsPending, setServerError } = useFormContext();
+  const form = useForm();
   const {
     register,
     control,
@@ -32,9 +35,7 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
     trigger,
   } = form;
   const { errors } = formState;
-  const [isPending, setIsPending] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [serverError, setServerError] = useState(null);
   const editorRef = useRef<any>(null);
 
   const onSubmit = (data: any) => {
@@ -65,11 +66,15 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
         },
       })
       .then(() => {
+        setIsPending(false);
         setSuccess(true);
       })
-      .catch((err: any) => {
+      .catch((err: AxiosError) => {
         console.error(err.message);
-        setServerError(err.message);
+        setServerError({
+          message: err?.response?.data?.message,
+          status: err?.response?.status,
+        });
       })
       .finally(() => {
         setIsPending(false);
@@ -185,9 +190,7 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
             </>
           )}
         </button>
-        <button className="btn danger" type="button">
-          {isPending ? <div className="spinner h-6 w-6"></div> : <>Delete</>}
-        </button>
+        <UpdatePublish published={postData.published} postId={postData._id} />
       </div>
     </form>
   );

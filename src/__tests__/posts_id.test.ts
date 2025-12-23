@@ -1,4 +1,5 @@
-import { GET, PUT } from "@/app/api/posts/[id]/route";
+import { GET, PUT, DELETE } from "@/app/api/posts/[id]/route";
+import { PUT as publishPUT } from "@/app/api/posts/[id]/update-publish/route";
 import Post from "@/models/Post";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
@@ -57,5 +58,34 @@ describe("API for Post model (dynamic)", () => {
 
     // PUT returns a 204, so doesn't return any data
     expect(res.status).toBe(204);
+  });
+
+  it("Publishes a post", async () => {
+    const req = new Request(
+      `http://localhost/api/posts/${postId}/update-publish`,
+      {
+        method: "PUT",
+      },
+    );
+
+    const context = { params: { id: postId } };
+    const res = await publishPUT(req, context);
+
+    const post = await Post.findById(postId);
+    expect(res.status).toBe(204);
+    expect(post?.published).toBe(true);
+  });
+
+  it("Deletes a post", async () => {
+    const req = new Request(`http://localhost/api/posts/${postId}`, {
+      method: "DELETE",
+    });
+
+    const context = { params: { id: postId } };
+    const res = await DELETE(req, context);
+
+    expect(res.status).toBe(204);
+    const post = await Post.findById(postId);
+    expect(post).toBeFalsy();
   });
 });

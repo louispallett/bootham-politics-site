@@ -1,3 +1,6 @@
+// ==========================
+// Route not in use
+// ==========================
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db";
 import Document from "@/models/Document";
