@@ -176,14 +176,15 @@ export async function DELETE(
     const { id } = await params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return NextResponse.json(
-        { success: false, message: "Invalid post ID" },
-        { status: 400 },
-      );
+      throw new HttpError("Invalid post ID", 400);
     }
 
     // Delete documents (if any)
     const documents = await getDocumentsByPostId(id);
+    if (!documents) {
+      throw new HttpError("Database failed to connect");
+    }
+
     while (documents.length > 0) {
       try {
         const workingDocument: DocumentType | undefined = documents.pop();
