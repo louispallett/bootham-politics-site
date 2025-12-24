@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "./styles/styles.css";
 import Link from "next/link";
+import ThemeSetter from "./ThemeSetter";
 
 export const metadata: Metadata = {
   title: "Bootham Politics Hub",
@@ -30,7 +31,7 @@ export default function RootLayout({
 
 function Header() {
   return (
-    <header>
+    <header className="flex justify-between gap-2.5">
       <Link href="/" className="cursor-pointer">
         <div className="flex justify-center items-center text-white">
           <img src="/images/big-ben.svg" alt="" className="h-16" />
@@ -40,6 +41,7 @@ function Header() {
           </div>
         </div>
       </Link>
+      <ThemeSetter />
     </header>
   );
 }
