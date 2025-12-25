@@ -3,6 +3,17 @@ h2,
 h3,
 h4,
 h5,
+h6,
+p,
+label {
+  color: var(--text-std);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
 h6 {
   font-weight: bold;
 }
@@ -43,4 +54,3 @@ ul {
   color: var(--link-focus);
   transform: translate(-2.5px, -2.5px);
 }
-
