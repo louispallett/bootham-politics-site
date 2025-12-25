@@ -19,11 +19,32 @@ export default function TinyEditor({ editorRef, data }: TinyEditorProps) {
   const [isDark, setIsDark] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsDark(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const html = document.documentElement;
+
+    const updateTheme = () => {
+      const theme = html.dataset.theme;
+      if (theme) {
+        setIsDark(theme === "dark");
+      } else {
+        setIsDark(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      }
+    };
+
+    updateTheme();
+
+    const observer = new MutationObserver(updateTheme);
+
+    observer.observe(html, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
     <Editor
+      key={isDark ? "dark" : "light"}
       apiKey={"uz9hicuo2wtpqyj182f5q7c0g2kb7c2eaq3zcxai7g7n8xja"}
       onInit={(_evt, editor) => (editorRef.current = editor)}
       initialValue={
