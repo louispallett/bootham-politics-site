@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 
 import "./styles/styles.css";
 import Link from "next/link";
+import ThemeSetter from "./ThemeSetter";
 
 export const metadata: Metadata = {
   title: "Bootham Politics Hub",
@@ -31,16 +31,17 @@ export default function RootLayout({
 
 function Header() {
   return (
-    <header>
+    <header className="flex justify-between gap-2.5">
       <Link href="/" className="cursor-pointer">
-        <div className="flex justify-center items-center text-white">
+        <div className="flex justify-center items-center">
           <img src="/images/big-ben.svg" alt="" className="h-16" />
           <div className="flex flex-col">
-            <h4>Bootham School</h4>
-            <h6 className="text-right">Politics Department</h6>
+            <h4 className="text-white!">Bootham School</h4>
+            <h6 className="text-white! text-right">Politics Department</h6>
           </div>
         </div>
       </Link>
+      <ThemeSetter />
     </header>
   );
 }

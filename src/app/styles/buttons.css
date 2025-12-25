@@ -63,3 +63,22 @@
 .spinner {
   animation: rotate 1500ms infinite linear;
 }
+
+.theme-btn {
+  position: relative;
+  display: inline-flex;
+  height: 1.75em;
+  width: 3.5em;
+  align-items: center;
+  border-radius: calc(infinity * 1px);
+  background: var(--theme-btn-bg);
+}
+
+.theme-toggle {
+  display: inline-block;
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: calc(infinity * 1px);
+  background: var(--theme-toggle-bg);
+  margin: 3px;
+}

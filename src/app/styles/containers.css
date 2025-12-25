@@ -1,7 +1,7 @@
 .standard-container,
 .users-container,
 .tag-container {
-  padding: 0.625em 1.25em;
+  padding: 0.625em 1.25rem;
   border-radius: 5px;
   box-shadow: 5px 5px 0px 0px var(--form-shadow);
 }
@@ -25,4 +25,32 @@
 .tag-container {
   border: 3px solid var(--yellow-border);
   background: var(--yellow-container);
+}
+
+.theme-wrapper {
+  display: flex;
+  align-items: center;
+  fill: currentColor;
+  gap: 0.625rem;
+  transform: translateX(0.25rem);
+}
+
+.theme-wrapper > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--theme-toggle-bg);
+}
+
+:root[data-theme="dark"] {
+  .theme-wrapper > button > span {
+    transform: translateX(1.6rem);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    .theme-wrapper > button > span {
+      transform: translateX(1.75rem);
+    }
+  }
 }
