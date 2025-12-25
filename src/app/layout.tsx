@@ -33,11 +33,11 @@ function Header() {
   return (
     <header className="flex justify-between gap-2.5">
       <Link href="/" className="cursor-pointer">
-        <div className="flex justify-center items-center text-white">
+        <div className="flex justify-center items-center">
           <img src="/images/big-ben.svg" alt="" className="h-16" />
           <div className="flex flex-col">
-            <h4>Bootham School</h4>
-            <h6 className="text-right">Politics Department</h6>
+            <h4 className="text-white!">Bootham School</h4>
+            <h6 className="text-white! text-right">Politics Department</h6>
           </div>
         </div>
       </Link>
