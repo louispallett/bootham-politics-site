@@ -15,13 +15,19 @@ export default async function AdminHome() {
         <CreateTagBtn />
         <AccountSettingsBtn />
       </div>
+      <div className="hidden users-container md:flex justify-between">
+        <h4>Published</h4>
+        <h4>Not Published</h4>
+      </div>
       <div className="flex flex-col md:grid grid-cols-2 gap-2.5">
         <div className="flex flex-col gap-2.5">
-          <h4>Published</h4>
+          <h4 className="standard-container success md:hidden">Published</h4>
           <Posts posts={published} />
         </div>
         <div className="flex flex-col gap-2.5">
-          <h4 className="md:text-right">Not Published</h4>
+          <h4 className="standard-container danger mt-5 md:hidden">
+            Not Published
+          </h4>
           <Posts posts={notPublished} />
         </div>
       </div>
@@ -86,4 +92,3 @@ function PostCard({ data }: { data: PostType }) {
     </Link>
   );
 }
-
