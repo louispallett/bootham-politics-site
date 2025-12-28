@@ -11,7 +11,7 @@
 .success,
 .danger {
   color: #fff;
-  border: 3px solid #000000;
+  border: 3px solid #000000 !important;
   position: relative;
   padding: 0.4em 0.75em;
   border-radius: 0.25rem;
