@@ -8,6 +8,8 @@ type FormContextType = {
   setIsPending: (v: boolean) => void;
   serverError: HttpError | null;
   setServerError: (v: HttpError | null) => void;
+  isPublished: boolean;
+  setIsPublished: (v: boolean) => void;
 };
 
 export const FormContext = createContext<FormContextType | null>(null);
