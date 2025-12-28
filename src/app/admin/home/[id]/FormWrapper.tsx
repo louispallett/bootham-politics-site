@@ -24,7 +24,7 @@ export default function FormWrapper({ postData, allTags }: Props) {
       <div className="flex flex-col gap-2.5">
         <UpdatePostForm postData={postData} allTags={allTags} />
         <DeletePost />
-        <ServerErrorMessage />
+        <FormErrorMessage />
       </div>
     </FormContext.Provider>
   );
@@ -93,7 +93,7 @@ function DeletePost() {
   );
 }
 
-function ServerErrorMessage() {
+function FormErrorMessage() {
   const { serverError } = useFormContext();
   return (
     <>
