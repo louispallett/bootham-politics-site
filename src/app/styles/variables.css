@@ -9,7 +9,7 @@
   --background: #eff6ff;
   --textColour: #000;
   --foreground: #93c5fd;
-  --form-background: #dbeafe;
+  --form-background: rgb(219, 234, 254, 0.9);
   --form-shadow: #e0e7ff;
   --input-background: #eae2e2;
   --input-background-focus: #fff;
@@ -35,7 +35,7 @@
   --foreground: #1d4ed8;
   --link: #facc15;
   --link-focus: #eab308;
-  --form-background: #3b82f6;
+  --form-background: rgb(59, 130, 246, 0.9);
   --textColour: #ffffff;
   --foreground: #1d4ed8;
   --form-shadow: #0c0a09;
@@ -59,7 +59,7 @@
     --foreground: #1d4ed8;
     --link: #facc15;
     --link-focus: #eab308;
-    --form-background: #3b82f6;
+    --form-background: rgb(59, 130, 246, 0.9);
     --textColour: #ffffff;
     --foreground: #1d4ed8;
     --form-shadow: #0c0a09;
