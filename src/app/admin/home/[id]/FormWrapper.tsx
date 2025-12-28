@@ -16,12 +16,25 @@ type Props = {
 export default function FormWrapper({ postData, allTags }: Props) {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [serverError, setServerError] = useState<HttpError | null>(null);
+  const [isPublished, setIsPublished] = useState<boolean>(postData.published);
+
+  const fullName = postData.author
+    ? postData.author.firstName + " " + postData.author.lastName
+    : "Unknown Author";
 
   return (
     <FormContext.Provider
-      value={{ isPending, setIsPending, serverError, setServerError }}
+      value={{
+        isPending,
+        setIsPending,
+        serverError,
+        setServerError,
+        isPublished,
+        setIsPublished,
+      }}
     >
       <div className="flex flex-col gap-2.5">
+        <PostInfo author={fullName} />
         <UpdatePostForm postData={postData} allTags={allTags} />
         <DeletePost />
         <FormErrorMessage />
@@ -107,6 +120,33 @@ function FormErrorMessage() {
           </p>
         </div>
       )}
+    </>
+  );
+}
+
+type PostInfoProps = {
+  author: string;
+};
+
+function PostInfo({ author }: PostInfoProps) {
+  const { isPublished } = useFormContext();
+  return (
+    <>
+      <div className="flex justify-between gap-2.5">
+        <h3>Update Post</h3>
+        {isPublished ? (
+          <div className="success">
+            <b>Published</b>
+          </div>
+        ) : (
+          <div className="danger">
+            <b>Not Published</b>
+          </div>
+        )}
+      </div>
+      <p className="text-right">
+        Created by <b>{author}</b>
+      </p>
     </>
   );
 }

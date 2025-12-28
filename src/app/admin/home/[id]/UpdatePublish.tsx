@@ -4,27 +4,24 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { useFormContext } from "./FormContext";
 
 type UpdatePublishProps = {
-  published: boolean;
   postId: string;
 };
 
-export default function UpdatePublish({
-  published,
-  postId,
-}: UpdatePublishProps) {
-  const { isPending, setIsPending, setServerError } = useFormContext();
+export default function UpdatePublish({ postId }: UpdatePublishProps) {
+  const {
+    isPending,
+    setIsPending,
+    setServerError,
+    isPublished,
+    setIsPublished,
+  } = useFormContext();
 
   const handlePublishChange = () => {
     setIsPending(true);
     axios
       .put(`/api/posts/${postId}/update-publish`)
       .then((response: AxiosResponse) => {
-        // TODO: If response is OK, we could update a state here.
-        // Since we also have a published/notpublished notice at the start of the article, we need to have
-        // this state in a parent folder.
-        //
-        // Or, alternatively:
-        // window.location.reload(); // This is a quick fix... and we should update
+        setIsPublished(!isPublished);
       })
       .catch((err: AxiosError) => {
         console.error(err);
@@ -43,7 +40,7 @@ export default function UpdatePublish({
       {isPending ? (
         <div className="spinner h-7 w-7"></div>
       ) : (
-        <>{published ? <>Unpublish</> : <>Publish</>}</>
+        <>{isPublished ? <>Unpublish</> : <>Publish</>}</>
       )}
     </button>
   );

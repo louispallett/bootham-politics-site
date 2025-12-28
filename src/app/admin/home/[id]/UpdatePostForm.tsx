@@ -1,9 +1,5 @@
 "use client";
 
-// Note - it might be wise to move the forms in general into a separate file where both the create and
-// update forms can draw from - the only difference here is the intial content, which can be an optional
-// parameter.
-
 import { PostType, TagType } from "@/lib/types";
 import axios, { AxiosError } from "axios";
 import { useParams } from "next/navigation";
@@ -34,6 +30,7 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
     setValue,
     trigger,
   } = form;
+  // TODO: Add <span> form error messages.
   const { errors } = formState;
   const [success, setSuccess] = useState(false);
   const editorRef = useRef<any>(null);
@@ -190,7 +187,7 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
             </>
           )}
         </button>
-        <UpdatePublish published={postData.published} postId={postData._id} />
+        <UpdatePublish postId={postData._id} />
       </div>
     </form>
   );

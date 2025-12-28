@@ -17,44 +17,15 @@ export default async function UpdatePost({
     tag._id = tag._id.toString();
   }
 
-  const fullName = data.author
-    ? data.author.firstName + " " + data.author.lastName
-    : "Unknown Author";
-
   return (
     <>
-      <div className="users-container flex flex-col gap-2.5">
-        <PostInfo published={data.published} author={fullName} />
+      <div className="users-container">
         <FormWrapper
           postData={JSON.parse(JSON.stringify(data))}
           allTags={JSON.parse(JSON.stringify(allTags))}
         />
       </div>
       <ManageDocuments postId={id} />
-    </>
-  );
-}
-
-function PostInfo({
-  published,
-  author,
-}: {
-  published: boolean;
-  author: string;
-}) {
-  return (
-    <>
-      <div className="flex justify-between gap-2.5">
-        <h3>Update Post</h3>
-        {published ? (
-          <div className="success">Published</div>
-        ) : (
-          <div className="danger">Not Published</div>
-        )}
-      </div>
-      <p className="text-right">
-        Created by <b>{author}</b>
-      </p>
     </>
   );
 }
