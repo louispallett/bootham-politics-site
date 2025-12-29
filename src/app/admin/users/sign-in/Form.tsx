@@ -58,7 +58,7 @@ export default function Form() {
           })}
         />
       </div>
-      <button className="submit">
+      <button className="btn submit">
         {isPending ? <div className="spinner h-6 w-6"></div> : <>Submit</>}
       </button>
       <p className="text-center text-sm">
