@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 
 export default function Form() {
   const form = useForm();
@@ -18,19 +18,25 @@ export default function Form() {
   } = form;
   const { errors } = formState;
   const [isPending, setIsPending] = useState(false);
-  const [success, setIsSuccess] = useState(false);
   const [serverError, setServerError] = useState(null);
 
   const onSubmit = (data: object) => {
+    setServerError(null);
     setIsPending(true);
     axios
       .post(`/api/auth/register`, data)
-      .then((response: object) => {
-        setIsSuccess(true);
+      .then((response: AxiosResponse) => {
+        axios.post("/api/auth", data)
+          .then(() => {
+            window.location.assign("/admin/home")
+          }).catch((err: AxiosError) => {
+            console.error(err);
+            setServerError(err?.response?.data?.message);
+          })
       })
-      .catch((err: any) => {
-        console.log(err.message);
-        setServerError(err.message);
+      .catch((err: AxiosError) => {
+        console.error(err.message);
+        setServerError(err?.response?.data?.message);
       })
       .finally(() => {
         setIsPending(false);
