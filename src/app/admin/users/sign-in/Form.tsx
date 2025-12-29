@@ -18,20 +18,21 @@ export default function Form() {
   } = form;
   const { errors } = formState;
   const [isPending, setIsPending] = useState(false);
-  const [success, setIsSuccess] = useState(false);
   const [serverError, setServerError] = useState(null);
 
   const onSubmit = (data: object) => {
     setIsPending(true);
     axios
       .post(`/api/auth`, data)
-      .then(() => {})
+      .then(() => {
+        window.location.assign("/admin/home");
+      })
       .catch((err: any) => {
-        console.log(err.message);
+        console.error(err.message);
         setServerError(err.message);
       })
       .finally(() => {
-        window.location.assign("/admin/home");
+        setIsPending(false);
       });
   };
 
