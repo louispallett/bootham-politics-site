@@ -78,10 +78,11 @@ export default function UpdatePasswordForm({ userId }: Props) {
             </span>
           </div>
           <div>
-            <div className="form-input flex gap-1.5">
+            <div className="flex items-center gap-1.5">
               <input
                 type={showPassword ? "text" : "password"}
                 id="newPassword"
+                className="form-input"
                 required
                 placeholder="New Password"
                 {...register("newPassword", {
@@ -98,7 +99,6 @@ export default function UpdatePasswordForm({ userId }: Props) {
                       "Must contain: uppercase, lowercase, number, and special character",
                   },
                 })}
-                className="w-full"
               />
               {showPassword ? (
                 <EyeIcon
