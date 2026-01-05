@@ -19,23 +19,23 @@ h6 {
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: var(--h1-size);
 }
 
 h2 {
-  font-size: 3rem;
+  font-size: var(--h2-size);
 }
 
 h3 {
-  font-size: 2em;
+  font-size: var(--h3-size);
 }
 
 h4 {
-  font-size: 1.5rem;
+  font-size: var(--h4-size);
 }
 
 h5 {
-  font-size: 1.25rem;
+  font-size: var(--h5-size);
 }
 
 .link {
