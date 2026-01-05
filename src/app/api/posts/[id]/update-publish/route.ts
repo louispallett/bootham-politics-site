@@ -5,7 +5,7 @@ import HttpError from "@/lib/HttpError";
 import Post from "@/models/Post";
 
 export async function PUT(
-  req: NextRequest,
+  req: NextRequest | Request,
   { params }: { params: { id: string } },
 ) {
   try {

@@ -13,7 +13,7 @@ import { DocumentType } from "@/lib/types";
 import Document from "@/models/Document";
 
 export async function GET(
-  req: NextRequest,
+  req: NextRequest | Request,
   { params }: { params: { id: string } },
 ) {
   try {
@@ -60,7 +60,7 @@ const PutValidation = z.object({
 });
 
 export async function PUT(
-  req: NextRequest,
+  req: NextRequest | Request,
   { params }: { params: { id: string } },
 ) {
   try {
@@ -167,7 +167,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  req: NextRequest,
+  req: NextRequest | Request,
   { params }: { params: { id: string } },
 ) {
   try {

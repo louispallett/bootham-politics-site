@@ -58,9 +58,8 @@ describe("API for Post route", () => {
   });
 
   describe("API for Post model(2)", () => {
-    let post: PostType;
     beforeAll(async () => {
-      post = await Post.create({
+      await Post.create({
         title: "Test",
         synopsis: "Test synopsis",
         content: "Test content",

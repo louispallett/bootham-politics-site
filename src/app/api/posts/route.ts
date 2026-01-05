@@ -52,7 +52,7 @@ const ValidationSchema = z.object({
   bannerCaption: z.string().max(1000).optional(),
 });
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest | Request) {
   try {
     await connectToDB();
 
