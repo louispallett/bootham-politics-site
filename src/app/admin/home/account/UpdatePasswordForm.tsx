@@ -22,13 +22,13 @@ export default function UpdatePasswordForm({ userId }: Props) {
     trigger,
   } = form;
   const { errors } = formState;
-  const [isPending, setIsPending] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(null);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (data: any) => {
-    setError(false);
+    setError(null);
     setIsPending(true);
     axios
       .put(`/api/auth/${userId}/update-password`, {
