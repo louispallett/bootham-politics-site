@@ -1,6 +1,6 @@
 import { getAllPosts } from "@/lib/posts";
-import { getAllTags } from "@/lib/tags";
-import Posts from "./Posts";
+import { PostPopulated } from "@/lib/types";
+import Link from "next/link";
 
 // FIXME: Fix filter function (need to add tags into an array in order to select multiple, or make it into a drop down to select just one.)
 // TODO: Apply sort functionality
@@ -15,16 +15,21 @@ import Posts from "./Posts";
 
 export default async function Home() {
   const posts = await getAllPosts();
-  const tags = await getAllTags();
+  // const tags = await getAllTags();
   const publishedPosts = posts.filter((post) => post.published);
 
   return (
     <div>
       <WelcomeMessage />
-      <Posts
-        posts={JSON.parse(JSON.stringify(publishedPosts))}
-        tags={JSON.parse(JSON.stringify(tags))}
-      />
+      {/* <Posts */}
+      {/*   posts={JSON.parse(JSON.stringify(publishedPosts))} */}
+      {/*   tags={JSON.parse(JSON.stringify(tags))} */}
+      {/* /> */}
+      <div className="flex flex-col gap-2.5 flex-1">
+        {publishedPosts.map((post: PostPopulated) => (
+          <PostCard data={post} key={post._id} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -43,6 +48,45 @@ function WelcomeMessage() {
         global politics, deepen your understanding of key ideas, and build
         real-world examples for essays and discussion. Check back regularly, new
         content is added as politics unfolds.
+      </p>
+    </div>
+  );
+}
+
+function PostCard({ data }: { data: PostPopulated }) {
+  return (
+    <Link href={"/home/" + data._id}>
+      <div className="users-container border-none p-0!">
+        <div className="rounded-b-none rounded-lg p-2.5">
+          <h4>{data.title}</h4>
+        </div>
+        {data.bannerURL && (
+          <img
+            src={data.bannerURL}
+            alt=""
+            className="object-cover max-h-full min-w-full"
+          />
+        )}
+        <p className="self-start italic px-2.5 py-3.5 sm:px-3 sm:py-4 dark:text-slate-100">
+          {data.synopsis}
+        </p>
+        <div className="p-2.5 self-end">
+          <div className="flex gap-2.5">
+            {data.tags.map((tag) => (
+              <TagCard data={tag.name} key={tag.name} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function TagCard({ data }: { data: string }) {
+  return (
+    <div className="tag-container shadow-none!">
+      <p>
+        <b>{data}</b>
       </p>
     </div>
   );
