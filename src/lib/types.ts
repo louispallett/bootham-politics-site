@@ -36,7 +36,7 @@ export interface UserType {
 
 export interface DocumentType {
   _id: string;
-  postId: Types.ObjectId | PostType;
+  postId: Types.ObjectId;
   uploader: Types.ObjectId | UserType;
   originalName: string;
   mimeType: string;
@@ -45,6 +45,10 @@ export interface DocumentType {
   s3Bucket: string;
   createdAt: Date;
   url?: string;
+}
+
+export interface DocumentPopulated extends Omit<DocumentType, "uploader"> {
+  uploader: Pick<UserType, "firstName" | "lastName">;
 }
 
 export interface HttpError {
