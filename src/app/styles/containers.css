@@ -22,6 +22,31 @@
   background: var(--form-background);
 }
 
+.main-title-wrapper,
+.header-title-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-title-wrapper {
+  margin: 4rem 0 2rem 0;
+}
+
+@media (max-width: 640px) {
+  .header-title-wrapper > div {
+    visibility: hidden;
+  }
+
+  .main-title-wrapper {
+    margin: 1rem 0 1rem 0;
+  }
+
+  .main-title-wrapper > div > h1 {
+    font-size: var(--h2-size);
+  }
+}
+
 .tag-container {
   border: 3px solid var(--yellow-border);
   background: var(--yellow-container);
