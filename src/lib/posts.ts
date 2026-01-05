@@ -2,9 +2,9 @@ import User from "@/models/User";
 import Tag from "@/models/Tag";
 import Post from "@/models/Post";
 import { connectToDB } from "./db";
-import { PostType } from "./types";
+import { PostPopulated, PostType } from "./types";
 
-export async function getAllPosts(): Promise<PostType[]> {
+export async function getAllPosts(): Promise<PostPopulated[]> {
   try {
     await connectToDB();
 
@@ -14,9 +14,9 @@ export async function getAllPosts(): Promise<PostType[]> {
         select: "firstName lastName -_id",
         model: User,
       })
-      .populate({ path: "tags", select: "name -_id", model: Tag })
+      .populate({ path: "tags", select: "name", model: Tag })
       .sort("-creationDate")
-      .lean();
+      .lean<PostPopulated[]>();
     return posts;
   } catch (err: any) {
     console.error("Error fetching posts:", err);
@@ -24,7 +24,7 @@ export async function getAllPosts(): Promise<PostType[]> {
   }
 }
 
-export async function getPostById(id: string): Promise<PostType> {
+export async function getPostById(id: string): Promise<PostPopulated | null> {
   await connectToDB();
 
   const post = await Post.findById(id)
@@ -34,7 +34,7 @@ export async function getPostById(id: string): Promise<PostType> {
       model: User,
     })
     .populate({ path: "tags", select: "name", model: Tag })
-    .lean();
+    .lean<PostPopulated>();
   return post;
 }
 
@@ -95,4 +95,3 @@ export async function getPostsWithTag(tagId: string): Promise<PostType[]> {
 // See this discussion here: https://stackoverflow.com/questions/26818071/mongoose-schema-hasnt-been-registered-for-model
 // (solution in link above by user3616725)
 //! You DO NOT need to insert the author and tag values as anything other than plain strings (representing documents _ids).
-

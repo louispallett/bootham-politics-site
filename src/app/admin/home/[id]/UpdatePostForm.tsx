@@ -1,6 +1,6 @@
 "use client";
 
-import { PostType, TagType } from "@/lib/types";
+import { PostPopulated, TagType } from "@/lib/types";
 import axios, { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
@@ -12,7 +12,7 @@ import Tags from "../Tags";
 import UpdatePublish from "./UpdatePublish";
 
 type Props = {
-  postData: PostType;
+  postData: PostPopulated;
   allTags: TagType[];
 };
 

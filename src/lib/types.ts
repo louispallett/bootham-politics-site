@@ -8,11 +8,16 @@ export interface PostType {
   bannerCaption?: string;
   synopsis: string;
   content: string;
-  author: Types.ObjectId | UserType;
-  tags: Types.ObjectId[] | TagType[];
+  author: Types.ObjectId;
+  tags: Types.ObjectId[];
   published: boolean;
   creationDate: Date;
   creationDateFormatted: string;
+}
+
+export interface PostPopulated extends Omit<PostType, "author" | "tags"> {
+  author: Pick<UserType, "firstName" | "lastName">;
+  tags: Pick<TagType, "name" | "_id">[];
 }
 
 export interface TagType {

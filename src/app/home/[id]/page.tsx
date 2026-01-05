@@ -1,7 +1,7 @@
 import { getIcon } from "@/app/auxiliary";
 import { getDocumentsByPostId } from "@/lib/documents";
 import { getPostById } from "@/lib/posts";
-import { DocumentType, PostType } from "@/lib/types";
+import { DocumentType, PostPopulated } from "@/lib/types";
 
 export default async function Post({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -10,14 +10,20 @@ export default async function Post({ params }: { params: { id: string } }) {
   const documents = await getDocumentsByPostId(id);
   return (
     <>
-      <Article data={data} />
+      {data ? (
+        <Article data={data} />
+      ) : (
+        <div className="users-container">
+          <p>An error occured</p>
+        </div>
+      )}
       {documents.length > 0 && <Documents documents={documents} />}
     </>
   );
 }
 
 type ArticleProps = {
-  data: PostType;
+  data: PostPopulated;
 };
 
 function Article({ data }: ArticleProps) {

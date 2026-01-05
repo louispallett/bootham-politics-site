@@ -1,4 +1,4 @@
-import { PostType } from "@/lib/types";
+import { PostPopulated, PostType } from "@/lib/types";
 import { getAllPosts } from "@/lib/posts";
 import Link from "next/link";
 
@@ -59,7 +59,7 @@ function AccountSettingsBtn() {
   );
 }
 
-function Posts({ posts }: { posts: PostType[] }) {
+function Posts({ posts }: { posts: PostPopulated[] }) {
   return (
     <>
       {posts.length > 0 ? (
@@ -77,7 +77,7 @@ function Posts({ posts }: { posts: PostType[] }) {
   );
 }
 
-function PostCard({ data }: { data: PostType }) {
+function PostCard({ data }: { data: PostPopulated }) {
   //? Note the shown errors below are a TS over-zealous one because data.author is technically a _id string
   const fullName = data.author
     ? data.author.firstName + " " + data.author.lastName
