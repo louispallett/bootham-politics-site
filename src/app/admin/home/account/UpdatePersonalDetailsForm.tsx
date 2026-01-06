@@ -77,11 +77,11 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
                 },
               })}
             />
-            <span>
+            {errors.firstName?.message && (
               <p className="text-red-600 font-bold mt-1.5 text-xs">
-                {errors.firstName?.message}
+                {String(errors.firstName?.message)}
               </p>
-            </span>
+            )}
           </div>
           <div>
             <label htmlFor="lastName">
