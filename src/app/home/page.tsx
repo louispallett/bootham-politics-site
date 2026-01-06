@@ -2,12 +2,8 @@ import { getAllPosts } from "@/lib/posts";
 import { PostPopulated } from "@/lib/types";
 import Link from "next/link";
 
-// FIXME: Fix filter function (need to add tags into an array in order to select multiple, or make it into a drop down to select just one.)
-// TODO: Apply sort functionality
 // FIXME: General responsive design for smaller screens (down to at least 340px):
 //      - Margin (x) of containers, put these down to zero to give the articles maximum space.
-//      - Set title in HEADER to be hidden on smallest screens (but keep logo)
-//      - Fix logo on /home screen.
 //      - Wrap list of files in FileManager (wrapping file btn and delete btn with flex-col).
 //      - Tags (open client side):
 //        - Wrap these around using a grid wrap or flex wrap.
@@ -15,16 +11,11 @@ import Link from "next/link";
 
 export default async function Home() {
   const posts = await getAllPosts();
-  // const tags = await getAllTags();
   const publishedPosts = posts.filter((post) => post.published);
 
   return (
     <div>
       <WelcomeMessage />
-      {/* <Posts */}
-      {/*   posts={JSON.parse(JSON.stringify(publishedPosts))} */}
-      {/*   tags={JSON.parse(JSON.stringify(tags))} */}
-      {/* /> */}
       <div className="flex flex-col gap-2.5 flex-1">
         {publishedPosts.map((post: PostPopulated) => (
           <PostCard data={post} key={post._id} />
