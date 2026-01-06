@@ -52,6 +52,6 @@ export interface DocumentPopulated extends Omit<DocumentType, "uploader"> {
 }
 
 export interface HttpError {
-  status: number;
+  status?: number;
   message: string;
 }

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios, {AxiosError, AxiosResponse} from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { HttpError } from "@/lib/types";
 
 export default function Form() {
   const form = useForm();
@@ -18,7 +19,22 @@ export default function Form() {
   } = form;
   const { errors } = formState;
   const [isPending, setIsPending] = useState(false);
-  const [serverError, setServerError] = useState(null);
+  const [serverError, setServerError] = useState<HttpError | null>(null);
+
+  const handleServerError = (err: AxiosError) => {
+    console.error(err);
+    if (axios.isAxiosError<HttpError>(err)) {
+      setServerError({
+        message: err.response?.data?.message ?? "Unknown",
+        status: err.response?.status,
+      });
+    } else {
+      setServerError({
+        message: "Unexpected Error",
+        status: 500,
+      });
+    }
+  };
 
   const onSubmit = (data: object) => {
     setServerError(null);
@@ -26,17 +42,17 @@ export default function Form() {
     axios
       .post(`/api/auth/register`, data)
       .then((response: AxiosResponse) => {
-        axios.post("/api/auth", data)
+        axios
+          .post("/api/auth", data)
           .then(() => {
-            window.location.assign("/admin/home")
-          }).catch((err: AxiosError) => {
-            console.error(err);
-            setServerError(err?.response?.data?.message);
+            window.location.assign("/admin/home");
           })
+          .catch((err: AxiosError) => {
+            handleServerError(err);
+          });
       })
       .catch((err: AxiosError) => {
-        console.error(err.message);
-        setServerError(err?.response?.data?.message);
+        handleServerError(err);
       })
       .finally(() => {
         setIsPending(false);
@@ -103,4 +119,3 @@ export default function Form() {
     </form>
   );
 }
-

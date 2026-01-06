@@ -60,10 +60,17 @@ function DeletePost() {
       })
       .catch((err: AxiosError) => {
         console.error(err);
-        setServerError({
-          message: err?.response?.data?.message,
-          status: err?.response?.status,
-        });
+        if (axios.isAxiosError<HttpError>(err)) {
+          setServerError({
+            message: err.response?.data?.message ?? "Unknown",
+            status: err.response?.status,
+          });
+        } else {
+          setServerError({
+            message: "Unexpected Error",
+            status: 500,
+          });
+        }
       })
       .finally(() => {
         setIsPending(false);

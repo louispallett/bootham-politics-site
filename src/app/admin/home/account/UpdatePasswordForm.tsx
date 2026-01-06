@@ -1,9 +1,10 @@
 "use client";
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
+import { HttpError } from "@/lib/types";
 
 type Props = {
   userId: string;
@@ -25,10 +26,10 @@ export default function UpdatePasswordForm({ userId }: Props) {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<HttpError | null>(null);
 
   const onSubmit = async (data: any) => {
-    setError(null);
+    setServerError(null);
     setIsPending(true);
     axios
       .put(`/api/auth/${userId}/update-password`, {
@@ -41,9 +42,19 @@ export default function UpdatePasswordForm({ userId }: Props) {
         }, 1500);
         reset();
       })
-      .catch((err: any) => {
-        console.error(err.response.data.message);
-        setError(err.response.data.message);
+      .catch((err: AxiosError) => {
+        console.error(err);
+        if (axios.isAxiosError<HttpError>(err)) {
+          setServerError({
+            message: err.response?.data?.message ?? "Unknown",
+            status: err.response?.status,
+          });
+        } else {
+          setServerError({
+            message: "Unexpected Error",
+            status: 500,
+          });
+        }
       })
       .finally(() => {
         setIsPending(false);
@@ -71,11 +82,11 @@ export default function UpdatePasswordForm({ userId }: Props) {
               })}
               className="form-input"
             />
-            <span>
+            {errors.currentPassword?.message && (
               <p className="text-red-600 font-bold mt-1.5 text-xs">
-                {errors.currentPassword?.message}
+                {String(errors.currentPassword.message)}
               </p>
-            </span>
+            )}
           </div>
           <div>
             <div className="flex items-center gap-1.5">
@@ -112,14 +123,18 @@ export default function UpdatePasswordForm({ userId }: Props) {
                 />
               )}
             </div>
-            <span>
+            {errors.newPassword?.message && (
               <p className="text-red-600 font-bold mt-1.5 text-xs text-right">
-                {errors.newPassword?.message}
+                {String(errors.newPassword?.message)}
               </p>
-            </span>
+            )}
           </div>
         </div>
-        {error && <div className="standard-container bg-red-500">{error}</div>}
+        {serverError && (
+          <div className="standard-container bg-red-500">
+            {serverError.message}
+          </div>
+        )}
         {isPending ? (
           <div className="submit flex justify-center">
             <div className="spinner h-6 w-6"></div>

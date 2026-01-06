@@ -103,11 +103,11 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
                 },
               })}
             />
-            <span>
+            {errors.lastName?.message && (
               <p className="text-red-600 font-bold mt-1.5 text-xs text-right">
-                {errors.lastName?.message}
+                {String(errors.lastName?.message)}
               </p>
-            </span>
+            )}
           </div>
         </div>
         <div className="flex flex-col">
@@ -130,11 +130,11 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
               },
             })}
           />
-          <span>
+          {errors.email?.message && (
             <p className="text-red-600 font-bold mt-1.5 text-xs">
-              {errors.email?.message}
+              {String(errors.email?.message)}
             </p>
-          </span>
+          )}
         </div>
         {error && (
           <div className="standard-container bg-red-500">

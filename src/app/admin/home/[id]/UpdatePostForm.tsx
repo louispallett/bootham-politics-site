@@ -1,6 +1,6 @@
 "use client";
 
-import { PostPopulated, TagType } from "@/lib/types";
+import { HttpError, PostPopulated, TagType } from "@/lib/types";
 import axios, { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
@@ -67,11 +67,18 @@ export default function UpdatePostForm({ postData, allTags }: Props) {
         setSuccess(true);
       })
       .catch((err: AxiosError) => {
-        console.error(err.message);
-        setServerError({
-          message: err?.response?.data?.message,
-          status: err?.response?.status,
-        });
+        console.error(err);
+        if (axios.isAxiosError<HttpError>(err)) {
+          setServerError({
+            message: err.response?.data?.message ?? "Unknown",
+            status: err.response?.status,
+          });
+        } else {
+          setServerError({
+            message: "Unexpected Error",
+            status: 500,
+          });
+        }
       })
       .finally(() => {
         setIsPending(false);
