@@ -28,9 +28,7 @@ export default function UpdatePasswordForm() {
     setServerError(null);
     setIsPending(true);
     axios
-      .put(`/api/auth/update/password`, {
-        data,
-      })
+      .put(`/api/auth/update/password`, data)
       .then(() => {
         setSuccess(true);
         setTimeout(() => {

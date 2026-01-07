@@ -33,17 +33,16 @@ describe("Auth ID route (account alterations)", () => {
   it("Changes account information", async () => {
     const cookieHeader = `token=${token}`;
 
-    const form = new FormData();
-    form.append("firstName", "Jane");
-    form.append("lastName", "Dane");
-    form.append("email", "jane.dane@example.com");
-
     const req = new Request("http://localhost/api/auth/update/details", {
       method: "PUT",
       headers: {
         cookie: cookieHeader,
       },
-      body: form,
+      body: JSON.stringify({
+        firstName: "Jane",
+        lastName: "Dane",
+        email: "jane.dane@example.com",
+      }),
     });
 
     const nextReq = new NextRequest(req);
@@ -55,16 +54,15 @@ describe("Auth ID route (account alterations)", () => {
   it("Changes account password", async () => {
     const cookieHeader = `token=${token}`;
 
-    const form = new FormData();
-    form.append("currentPassword", "HelloWorld1!");
-    form.append("newPassword", "HelloWorld123!");
-
     const req = new Request("http://localhost/api/auth/update/password", {
       method: "PUT",
       headers: {
         cookie: cookieHeader,
       },
-      body: form,
+      body: JSON.stringify({
+        currentPassword: "HelloWorld1!",
+        newPassword: "HelloWorld123!"
+      })
     });
 
     const nextReq = new NextRequest(req);

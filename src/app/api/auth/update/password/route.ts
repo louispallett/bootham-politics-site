@@ -7,22 +7,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const PutValidation = z.object({
-    currentPassword: z.string().trim().min(1).max(50),
-    newPassword: z
-      .string()
-      .trim()
-      .min(8)
-      .max(200)
-      .refine(
-        (val: string) =>
-          /[A-Z]/.test(val) &&
-          /[a-z]/.test(val) &&
-          /[0-9]/.test(val) &&
-          /[^A-Za-z0-9]/.test(val),
-        {
-          message: "Password must include upper/lowercase, number, and symbol",
-        },
-      ),
+  currentPassword: z.string().trim().min(1).max(50),
+  newPassword: z
+    .string()
+    .trim()
+    .min(8)
+    .max(200)
+    .refine(
+      (val: string) =>
+        /[A-Z]/.test(val) &&
+        /[a-z]/.test(val) &&
+        /[0-9]/.test(val) &&
+        /[^A-Za-z0-9]/.test(val),
+      {
+        message: "Password must include upper/lowercase, number, and symbol",
+      },
+    ),
 });
 
 export async function PUT(req: NextRequest) {
@@ -42,7 +42,8 @@ export async function PUT(req: NextRequest) {
 
     const body = await req.json();
 
-    const parsed = PutValidation.safeParse({ data: body.data });
+    const parsed = PutValidation.safeParse(body);
+
     if (!parsed.success) throw new HttpError(parsed.error.message, 400);
     const { currentPassword, newPassword } = parsed.data;
 
@@ -51,7 +52,7 @@ export async function PUT(req: NextRequest) {
 
     const correctPassword = await bcrypt.compare(
       currentPassword,
-      newPassword,
+      user.password,
     );
 
     if (!correctPassword) {

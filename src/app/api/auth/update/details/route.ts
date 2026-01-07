@@ -26,15 +26,9 @@ export async function PUT(req: NextRequest) {
     }) as { userId: string };
     const userId = decoded.userId;
 
-    const formData = await req.formData();
-    const body = Object.fromEntries(formData.entries());
+    const body = await req.json();
 
-    const parsed = PutValidation.safeParse({
-      firstName: body.firstName,
-      lastName: body.lastName,
-      email: body.email,
-    });
-
+    const parsed = PutValidation.safeParse(body);
     if (!parsed.success) throw new HttpError(parsed.error.message, 400);
     const { firstName, lastName, email } = parsed.data;
 
