@@ -1,5 +1,6 @@
 import { POST } from "@/app/api/auth/route";
-import { PUT } from "@/app/api/auth/update/details/route";
+import { PUT as detailsPUT } from "@/app/api/auth/update/details/route";
+import { PUT as passwordPUT } from "@/app/api/auth/update/password/route";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextRequest } from "next/server";
@@ -46,7 +47,28 @@ describe("Auth ID route (account alterations)", () => {
     });
 
     const nextReq = new NextRequest(req);
-    const res = await PUT(nextReq);
+    const res = await detailsPUT(nextReq);
+
+    expect(res.status).toBe(204);
+  });
+
+  it("Changes account password", async () => {
+    const cookieHeader = `token=${token}`;
+
+    const form = new FormData();
+    form.append("currentPassword", "HelloWorld1!");
+    form.append("newPassword", "HelloWorld123!");
+
+    const req = new Request("http://localhost/api/auth/update/password", {
+      method: "PUT",
+      headers: {
+        cookie: cookieHeader,
+      },
+      body: form,
+    });
+
+    const nextReq = new NextRequest(req);
+    const res = await passwordPUT(nextReq);
 
     expect(res.status).toBe(204);
   });
