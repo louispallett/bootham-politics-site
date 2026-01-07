@@ -69,7 +69,9 @@ export async function POST(req: NextRequest | Request) {
     let userId: string | null = null;
 
     try {
-      const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!, {
+        algorithms: ["HS256"],
+      }) as { userId: string };
       userId = decoded?.userId;
 
       if (!userId) {

@@ -30,7 +30,7 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
     setError(null);
     setIsPending(true);
     axios
-      .put(`/api/auth/${details._id}/update-details`, {
+      .put(`/api/auth/update/details`, {
         data,
       })
       .then(() => {

@@ -6,11 +6,7 @@ import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 import { HttpError } from "@/lib/types";
 
-type Props = {
-  userId: string;
-};
-
-export default function UpdatePasswordForm({ userId }: Props) {
+export default function UpdatePasswordForm() {
   const form = useForm();
   const {
     register,
@@ -32,7 +28,7 @@ export default function UpdatePasswordForm({ userId }: Props) {
     setServerError(null);
     setIsPending(true);
     axios
-      .put(`/api/auth/${userId}/update-password`, {
+      .put(`/api/auth/update/password`, {
         data,
       })
       .then(() => {

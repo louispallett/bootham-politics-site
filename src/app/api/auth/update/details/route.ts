@@ -1,32 +1,42 @@
-import objectIdSchema from "@/app/api/objectIdSchema";
 import { connectToDB } from "@/lib/db";
 import HttpError from "@/lib/HttpError";
 import User from "@/models/User";
+import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const PutValidation = z.object({
-  userId: objectIdSchema,
-  data: z.object({
-    firstName: z.string().trim().min(1).max(50),
-    lastName: z.string().trim().min(1).max(50),
-    email: z.string().trim().email().max(100),
-  }),
+  firstName: z.string().trim().min(1).max(50),
+  lastName: z.string().trim().min(1).max(50),
+  email: z.string().trim().email().max(100),
 });
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function PUT(req: NextRequest) {
+  const token = req.cookies.get("token")?.value;
+
   try {
+    if (!token) {
+      throw new HttpError("No token provided", 403);
+    }
+
     await connectToDB();
 
-    const body = await req.json();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!, {
+      algorithms: ["HS256"],
+    }) as { userId: string };
+    const userId = decoded.userId;
 
-    const { id } = await params;
-    const parsed = PutValidation.safeParse({ userId: id, data: body.data });
+    const formData = await req.formData();
+    const body = Object.fromEntries(formData.entries());
+
+    const parsed = PutValidation.safeParse({
+      firstName: body.firstName,
+      lastName: body.lastName,
+      email: body.email,
+    });
+
     if (!parsed.success) throw new HttpError(parsed.error.message, 400);
-    const { userId, data } = parsed.data;
+    const { firstName, lastName, email } = parsed.data;
 
     const user = await User.findById(userId);
     if (!user) throw new HttpError("User not found", 404);
@@ -34,9 +44,9 @@ export async function PUT(
     await User.updateOne(
       { _id: userId },
       {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
       },
     );
 
