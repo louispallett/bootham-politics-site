@@ -19,8 +19,6 @@ describe("API for Document route", () => {
     });
   });
 
-  
-
   it("Fetches all documents", async () => {
     const res = await GET();
     const json = await res.json();
