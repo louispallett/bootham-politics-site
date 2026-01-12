@@ -17,9 +17,17 @@ export default async function Home() {
     <div>
       <WelcomeMessage />
       <div className="flex flex-col gap-2.5 flex-1">
-        {publishedPosts.map((post: PostPopulated) => (
-          <PostCard data={post} key={post._id} />
-        ))}
+        {publishedPosts.length > 0 ? (
+          <>
+            {publishedPosts.map((post: PostPopulated) => (
+              <PostCard data={post} key={post._id} />
+            ))}
+          </>
+        ) : (
+          <div className="users-container">
+            <h4>No Posts Yet</h4>
+          </div>
+        )}
       </div>
     </div>
   );

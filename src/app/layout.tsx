@@ -16,6 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" type="image/svg+xml" href="/images/big-ben.svg" />
       <body>
         <div className="min-h-screen flex flex-col">
           <Header />
