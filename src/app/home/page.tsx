@@ -70,7 +70,7 @@ function PostCard({ data }: { data: PostPopulated }) {
           {data.synopsis}
         </p>
         <div className="p-2.5 self-end">
-          <div className="flex gap-2.5">
+          <div className="tag-wrapper">
             {data.tags.map((tag) => (
               <TagCard data={tag.name} key={tag.name} />
             ))}

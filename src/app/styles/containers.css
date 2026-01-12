@@ -33,18 +33,10 @@
   margin: 4rem 0 2rem 0;
 }
 
-@media (max-width: 640px) {
-  .header-title-wrapper > div {
-    visibility: hidden;
-  }
-
-  .main-title-wrapper {
-    margin: 1rem 0 1rem 0;
-  }
-
-  .main-title-wrapper > div > h1 {
-    font-size: var(--h2-size);
-  }
+.tag-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
 }
 
 .tag-container {
@@ -77,5 +69,27 @@
     .theme-wrapper > button > span {
       transform: translateX(1.75rem);
     }
+  }
+}
+
+@media (max-width: 640px) {
+  .header-title-wrapper > div {
+    visibility: hidden;
+  }
+
+  .main-title-wrapper {
+    margin: 1rem 0 1rem 0;
+  }
+
+  .main-title-wrapper > div > h1 {
+    font-size: var(--h2-size);
+  }
+
+  .tag-container {
+    padding: 0.3em 0.625rem;
+  }
+
+  .tag-container > p {
+    font-size: 0.9rem;
   }
 }
