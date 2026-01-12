@@ -6,7 +6,7 @@ import Post from "@/models/Post";
 
 export async function PUT(
   req: NextRequest | Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await connectToDB();

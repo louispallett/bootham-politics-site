@@ -3,6 +3,7 @@ import { PUT as publishPUT } from "@/app/api/posts/[id]/update-publish/route";
 import Post from "@/models/Post";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import { NextRequest } from "next/server";
 
 describe("API for Post model (dynamic)", () => {
   let postId: string;
@@ -32,8 +33,9 @@ describe("API for Post model (dynamic)", () => {
       method: "GET",
     });
 
-    const context = { params: { id: postId } };
-    const res = await GET(req, context);
+    const context = { params: Promise.resolve({ id: postId }) };
+    const nextReq = new NextRequest(req);
+    const res = await GET(nextReq, context);
     const json = await res.json();
 
     expect(res.status).toBe(200);
@@ -53,8 +55,9 @@ describe("API for Post model (dynamic)", () => {
       body: form,
     });
 
-    const context = { params: { id: postId } };
-    const res = await PUT(req, context);
+    const context = { params: Promise.resolve({ id: postId }) };
+    const nextReq = new NextRequest(req);
+    const res = await PUT(nextReq, context);
 
     // PUT returns a 204, so doesn't return any data
     expect(res.status).toBe(204);
@@ -68,8 +71,9 @@ describe("API for Post model (dynamic)", () => {
       },
     );
 
-    const context = { params: { id: postId } };
-    const res = await publishPUT(req, context);
+    const context = { params: Promise.resolve({ id: postId }) };
+    const nextReq = new NextRequest(req);
+    const res = await publishPUT(nextReq, context);
 
     const post = await Post.findById(postId);
     expect(res.status).toBe(204);
@@ -81,8 +85,9 @@ describe("API for Post model (dynamic)", () => {
       method: "DELETE",
     });
 
-    const context = { params: { id: postId } };
-    const res = await DELETE(req, context);
+    const context = { params: Promise.resolve({ id: postId }) };
+    const nextReq = new NextRequest(req);
+    const res = await DELETE(nextReq, context);
 
     expect(res.status).toBe(204);
     const post = await Post.findById(postId);

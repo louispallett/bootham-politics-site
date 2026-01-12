@@ -13,8 +13,8 @@ import { DocumentType } from "@/lib/types";
 import Document from "@/models/Document";
 
 export async function GET(
-  req: NextRequest | Request,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await connectToDB();
@@ -60,8 +60,8 @@ const PutValidation = z.object({
 });
 
 export async function PUT(
-  req: NextRequest | Request,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await connectToDB();
@@ -167,8 +167,8 @@ export async function PUT(
 }
 
 export async function DELETE(
-  req: NextRequest | Request,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await connectToDB();
