@@ -1,3 +1,11 @@
+/* Root <main> element */
+.main-parent {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  margin: 0 2rem 4rem 2rem;
+}
+
 .standard-container,
 .users-container,
 .tag-container {
@@ -73,6 +81,9 @@
 }
 
 @media (max-width: 640px) {
+  .main-parent {
+    margin: 0 0.3rem 4rem 0.3rem;
+  }
   .header-title-wrapper > div {
     visibility: hidden;
   }
