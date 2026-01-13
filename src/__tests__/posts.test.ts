@@ -4,11 +4,12 @@ import bcrypt from "bcryptjs";
 import Post from "@/models/Post";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { PostType } from "@/lib/types";
 
 jest.mock("next/headers", () => ({
   cookies: jest.fn(),
 }));
+
+jest.mock("file-type");
 
 describe("API for Post route", () => {
   let id: string;
