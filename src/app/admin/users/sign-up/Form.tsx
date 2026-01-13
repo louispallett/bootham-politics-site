@@ -129,9 +129,6 @@ export default function Form() {
         })}
       />
       <button className="btn submit">Submit</button>
-      <p className="text-center text-sm">
-        Already have an account? <a href="sign-in">Sign in</a>
-      </p>
     </form>
   );
 }

@@ -79,9 +79,6 @@ export default function Form() {
       <button className="btn submit">
         {isPending ? <div className="spinner h-6 w-6"></div> : <>Submit</>}
       </button>
-      <p className="text-center text-sm">
-        Not registered? <a href="sign-up">Sign Up</a>
-      </p>
     </form>
   );
 }
