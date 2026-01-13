@@ -37,7 +37,7 @@ export default function UpdatePasswordForm() {
         reset();
       })
       .catch((err: AxiosError) => {
-        console.error(err);
+        console.error(err.response);
         if (axios.isAxiosError<HttpError>(err)) {
           setServerError({
             message: err.response?.data?.message ?? "Unknown",
@@ -77,7 +77,7 @@ export default function UpdatePasswordForm() {
               className="form-input"
             />
             {errors.currentPassword?.message && (
-              <p className="text-red-600 font-bold mt-1.5 text-xs">
+              <p className="form-error">
                 {String(errors.currentPassword.message)}
               </p>
             )}
@@ -118,7 +118,7 @@ export default function UpdatePasswordForm() {
               )}
             </div>
             {errors.newPassword?.message && (
-              <p className="text-red-600 font-bold mt-1.5 text-xs text-right">
+              <p className="form-error text-right">
                 {String(errors.newPassword?.message)}
               </p>
             )}
@@ -126,7 +126,7 @@ export default function UpdatePasswordForm() {
         </div>
         {serverError && (
           <div className="standard-container bg-red-500">
-            {serverError.message}
+            <b>Error ({serverError.status})</b>: {serverError.message}
           </div>
         )}
         {isPending ? (

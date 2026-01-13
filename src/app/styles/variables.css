@@ -19,6 +19,7 @@
   --yellow-container: #fef9c3;
   --yellow-border: #eab308;
   --text-std: #000;
+  --form-error-red: #dc2626;
   /* Button colours */
   --btn-default-bg: #bae6fd;
   --btn-submit-bg: #1d4ed8;
@@ -50,6 +51,7 @@
   --yellow-container: #d97706;
   --yellow-border: #854d0e;
   --text-std: #fff;
+  --form-error-red: #fca5a5;
   /* Button colours */
   --btn-default-bg: #1e40af;
   --btn-default-bg-hover: #2563eb;

@@ -83,16 +83,16 @@ export default function Form() {
           })}
         />
       </div>
+      <input
+        type="email"
+        className="form-input"
+        placeholder="Email"
+        required
+        {...register("email", {
+          required: "Required",
+        })}
+      />
       <div className="form-grid">
-        <input
-          type="email"
-          className="form-input"
-          placeholder="Email"
-          required
-          {...register("email", {
-            required: "Required",
-          })}
-        />
         <input
           type="password"
           className="form-input"
@@ -100,6 +100,22 @@ export default function Form() {
           required
           {...register("password", {
             required: "Required",
+          })}
+        />
+        <input
+          type="password"
+          className="form-input"
+          placeholder="Confirm Password"
+          required
+          {...register("confPassword", {
+            required: "Required",
+            validate: {
+              passwordMatch: (fieldValue) => {
+                return (
+                  fieldValue == watch("password") || "Passwords do not match"
+                );
+              },
+            },
           })}
         />
       </div>
