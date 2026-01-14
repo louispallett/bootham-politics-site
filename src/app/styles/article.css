@@ -27,11 +27,6 @@
     margin-bottom: 0.625rem;
 }
 
-.article-inner > h1,
-.article-inner > h2 { 
-    text-shadow: 5px 5px 5px #9C9A9A;
-}
-
 .article-inner > p > a {
     font-weight: bold;
     color: var(--btn-submit-bg);
