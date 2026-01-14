@@ -60,11 +60,7 @@ function PostCard({ data }: { data: PostPopulated }) {
           <h4>{data.title}</h4>
         </div>
         {data.bannerURL && (
-          <img
-            src={data.bannerURL}
-            alt=""
-            className="object-cover max-h-full min-w-full"
-          />
+          <img src={data.bannerURL} alt="" className="object-cover" />
         )}
         <p className="self-start italic px-2.5 py-3.5 sm:px-3 sm:py-4 dark:text-slate-100">
           {data.synopsis}
