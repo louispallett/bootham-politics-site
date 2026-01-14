@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import Post from "@/models/Post";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { NextRequest } from "next/server";
 
 jest.mock("next/headers", () => ({
   cookies: jest.fn(),
@@ -49,7 +50,8 @@ describe("API for Post route", () => {
         body: form,
       });
 
-      const res = await POST(req);
+      const nextRequest = new NextRequest(req);
+      const res = await POST(nextRequest);
       const json = await res.json();
 
       expect(res.status).toBe(201);
