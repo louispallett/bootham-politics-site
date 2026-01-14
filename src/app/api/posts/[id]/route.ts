@@ -11,6 +11,13 @@ import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getDocumentsByPostId } from "@/lib/documents";
 import { DocumentType } from "@/lib/types";
 import Document from "@/models/Document";
+import {
+  ALLOWED_BANNER_MIME_TYPES,
+  ALLOWED_FORMATS,
+  MAX_FILE_SIZE,
+  PostValidationSchema,
+} from "../auxiliary";
+import { fileTypeFromBuffer } from "file-type";
 
 export async function GET(
   req: NextRequest,
@@ -48,17 +55,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const PutValidation = z.object({
-  title: z.string().trim().max(200),
-  synopsis: z.string().trim().max(1000),
-  content: z.string().min(8).max(100000),
-  tags: z
-    .array(z.string().regex(/^[a-f\d]{24}$/i, "Invalid tag ID"))
-    .optional(),
-  banner: z.instanceof(File).optional(),
-  bannerCaption: z.string().max(1000).optional(),
-});
-
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -78,7 +74,7 @@ export async function PUT(
     const formData = await req.formData();
     const body = Object.fromEntries(formData.entries());
 
-    const parsed = PutValidation.safeParse({
+    const parsed = PostValidationSchema.safeParse({
       title: body.title,
       synopsis: body.synopsis,
       content: body.content,
@@ -105,19 +101,37 @@ export async function PUT(
     let cloudinaryURL = null;
     let cloudinaryId = null;
     if (banner) {
+      // VALIDATION CHECKS ON BANNER
+      // Check file size
+      if (banner.size > MAX_FILE_SIZE) {
+        throw new HttpError("Banner image exceeds 15MB", 400);
+      }
+
+      // Check File Type
+      // NOTE: package file-type helps prevent renamed executables (i.e. virus.jpg.exe)
+      const buffer = Buffer.from(await banner.arrayBuffer());
+      const detectedType = await fileTypeFromBuffer(buffer);
+      if (
+        !detectedType ||
+        !ALLOWED_BANNER_MIME_TYPES.includes(detectedType.mime)
+      ) {
+        throw new HttpError("Banner file type not allowed", 400);
+      }
       const originalPost = await Post.findById(id);
       if (originalPost.bannerURL) {
         await cloudinary.uploader.destroy(originalPost.cloudinaryId);
       }
 
       // Add new image to cloudinary
-      const arrayBuffer = await banner.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-
       const result = await new Promise((resolve, reject) => {
         cloudinary.uploader
           .upload_stream(
-            { resource_type: "auto", folder: "Bootham Banners" },
+            {
+              resource_type: "image",
+              folder: "Bootham Banners",
+              max_file_size: MAX_FILE_SIZE,
+              allowed_formats: ALLOWED_FORMATS,
+            },
             (error, result) => {
               if (error) reject(error);
               else resolve(result);
