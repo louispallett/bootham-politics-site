@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <div>
       <WelcomeMessage />
-      <div className="flex flex-col gap-2.5 flex-1">
+      <div className="grid-sm">
         {publishedPosts.length > 0 ? (
           <>
             {publishedPosts.map((post: PostPopulated) => (
@@ -55,7 +55,7 @@ function WelcomeMessage() {
 function PostCard({ data }: { data: PostPopulated }) {
   return (
     <Link href={"/home/" + data._id}>
-      <div className="users-container border-none p-0!">
+      <div className="users-container h-full border-none p-0!">
         <div className="rounded-b-none rounded-lg p-2.5">
           <h4>{data.title}</h4>
         </div>

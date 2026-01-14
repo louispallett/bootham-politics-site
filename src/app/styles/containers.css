@@ -41,6 +41,12 @@
   margin: 4rem 0 2rem 0;
 }
 
+.grid-sm {
+  display: grid;
+  gap: 0.625em;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+}
+
 .tag-wrapper {
   display: flex;
   flex-wrap: wrap;
