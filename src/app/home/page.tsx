@@ -55,7 +55,7 @@ function WelcomeMessage() {
 function PostCard({ data }: { data: PostPopulated }) {
   return (
     <Link href={"/home/" + data._id}>
-      <div className="users-container h-full border-none p-0!">
+      <div className="article-container">
         <div className="rounded-b-none rounded-lg p-2.5">
           <h4>{data.title}</h4>
         </div>
