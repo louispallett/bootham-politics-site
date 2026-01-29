@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import "./styles/styles.css";
+import "./styles/index.css";
 import Link from "next/link";
 import ThemeSetter from "./ThemeSetter";
 
