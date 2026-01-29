@@ -1,66 +1,68 @@
 .article {
-    display: flex;
-    flex-direction: column;
-    gap: 10px
-    padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 10px;
 }
 
 .article-synopsis-wrapper {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--padding-sm);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--padding-sm);
 }
 
 .article-author {
-    align-self: start;
-    min-width: fit-content;
-    padding: var(--padding-xs) var(--padding-md);
-    border-radius: var(--padding-sm);
-    background-color: var(--btn-submit-bg);
-    color: #fff;
-    font-weight: bold;
-    box-shadow: 5px 5px 0px 0px #9C9A9A;
+  align-self: start;
+  min-width: fit-content;
+  padding: var(--padding-xs) var(--padding-md);
+  border-radius: var(--padding-sm);
+  background-color: var(--btn-submit-bg);
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 5px 5px 0px 0px #9c9a9a;
 }
 
 .article-inner > p {
-    margin-top: 0.625rem;
-    margin-bottom: 0.625rem;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
 }
 
 .article-inner > p > a {
-    font-weight: bold;
-    color: var(--btn-submit-bg);
+  font-weight: bold;
+  color: var(--btn-submit-bg);
 }
 
 .file-uploader {
-    margin-top: var(--padding-md);
-    background-color: var(--form-background);
+  margin-top: var(--padding-md);
+  background-color: var(--form-background);
 }
 
 .loading-bar-wrapper {
-    width: full;
-    background-color: #fff;
-    height: 1.25em;
-    margin-top: 1em;
-    outline: 2px solid black;
+  width: 100%;
+  background-color: #fff;
+  height: 1.25em;
+  margin-top: 1em;
+  outline: 2px solid black;
 }
 
 .loading-bar {
-    background-color: #65a30d;
-    height: 1.25em;
-    transition-property: all;
-    transition-timing-function: var(--default-transition-timing-function); /* cubic-bezier(0.4, 0, 0.2, 1) */
-    transition-duration: var(--default-transition-duration); /* 150ms */
+  background-color: #65a30d;
+  height: 1.25em;
+  transition-property: all;
+  transition-timing-function: var(
+    --default-transition-timing-function
+  ); /* cubic-bezier(0.4, 0, 0.2, 1) */
+  transition-duration: var(--default-transition-duration); /* 150ms */
 }
 
 @media (max-width: 640px) {
-    .article-synopsis-wrapper {
-        flex-direction: column;
-        align-items: end;
-    }
+  .article-synopsis-wrapper {
+    flex-direction: column;
+    align-items: end;
+  }
 
-    .article-author {
-        align-self: end;
-        margin-right: 0.625rem;
-    }
+  .article-author {
+    align-self: end;
+    margin-right: 0.625rem;
+  }
 }

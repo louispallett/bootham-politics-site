@@ -86,17 +86,13 @@
   color: var(--theme-toggle-bg);
 }
 
-:root[data-theme="dark"] {
-  .theme-wrapper > button > span {
-    transform: translateX(1.6rem);
-  }
+:root[data-theme="dark"] .theme-wrapper > button > span {
+  transform: translateX(1.6rem);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    .theme-wrapper > button > span {
-      transform: translateX(1.75rem);
-    }
+  :root:not([data-theme]) .theme-wrapper > button > span {
+    transform: translateX(1.75rem);
   }
 }
 
