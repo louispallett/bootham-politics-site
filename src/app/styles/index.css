@@ -1,11 +1,17 @@
 @import "tailwindcss";
-@import "./variables.css";
-@import "./article.css";
-@import "./buttons.css";
-@import "./containers.css";
-@import "./footer.css";
-@import "./fonts.css";
-@import "./form.css";
+
+@layer base {
+  @import "./variables.css";
+  @import "./fonts.css";
+}
+
+@layer components {
+  @import "./article.css";
+  @import "./buttons.css";
+  @import "./containers.css";
+  @import "./footer.css";
+  @import "./form.css";
+}
 
 * {
   font-family:
