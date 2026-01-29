@@ -1,6 +1,6 @@
 "use client";
 
-import { UserType } from "@/lib/types";
+import { HttpError, UserType } from "@/lib/types";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -24,15 +24,13 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
   const { errors } = formState;
   const [isPending, setIsPending] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  const [error, setError] = useState<AxiosError | null>(null);
+  const [serverError, setServerError] = useState<HttpError | null>(null);
 
   const onSubmit = async (data: any) => {
-    setError(null);
+    setServerError(null);
     setIsPending(true);
     axios
-      .put(`/api/auth/${details._id}/update-details`, {
-        data,
-      })
+      .put(`/api/auth/update/details`, data)
       .then(() => {
         setSuccess(true);
         setTimeout(() => {
@@ -41,7 +39,17 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
       })
       .catch((err: any) => {
         console.error(err.response);
-        setError(err.response.data.message);
+        if (axios.isAxiosError<HttpError>(err)) {
+          setServerError({
+            message: err.response?.data?.message ?? "Unknown",
+            status: err.response?.status,
+          });
+        } else {
+          setServerError({
+            message: "Unexpected Error",
+            status: 500,
+          });
+        }
       })
       .finally(() => {
         setIsPending(false);
@@ -77,11 +85,9 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
                 },
               })}
             />
-            <span>
-              <p className="text-red-600 font-bold mt-1.5 text-xs">
-                {errors.firstName?.message}
-              </p>
-            </span>
+            {errors.firstName?.message && (
+              <p className="form-error">{String(errors.firstName?.message)}</p>
+            )}
           </div>
           <div>
             <label htmlFor="lastName">
@@ -103,11 +109,11 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
                 },
               })}
             />
-            <span>
-              <p className="text-red-600 font-bold mt-1.5 text-xs text-right">
-                {errors.lastName?.message}
+            {errors.lastName?.message && (
+              <p className="form-error text-right">
+                {String(errors.lastName?.message)}
               </p>
-            </span>
+            )}
           </div>
         </div>
         <div className="flex flex-col">
@@ -130,15 +136,15 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
               },
             })}
           />
-          <span>
-            <p className="text-red-600 font-bold mt-1.5 text-xs">
-              {errors.email?.message}
-            </p>
-          </span>
+          {errors.email?.message && (
+            <p className="form-error">{String(errors.email?.message)}</p>
+          )}
         </div>
-        {error && (
+        {serverError && (
           <div className="standard-container bg-red-500">
-            <p>{error.message}</p>
+            <p>
+              <b>Error ({serverError.status})</b>: {serverError.message}
+            </p>
           </div>
         )}
         {isPending ? (
@@ -148,7 +154,7 @@ export default function UpdatePersonalDetailsForm({ details }: Props) {
         ) : (
           <>
             {success ? (
-              <div className="success flex justify-center">
+              <div className="success flex justify-center font-bold">
                 <p>Success!</p>
               </div>
             ) : (

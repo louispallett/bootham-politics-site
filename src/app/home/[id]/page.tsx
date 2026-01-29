@@ -1,23 +1,33 @@
 import { getIcon } from "@/app/auxiliary";
 import { getDocumentsByPostId } from "@/lib/documents";
 import { getPostById } from "@/lib/posts";
-import { DocumentType, PostType } from "@/lib/types";
+import { DocumentType, PostPopulated } from "@/lib/types";
 
-export default async function Post({ params }: { params: { id: string } }) {
+export default async function Post({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
 
   const data = await getPostById(id);
   const documents = await getDocumentsByPostId(id);
   return (
     <>
-      <Article data={data} />
+      {data ? (
+        <Article data={data} />
+      ) : (
+        <div className="users-container">
+          <p>An error occured</p>
+        </div>
+      )}
       {documents.length > 0 && <Documents documents={documents} />}
     </>
   );
 }
 
 type ArticleProps = {
-  data: PostType;
+  data: PostPopulated;
 };
 
 function Article({ data }: ArticleProps) {
@@ -38,7 +48,7 @@ function Article({ data }: ArticleProps) {
           <i>{data.bannerCaption}</i>
         </p>
       )}
-      <div className="article sm:px-3 sm:py-4">
+      <div className="article p-1.5 sm:px-3 sm:py-4">
         <div className="article-synopsis-wrapper">
           <p className="italic dark:text-slate-100">{data.synopsis}</p>
           <p className="article-author">

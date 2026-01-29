@@ -1,5 +1,4 @@
 import { connectToDB } from "@/lib/db";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
@@ -7,8 +6,16 @@ import jwt from "jsonwebtoken";
 import { z } from "zod";
 
 const ValidationSchema = z.object({
-  email: z.string().trim().email().max(100),
-  password: z.string().min(8).max(200),
+  email: z
+    .string()
+    .trim()
+    .email({ message: "Email: Invalid email" })
+    .min(1, { message: "Email: Required" })
+    .max(100, { message: "Email: Max characters 100" }),
+  password: z
+    .string()
+    .min(1, { message: "Passowrd: Required" })
+    .max(200, { message: "Password: Max characters 200" }),
 });
 
 // Sign in
@@ -19,6 +26,7 @@ export async function POST(req: Request) {
 
     const parsed = ValidationSchema.safeParse(body);
     if (!parsed.success) {
+      console.error(parsed.error);
       return NextResponse.json(
         {
           message: "Validation Errors",
@@ -33,11 +41,13 @@ export async function POST(req: Request) {
     const user = await User.findOne({ email: email.toLowerCase() });
 
     if (!user) {
+      console.error("User not found");
       return NextResponse.json({ message: "User not found" }, { status: 401 });
     }
 
     const correctPassword = await bcrypt.compare(password, user.password);
     if (!correctPassword) {
+      console.error("Incorrect Password");
       return NextResponse.json(
         { message: "Incorrect Password" },
         { status: 401 },

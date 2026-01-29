@@ -4,11 +4,13 @@ import bcrypt from "bcryptjs";
 import Post from "@/models/Post";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { PostType } from "@/lib/types";
+import { NextRequest } from "next/server";
 
 jest.mock("next/headers", () => ({
   cookies: jest.fn(),
 }));
+
+jest.mock("file-type");
 
 describe("API for Post route", () => {
   let id: string;
@@ -48,7 +50,8 @@ describe("API for Post route", () => {
         body: form,
       });
 
-      const res = await POST(req);
+      const nextRequest = new NextRequest(req);
+      const res = await POST(nextRequest);
       const json = await res.json();
 
       expect(res.status).toBe(201);
@@ -58,9 +61,8 @@ describe("API for Post route", () => {
   });
 
   describe("API for Post model(2)", () => {
-    let post: PostType;
     beforeAll(async () => {
-      post = await Post.create({
+      await Post.create({
         title: "Test",
         synopsis: "Test synopsis",
         content: "Test content",

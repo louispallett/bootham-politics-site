@@ -19,6 +19,7 @@
   --yellow-container: #fef9c3;
   --yellow-border: #eab308;
   --text-std: #000;
+  --form-error-red: #dc2626;
   /* Button colours */
   --btn-default-bg: #bae6fd;
   --btn-submit-bg: #1d4ed8;
@@ -26,6 +27,12 @@
   --btn-danger-bg: #dc2626;
   --theme-btn-bg: #93c5fd;
   --theme-toggle-bg: #fff;
+  /* Font Sizes */
+  --h1-size: 4rem;
+  --h2-size: 3rem;
+  --h3-size: 2rem;
+  --h4-size: 1.5rem;
+  --h5-size: 1.25rem;
 }
 
 :root[data-theme="dark"] {
@@ -44,6 +51,7 @@
   --yellow-container: #d97706;
   --yellow-border: #854d0e;
   --text-std: #fff;
+  --form-error-red: #fca5a5;
   /* Button colours */
   --btn-default-bg: #1e40af;
   --btn-default-bg-hover: #2563eb;
@@ -73,5 +81,25 @@
     --btn-default-bg-hover: #2563eb;
     --theme-btn-bg: #d97706;
     --theme-toggle-bg: #fff;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    /* Font Sizes */
+    --h1-size: 3.5rem;
+    --h2-size: 2.5rem;
+    --h3-size: 1.75rem;
+  }
+}
+
+@media (max-width: 420px) {
+  :root {
+    /* Font Sizes */
+    --h1-size: 3rem;
+    --h2-size: 2rem;
+    --h3-size: 1.5rem;
+    --h4-size: 1.25rem;
+    --h5-size: 1.1rem;
   }
 }

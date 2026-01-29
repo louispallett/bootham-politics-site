@@ -2,6 +2,7 @@ import { GET, POST } from "@/app/api/tags/route";
 import { PUT } from "@/app/api/tags/[id]/route";
 import Tag from "@/models/Tag";
 import { TagType } from "@/lib/types";
+import {NextRequest} from "next/server";
 
 describe("API for Tag model", () => {
   it("Creates a tag", async () => {
@@ -65,8 +66,9 @@ describe("API for Tag model", () => {
         headers: { "Content-Type": "application/json" },
       });
 
-      const context = { params: { id: createdTag._id.toString() } };
-      const res = await PUT(req, context);
+      const context = { params: Promise.resolve({ id: createdTag._id.toString() }) };
+      const nextReq = new NextRequest(req);
+      const res = await PUT(nextReq, context);
 
       expect(res.status).toBe(204);
     });

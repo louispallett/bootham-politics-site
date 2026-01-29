@@ -23,7 +23,7 @@ export async function getDocumentsByPostId(
   try {
     await connectToDB();
 
-    const documents = await Document.find({ postId }).lean();
+    const documents = await Document.find({ postId }).lean<DocumentType[]>();
     if (!documents) {
       throw new HttpError("Error fetching documents");
     }

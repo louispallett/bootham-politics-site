@@ -1,59 +1,65 @@
-import objectIdSchema from "@/app/api/objectIdSchema";
 import { connectToDB } from "@/lib/db";
 import HttpError from "@/lib/HttpError";
 import User from "@/models/User";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const PutValidation = z.object({
-  userId: objectIdSchema,
-  data: z.object({
-    currentPassword: z.string().trim().min(1).max(50),
-    newPassword: z
-      .string()
-      .trim()
-      .min(8)
-      .max(200)
-      .refine(
-        (val: string) =>
-          /[A-Z]/.test(val) &&
-          /[a-z]/.test(val) &&
-          /[0-9]/.test(val) &&
-          /[^A-Za-z0-9]/.test(val),
-        {
-          message: "Password must include upper/lowercase, number, and symbol",
-        },
-      ),
-  }),
+  currentPassword: z.string().trim().min(1).max(50),
+  newPassword: z
+    .string()
+    .trim()
+    .min(8)
+    .max(200)
+    .refine(
+      (val: string) =>
+        /[A-Z]/.test(val) &&
+        /[a-z]/.test(val) &&
+        /[0-9]/.test(val) &&
+        /[^A-Za-z0-9]/.test(val),
+      {
+        message: "Password must include upper/lowercase, number, and symbol",
+      },
+    ),
 });
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function PUT(req: NextRequest) {
+  const token = req.cookies.get("token")?.value;
+
   try {
+    if (!token) {
+      throw new HttpError("No token provided", 403);
+    }
+
     await connectToDB();
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!, {
+      algorithms: ["HS256"],
+    }) as { userId: string };
+    const userId = decoded.userId;
 
     const body = await req.json();
 
-    const { id } = await params;
-    const parsed = PutValidation.safeParse({ userId: id, data: body.data });
+    const parsed = PutValidation.safeParse(body);
+
     if (!parsed.success) throw new HttpError(parsed.error.message, 400);
-    const { userId, data } = parsed.data;
+    const { currentPassword, newPassword } = parsed.data;
 
     const user = await User.findById(userId);
     if (!user) throw new HttpError("User not found", 400);
 
     const correctPassword = await bcrypt.compare(
-      data.currentPassword,
+      currentPassword,
       user.password,
     );
+
     if (!correctPassword) {
       throw new HttpError("Incorrect Current Password", 401);
     }
 
-    const hashedPassword = await bcrypt.hash(data.newPassword, 12);
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
 
     await User.updateOne({ _id: userId }, { password: hashedPassword });
 

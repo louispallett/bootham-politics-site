@@ -5,8 +5,8 @@ import HttpError from "@/lib/HttpError";
 import Post from "@/models/Post";
 
 export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } },
+  req: NextRequest | Request,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await connectToDB();

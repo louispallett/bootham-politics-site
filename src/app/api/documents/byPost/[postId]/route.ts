@@ -7,7 +7,7 @@ import { getPresignedDownloadUrl } from "@/lib/s3";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { postId: string } },
+  { params }: { params: Promise<{ postId: string }> },
 ) {
   try {
     await connectToDB();

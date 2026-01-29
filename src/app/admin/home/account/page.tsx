@@ -14,7 +14,6 @@ export default async function Account() {
   const userId: any = payload.userId;
   const user = await getUserById(userId);
   const userClient = {
-    _id: user._id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
@@ -28,7 +27,7 @@ export default async function Account() {
       <UpdatePersonalDetailsForm
         details={JSON.parse(JSON.stringify(userClient))}
       />
-      <UpdatePasswordForm userId={JSON.parse(JSON.stringify(user._id))} />
+      <UpdatePasswordForm />
     </div>
   );
 }

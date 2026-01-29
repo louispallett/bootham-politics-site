@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Tag from "@/models/Tag";
 import { connectToDB } from "@/lib/db";
 import { z } from "zod";
@@ -18,8 +18,8 @@ const PutValidation = z.object({
 
 // Updates a single tag
 export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await connectToDB();
@@ -61,8 +61,8 @@ const DeleteValidation = z.object({
 });
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await connectToDB();

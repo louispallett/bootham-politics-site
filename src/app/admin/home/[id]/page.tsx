@@ -13,8 +13,10 @@ export default async function UpdatePost({
   const allTags = await getAllTags();
 
   // NextJS throws warning if we don't convert _id to simple string:
-  for (let tag of data.tags) {
-    tag._id = tag._id.toString();
+  if (data) {
+    for (let tag of data.tags) {
+      tag._id = tag._id.toString();
+    }
   }
 
   return (

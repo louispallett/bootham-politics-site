@@ -8,11 +8,16 @@ export interface PostType {
   bannerCaption?: string;
   synopsis: string;
   content: string;
-  author: Types.ObjectId | UserType;
-  tags: Types.ObjectId[] | TagType[];
+  author: Types.ObjectId;
+  tags: Types.ObjectId[];
   published: boolean;
   creationDate: Date;
   creationDateFormatted: string;
+}
+
+export interface PostPopulated extends Omit<PostType, "author" | "tags"> {
+  author: Pick<UserType, "firstName" | "lastName">;
+  tags: Pick<TagType, "name" | "_id">[];
 }
 
 export interface TagType {
@@ -31,7 +36,7 @@ export interface UserType {
 
 export interface DocumentType {
   _id: string;
-  postId: Types.ObjectId | PostType;
+  postId: Types.ObjectId;
   uploader: Types.ObjectId | UserType;
   originalName: string;
   mimeType: string;
@@ -42,7 +47,11 @@ export interface DocumentType {
   url?: string;
 }
 
+export interface DocumentPopulated extends Omit<DocumentType, "uploader"> {
+  uploader: Pick<UserType, "firstName" | "lastName">;
+}
+
 export interface HttpError {
-  status: number;
+  status?: number;
   message: string;
 }

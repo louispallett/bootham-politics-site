@@ -1,6 +1,6 @@
 "use client";
 
-import { HttpError, PostType, TagType } from "@/lib/types";
+import { HttpError, PostPopulated, TagType } from "@/lib/types";
 import { useState } from "react";
 import UpdatePostForm from "./UpdatePostForm";
 import { FormContext } from "./FormContext";
@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import { useFormContext } from "./FormContext";
 
 type Props = {
-  postData: PostType;
+  postData: PostPopulated;
   allTags: TagType[];
 };
 
@@ -60,10 +60,17 @@ function DeletePost() {
       })
       .catch((err: AxiosError) => {
         console.error(err);
-        setServerError({
-          message: err?.response?.data?.message,
-          status: err?.response?.status,
-        });
+        if (axios.isAxiosError<HttpError>(err)) {
+          setServerError({
+            message: err.response?.data?.message ?? "Unknown",
+            status: err.response?.status,
+          });
+        } else {
+          setServerError({
+            message: "Unexpected Error",
+            status: 500,
+          });
+        }
       })
       .finally(() => {
         setIsPending(false);

@@ -2,6 +2,7 @@
 
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useFormContext } from "./FormContext";
+import {HttpError} from "@/lib/types";
 
 type UpdatePublishProps = {
   postId: string;
@@ -25,10 +26,17 @@ export default function UpdatePublish({ postId }: UpdatePublishProps) {
       })
       .catch((err: AxiosError) => {
         console.error(err);
-        setServerError({
-          message: err?.response?.data?.message,
-          status: err?.response?.status,
-        });
+        if (axios.isAxiosError<HttpError>(err)) {
+          setServerError({
+            message: err.response?.data?.message ?? "Unknown",
+            status: err.response?.status,
+          });
+        } else {
+          setServerError({
+            message: "Unexpected Error",
+            status: 500,
+          });
+        }
       })
       .finally(() => {
         setIsPending(false);

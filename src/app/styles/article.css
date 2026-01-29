@@ -27,11 +27,6 @@
     margin-bottom: 0.625rem;
 }
 
-.article-inner > h1,
-.article-inner > h2 { 
-    text-shadow: 5px 5px 5px #9C9A9A;
-}
-
 .article-inner > p > a {
     font-weight: bold;
     color: var(--btn-submit-bg);
@@ -56,4 +51,16 @@
     transition-property: all;
     transition-timing-function: var(--default-transition-timing-function); /* cubic-bezier(0.4, 0, 0.2, 1) */
     transition-duration: var(--default-transition-duration); /* 150ms */
+}
+
+@media (max-width: 640px) {
+    .article-synopsis-wrapper {
+        flex-direction: column;
+        align-items: end;
+    }
+
+    .article-author {
+        align-self: end;
+        margin-right: 0.625rem;
+    }
 }
