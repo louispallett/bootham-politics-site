@@ -2,6 +2,8 @@ import { PostPopulated, PostType } from "@/lib/types";
 import { getAllPosts } from "@/lib/posts";
 import Link from "next/link";
 
+export const runtime = "nodejs";
+
 export default async function AdminHome() {
   const posts = await getAllPosts();
 

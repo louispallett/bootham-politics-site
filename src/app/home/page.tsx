@@ -2,12 +2,7 @@ import { getAllPosts } from "@/lib/posts";
 import { PostPopulated } from "@/lib/types";
 import Link from "next/link";
 
-// FIXME: General responsive design for smaller screens (down to at least 340px):
-//      - Margin (x) of containers, put these down to zero to give the articles maximum space.
-//      - Wrap list of files in FileManager (wrapping file btn and delete btn with flex-col).
-//      - Tags (open client side):
-//        - Wrap these around using a grid wrap or flex wrap.
-//        - Simplify the styling on smaller screens.
+export const runtime = "nodejs";
 
 export default async function Home() {
   const posts = await getAllPosts();

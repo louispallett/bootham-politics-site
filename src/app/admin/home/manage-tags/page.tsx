@@ -2,6 +2,8 @@ import { getAllTags } from "@/lib/tags";
 import CreateTagForm from "./CreateTagForm";
 import AllTags from "./AllTags";
 
+export const runtime = "nodejs";
+
 export default async function Tags() {
   const tags = await getAllTags();
 
