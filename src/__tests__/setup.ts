@@ -1,3 +1,4 @@
+import {connectToDB} from "@/lib/db";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env.test" });
 jest.setTimeout(10000); // (to allow for memory-server to run
@@ -10,7 +11,7 @@ beforeAll(async () => {
   mongo = await MongoMemoryServer.create();
   const uri = mongo.getUri();
 
-  await mongoose.connect(uri);
+  await connectToDB(uri);
 });
 
 afterEach(async () => {
