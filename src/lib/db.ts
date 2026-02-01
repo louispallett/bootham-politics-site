@@ -1,15 +1,35 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+declare global {
+  var _mongoose: {
+    conn: typeof import("mongoose") | null;
+    promise: Promise<typeof import("mongoose")> | null;
+  };
+}
 
-export async function connectToDB() {
-  if (mongoose.connection.readyState >= 1) {
-    return;
+let cached = global._mongoose || { conn: null, promise: null };
+
+if (!global._mongoose) {
+  global._mongoose = cached;
+}
+
+export async function connectToDB(uri?: string) {
+  if (cached.conn) {
+    return cached.conn;
   }
 
-  if (!MONGODB_URI) {
+  const mongoUri = uri ?? process.env.MONGODB_URI;
+
+  if (!mongoUri) {
     throw new Error("MONGODB_URI not set");
   }
 
-  return mongoose.connect(MONGODB_URI);
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(mongoUri, {
+      bufferCommands: false,
+    });
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
