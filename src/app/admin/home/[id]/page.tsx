@@ -3,6 +3,8 @@ import { getAllTags } from "@/lib/tags";
 import ManageDocuments from "../ManageDocuments";
 import FormWrapper from "./FormWrapper";
 
+export const runtime = "nodejs";
+
 export default async function UpdatePost({
   params,
 }: {

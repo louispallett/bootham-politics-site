@@ -4,6 +4,8 @@ import { getUserById } from "@/lib/users";
 import UpdatePersonalDetailsForm from "./UpdatePersonalDetailsForm";
 import UpdatePasswordForm from "./UpdatePasswordForm";
 
+export const runtime = "nodejs";
+
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
 
 export default async function Account() {

@@ -3,6 +3,8 @@ import { getDocumentsByPostId } from "@/lib/documents";
 import { getPostById } from "@/lib/posts";
 import { DocumentType, PostPopulated } from "@/lib/types";
 
+export const runtime = "nodejs";
+
 export default async function Post({
   params,
 }: {
