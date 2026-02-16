@@ -1,6 +1,8 @@
 import Link from "next/link";
 import PostsWrapper from "./PostsWrapper";
 
+export const runtime = "nodejs";
+
 export default async function AdminHome() {
   return (
     <div className="flex flex-col gap-2.5">
