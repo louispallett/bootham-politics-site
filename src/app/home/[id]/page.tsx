@@ -1,6 +1,7 @@
 import Post from "./Post";
 
-export default async function Page({
+
+export default async function Post({
   params,
 }: {
   params: Promise<{ id: string }>;

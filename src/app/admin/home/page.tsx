@@ -5,6 +5,8 @@ import PostsWrapper from "./PostsWrapper";
 
 export const runtime = "nodejs";
 
+export const runtime = "nodejs";
+
 export default async function AdminHome() {
   const posts = await getAllPosts();
 
