@@ -1,29 +1,12 @@
-import { getAllPosts } from "@/lib/posts";
-import { PostPopulated } from "@/lib/types";
-import Link from "next/link";
+import Posts from "./Posts";
 
 export const runtime = "nodejs";
 
 export default async function Home() {
-  const posts = await getAllPosts();
-  const publishedPosts = posts.filter((post) => post.published);
-
   return (
     <div>
       <WelcomeMessage />
-      <div className="grid-sm">
-        {publishedPosts.length > 0 ? (
-          <>
-            {publishedPosts.map((post: PostPopulated) => (
-              <PostCard data={post} key={post._id} />
-            ))}
-          </>
-        ) : (
-          <div className="users-container">
-            <h4>No Posts Yet</h4>
-          </div>
-        )}
-      </div>
+      <Posts />
     </div>
   );
 }
@@ -42,41 +25,6 @@ function WelcomeMessage() {
         global politics, deepen your understanding of key ideas, and build
         real-world examples for essays and discussion. Check back regularly, new
         content is added as politics unfolds.
-      </p>
-    </div>
-  );
-}
-
-function PostCard({ data }: { data: PostPopulated }) {
-  return (
-    <Link href={"/home/" + data._id}>
-      <div className="article-container">
-        <div className="rounded-b-none rounded-lg p-2.5">
-          <h4>{data.title}</h4>
-        </div>
-        {data.bannerURL && (
-          <img src={data.bannerURL} alt="" className="object-cover" />
-        )}
-        <p className="self-start italic px-2.5 py-3.5 sm:px-3 sm:py-4 dark:text-slate-100">
-          {data.synopsis}
-        </p>
-        <div className="p-2.5 self-end">
-          <div className="tag-wrapper">
-            {data.tags.map((tag) => (
-              <TagCard data={tag.name} key={tag.name} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-function TagCard({ data }: { data: string }) {
-  return (
-    <div className="tag-container shadow-none!">
-      <p>
-        <b>{data}</b>
       </p>
     </div>
   );

@@ -11,7 +11,7 @@ export default async function Tags() {
     <div className="flex flex-col gap-2.5">
       <div className="flex flex-col lg:grid grid-cols-2 gap-2.5">
         <CreateTagForm />
-        <AllTags tags={tags} />
+        <AllTags />
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
 "use client";
 
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useForm } from "react-hook-form";
 import { TagType } from "@/lib/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function AllTags({ tags }: { tags: TagType[] }) {
+export default function AllTags() {
   const form = useForm();
   const {
     register,
@@ -20,6 +20,25 @@ export default function AllTags({ tags }: { tags: TagType[] }) {
   const { errors } = formState;
   const [isPending, setIsPending] = useState(false);
   const [serverError, setServerError] = useState(null);
+  const [tags, setTags] = useState<TagType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const getTags = () => {
+      axios
+        .get("/api/tags")
+        .then((response: AxiosResponse) => {
+          setTags(response.data.tags);
+        })
+        .catch((err: AxiosError) => {
+          // setServerError(err.message);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+    getTags();
+  }, []);
 
   const onSubmit = (data: object) => {
     setServerError(null);
@@ -46,14 +65,26 @@ export default function AllTags({ tags }: { tags: TagType[] }) {
     >
       <div className="flex flex-col gap-2.5">
         <h4>Current Tags</h4>
-        {tags.map((tag) => (
-          <TagCard
-            tag={tag}
-            key={tag._id}
-            register={register}
-            errors={errors}
-          />
-        ))}
+        {loading ? (
+          <div className="spinner h-12 w-12" />
+        ) : (
+          <>
+            {tags.length > 0 ? (
+              <>
+                {tags.map((tag) => (
+                  <TagCard
+                    tag={tag}
+                    key={tag._id}
+                    register={register}
+                    errors={errors}
+                  />
+                ))}
+              </>
+            ) : (
+              <p>No tags</p>
+            )}
+          </>
+        )}
       </div>
       {serverError && (
         <span className="bg-red-600 text-white font-bold self-start px-2.5 rounded">
