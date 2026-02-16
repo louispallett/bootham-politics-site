@@ -18,6 +18,8 @@ import {
   PostValidationSchema,
 } from "../auxiliary";
 import { fileTypeFromBuffer } from "file-type";
+import Tag from "@/models/Tag";
+import User from "@/models/User";
 
 export async function GET(
   req: NextRequest,
@@ -34,7 +36,18 @@ export async function GET(
 
     const _id = new ObjectId(id);
 
-    const post = await Post.findById(_id);
+    const post = await Post.findById(_id)
+      .populate({
+        path: "author",
+        select: "firstName lastName -_id",
+        model: User,
+      })
+      .populate({
+        path: "tags",
+        select: "name -_id",
+        model: Tag,
+      });
+
     if (!post) {
       return NextResponse.json({ message: "Post not found" }, { status: 404 });
     }
