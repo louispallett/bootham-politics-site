@@ -1,13 +1,7 @@
-import { PostPopulated, PostType } from "@/lib/types";
-import { getAllPosts } from "@/lib/posts";
 import Link from "next/link";
 import PostsWrapper from "./PostsWrapper";
 
-export const runtime = "nodejs";
-
 export default async function AdminHome() {
-  const posts = await getAllPosts();
-
   return (
     <div className="flex flex-col gap-2.5">
       <div className="flex flex-col md:grid grid-cols-3 gap-2.5">
