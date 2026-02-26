@@ -5,6 +5,8 @@ h4,
 h5,
 h6,
 p,
+ul,
+ol,
 label {
   color: var(--text-std);
 }
@@ -38,6 +40,11 @@ h5 {
   font-size: var(--h5-size);
 }
 
+ol > li > a,
+ul > li > a,
+li > a,
+p > a,
+a,
 .link {
   font-weight: bold;
   color: var(--link);
@@ -48,6 +55,11 @@ ul {
   list-style: square;
 }
 
+ol > li > a:hover,
+ul > li > a:hover,
+li > a:hover,
+p > a:hover,
+a:hover,
 .link:hover,
 .link:focus {
   cursor: pointer;

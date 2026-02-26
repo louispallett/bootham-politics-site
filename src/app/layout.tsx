@@ -57,12 +57,7 @@ function Footer() {
           Administrator
         </a>
         <p>
-          <a
-            href="https://github.com/louispallett"
-            className="text-sm text-yellow-400! focus:text-yellow-300! hover:text-yellow-200!"
-          >
             © 2025 Louis Pallett
-          </a>
         </p>
       </div>
     </footer>
