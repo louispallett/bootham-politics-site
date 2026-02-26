@@ -5,6 +5,8 @@ h4,
 h5,
 h6,
 p,
+ul,
+ol,
 label {
   color: var(--text-std);
 }
